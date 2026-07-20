@@ -145,7 +145,9 @@ function setRole(role, updateUrl = true) {
   switchEnterprise.setAttribute('aria-pressed', String(enterpriseActive));
   switchTalent.setAttribute('aria-pressed', String(!enterpriseActive));
   appEyebrow.textContent = enterpriseActive ? 'FOR BUSINESS' : 'FOR TALENT';
-  appTitle.textContent = enterpriseActive ? '把模糊问题，变成可确认的任务' : '把做过的事，变成可验证的能力';
+  appTitle.innerHTML = enterpriseActive
+    ? '<span class="app-title-line">把模糊问题，</span><span class="app-title-line">变成可确认的任务</span>'
+    : '<span class="app-title-line">把做过的事，</span><span class="app-title-line">变成可验证的能力</span>';
   document.title = enterpriseActive ? '企业问题诊断｜嘟嘟嗨 Duduhire' : '人才能力定位｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);
