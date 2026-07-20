@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">嘟嘟嗨品牌标志</title>
+  <desc id="desc">两个相互连接的字母 D，代表企业问题与人才能力的匹配</desc>
+  <defs>
+    <linearGradient id="surface" x1="8" y1="5" x2="56" y2="59" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#242643"/>
+      <stop offset="1" stop-color="#111326"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="22" y1="19" x2="47" y2="47" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A69BFF"/>
+      <stop offset="1" stop-color="#6B5CE8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-15%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#272052" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <rect x="3" y="3" width="58" height="58" rx="19" fill="url(#surface)" filter="url(#shadow)"/>
+  <rect x="3.75" y="3.75" width="56.5" height="56.5" rx="18.25" fill="none" stroke="#FFFFFF" stroke-opacity=".13" stroke-width="1.5"/>
+  <path d="M16.5 15.5h10.75C38.3 15.5 46 22.23 46 32s-7.7 16.5-18.75 16.5H16.5v-33Z" fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linejoin="round"/>
+  <path d="M25.5 22.5h3.25C35.42 22.5 40 26.2 40 32s-4.58 9.5-11.25 9.5H25.5v-19Z" fill="none" stroke="url(#signal)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="47.5" cy="16.5" r="4.5" fill="#79DFC4"/>
+  <circle cx="47.5" cy="16.5" r="2" fill="#D8FFF4"/>
+</svg>

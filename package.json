@@ -1,0 +1,16 @@
+{
+  "name": "duduhire",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/clean-dist.mjs && vite build && node scripts/stage-sites-build.mjs",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.37.1",
+    "vite": "^8.1.1",
+    "wrangler": "^4.92.0"
+  }
+}

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="企业生成业务问题诊断草稿，人才生成初步出海能力定位。页面结果仅作初步梳理，最终由人工核验。">
+  <meta name="theme-color" content="#f7f7f3">
+  <title>开始使用｜嘟嘟嗨 Duduhire</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/duduhire-mark.svg">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header always-solid subpage-header">
+    <div class="container header-inner">
+      <a href="/" class="brand" aria-label="嘟嘟嗨首页">
+        <img class="brand-mark" src="/assets/duduhire-mark.svg" alt="" width="48" height="48">
+        <span class="brand-copy"><strong>嘟嘟嗨</strong><small>DUDUHIRE</small></span>
+      </a>
+      <nav class="main-nav" aria-label="辅助导航">
+        <a href="/">首页</a>
+        <a href="/skill-leaderboard.html">需求与能力库</a>
+      </nav>
+      <a class="back-link" href="/">← 返回首页</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="role-selection" id="role-selection" hidden>
+      <div class="container">
+        <div class="role-intro">
+          <p class="eyebrow">选择你的目标</p>
+          <h1>从一件现在就想解决的事开始</h1>
+          <p>企业生成一份结构化问题单；人才生成一份初步能力定位。首次体验无需注册。</p>
+        </div>
+        <div class="role-grid">
+          <a class="role-card" href="?role=enterprise">
+            <span class="role-icon" aria-hidden="true">企</span>
+            <h2>我是企业</h2>
+            <p>描述正在影响增长、成本或执行速度的问题，获得任务边界与下一步建议。</p>
+            <span class="text-link">生成业务问题单 <span aria-hidden="true">→</span></span>
+          </a>
+          <a class="role-card" href="?role=talent">
+            <span class="role-icon" aria-hidden="true">才</span>
+            <h2>我是人才</h2>
+            <p>描述一段真实项目经历，看看它可以被拆成哪些可交付、待验证的能力。</p>
+            <span class="text-link">生成初步能力定位 <span aria-hidden="true">→</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-main" id="app-main" hidden>
+      <div class="container">
+        <div class="app-header">
+          <div class="app-heading">
+            <p class="eyebrow" id="app-eyebrow">DUDUHIRE EXPERIENCE</p>
+            <h1 id="app-title">把输入变成下一步可执行的信息</h1>
+          </div>
+          <div class="segmented-control" role="group" aria-label="切换使用身份">
+            <button type="button" id="switch-enterprise" data-role="enterprise">企业端</button>
+            <button type="button" id="switch-talent" data-role="talent">人才端</button>
+          </div>
+        </div>
+
+        <section id="enterprise-flow" hidden aria-labelledby="enterprise-title">
+          <div class="progress-steps" aria-label="企业流程进度">
+            <div class="progress-step active" id="e-step-1"><span>1</span>描述现象</div>
+            <i class="step-line" aria-hidden="true"></i>
+            <div class="progress-step" id="e-step-2"><span>2</span>生成问题单</div>
+            <i class="step-line" aria-hidden="true"></i>
+            <div class="progress-step" id="e-step-3"><span>3</span>人工确认</div>
+          </div>
+
+          <div class="builder-layout">
+            <article class="builder-panel">
+              <header class="panel-header">
+                <div>
+                  <h2 id="enterprise-title">描述你现在卡住的问题</h2>
+                  <p>先写事实和影响，不必先判断需要什么岗位。</p>
+                </div>
+                <span class="status-badge" id="enterprise-status">未开始</span>
+              </header>
+              <div class="panel-body">
+                <form id="enterprise-form" novalidate>
+                  <div class="form-error-summary" id="enterprise-error-summary" role="alert" tabindex="-1" hidden>
+                    <strong>还需要补充几项信息</strong>
+                    <p>请检查下方标红字段后再生成问题单。</p>
+                  </div>
+                  <div class="draft-bar" aria-live="polite">
+                    <span><strong id="enterprise-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
+                    <button class="text-button" type="button" data-action="clear-enterprise-draft">清除草稿</button>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="enterprise-problem"><span>业务现象 *</span><span class="char-count" id="problem-count">0 / 500</span></label>
+                    <textarea class="form-textarea" id="enterprise-problem" maxlength="500" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="例如：我们面向印尼的 TikTok 官方账号连续三周自然流量下降，申诉后仍没有改善，已经影响新品发布。"></textarea>
+                    <p class="form-hint" id="enterprise-problem-hint">建议写清：什么时候开始、出现了什么变化、影响了什么。</p>
+                    <p class="field-error" id="enterprise-problem-error" role="alert"></p>
+                  </div>
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label" for="enterprise-market">目标市场 *</label>
+                      <input class="form-input" id="enterprise-market" maxlength="60" required placeholder="如：印尼">
+                      <p class="field-error" id="enterprise-market-error" role="alert"></p>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="enterprise-stage">当前阶段 *</label>
+                      <select class="form-select" id="enterprise-stage" required>
+                        <option value="">请选择</option>
+                        <option value="验证期">验证期：刚开始测试市场</option>
+                        <option value="增长期">增长期：已验证，正在放大</option>
+                        <option value="规模化">规模化：需要提升效率与稳定性</option>
+                      </select>
+                      <p class="field-error" id="enterprise-stage-error" role="alert"></p>
+                    </div>
+                    <div class="form-group full">
+                      <label class="form-label" for="enterprise-impact"><span>业务影响 *</span><span class="optional">收入 / 成本 / 增长 / 时效</span></label>
+                      <input class="form-input" id="enterprise-impact" maxlength="160" required placeholder="例如：新品内容无法按计划放量，预计影响本月 20% 的自然流量目标">
+                      <p class="field-error" id="enterprise-impact-error" role="alert"></p>
+                    </div>
+                    <div class="form-group full">
+                      <label class="form-label" for="enterprise-tried"><span>已经尝试过什么</span><span class="optional">选填</span></label>
+                      <textarea class="form-textarea compact" id="enterprise-tried" maxlength="240" placeholder="例如：提交申诉、降低发布频次、更换内容题材，但没有稳定改善"></textarea>
+                    </div>
+                    <div class="form-group full">
+                      <label class="form-label" for="enterprise-result">希望得到什么结果 *</label>
+                      <input class="form-input" id="enterprise-result" maxlength="160" required placeholder="例如：找出主要原因，并得到一份未来 14 天可执行的调整清单">
+                      <p class="field-error" id="enterprise-result-error" role="alert"></p>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="enterprise-deadline">希望完成时间</label>
+                      <select class="form-select" id="enterprise-deadline">
+                        <option value="1-3 天">1-3 天</option>
+                        <option value="3-10 天" selected>3-10 天</option>
+                        <option value="2-4 周">2-4 周</option>
+                        <option value="尚未确定">尚未确定</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="enterprise-budget">试点预算</label>
+                      <select class="form-select" id="enterprise-budget">
+                        <option value="">尚未确定</option>
+                        <option value="diagnosis">¥999-3,999</option>
+                        <option value="micro-task">¥3,000-30,000</option>
+                        <option value="paid-trial">¥10,000-50,000</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <label class="checkbox-row">
+                    <input type="checkbox" id="enterprise-sensitive">
+                    <span>这个问题涉及未公开数据或敏感材料。请先只写概况，正式提供材料前再确认保密与访问范围。</span>
+                  </label>
+                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>公开体验会在浏览器内按规则生成草稿，不会调用外部模型或自动提交。</strong>是否立项、任务边界、预算、风险和最终推荐都需要人工确认。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
+                  <button class="btn btn-primary btn-large btn-block" id="analyze-btn" type="submit">生成业务问题诊断</button>
+                </form>
+
+                <div class="loading-state" id="enterprise-loading" hidden aria-live="polite">
+                  <div class="loader-ring" aria-hidden="true"></div>
+                  <h3 id="enterprise-loading-title">正在整理问题事实</h3>
+                  <p id="enterprise-loading-detail">区分现象、影响与期望结果</p>
+                  <div class="progress-bar"><div class="progress-fill" id="enterprise-progress"></div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="builder-panel" aria-live="polite">
+              <header class="panel-header">
+                <div><h2>业务问题单</h2><p>用于后续访谈、匹配与报价的初稿</p></div>
+                <span class="status-badge" id="enterprise-output-status">待生成</span>
+              </header>
+              <div class="panel-body" id="enterprise-output">
+                <div class="empty-state">
+                  <div class="empty-state-inner">
+                    <div class="empty-visual" aria-hidden="true">问</div>
+                    <h3>先描述真实业务现象</h3>
+                    <p>系统会整理任务范围、建议合作方式、初步能力组合，以及需要人工追问的问题。</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="talent-flow" hidden aria-labelledby="talent-title">
+          <div class="progress-steps" aria-label="人才流程进度">
+            <div class="progress-step active" id="t-step-1"><span>1</span>描述经历</div>
+            <i class="step-line" aria-hidden="true"></i>
+            <div class="progress-step" id="t-step-2"><span>2</span>初步定位</div>
+            <i class="step-line" aria-hidden="true"></i>
+            <div class="progress-step" id="t-step-3"><span>3</span>补充证据</div>
+          </div>
+
+          <div class="builder-layout">
+            <article class="builder-panel">
+              <header class="panel-header">
+                <div>
+                  <h2 id="talent-title">讲一段你亲自完成的经历</h2>
+                  <p>比职位名称更重要的是：你做了什么、怎么做、结果如何。</p>
+                </div>
+                <span class="status-badge" id="talent-status">未开始</span>
+              </header>
+              <div class="panel-body">
+                <form id="talent-form" novalidate>
+                  <div class="form-error-summary" id="talent-error-summary" role="alert" tabindex="-1" hidden>
+                    <strong>经历描述还不够完整</strong>
+                    <p>请补充你亲自完成的动作与结果后再生成定位。</p>
+                  </div>
+                  <div class="draft-bar" aria-live="polite">
+                    <span><strong id="talent-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
+                    <button class="text-button" type="button" data-action="clear-talent-draft">清除草稿</button>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="talent-experience"><span>项目经历 *</span><span class="char-count" id="experience-count">0 / 800</span></label>
+                    <textarea class="form-textarea" id="talent-experience" maxlength="800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="例如：我负责印尼市场的 TikTok 内容运营。通过账号审计、竞品对照和内容结构调整，在 30 天内把自然播放量提升了 62%。我本人负责诊断与策略，拍摄由当地团队完成。"></textarea>
+                    <p class="form-hint" id="talent-experience-hint">建议包含：市场与业务背景、你的具体职责、方法、结果，以及谁或什么材料可以证明。</p>
+                    <p class="field-error" id="talent-experience-error" role="alert"></p>
+                  </div>
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label" for="talent-market"><span>熟悉市场</span><span class="optional">选填</span></label>
+                      <input class="form-input" id="talent-market" maxlength="80" placeholder="如：印尼、泰国">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="talent-field"><span>业务方向</span><span class="optional">选填</span></label>
+                      <input class="form-input" id="talent-field" maxlength="80" placeholder="如：内容增长、本地化、电商">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="talent-cooperation">希望的合作方式</label>
+                      <select class="form-select" id="talent-cooperation">
+                        <option value="diagnosis">专家快诊</option>
+                        <option value="micro-task" selected>标准微任务</option>
+                        <option value="paid-trial">付费试用项目</option>
+                        <option value="flexible">都可以，视任务而定</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="talent-availability">未来一个月档期</label>
+                      <select class="form-select" id="talent-availability">
+                        <option value="每周 5 小时以内">每周 5 小时以内</option>
+                        <option value="每周 5-10 小时" selected>每周 5-10 小时</option>
+                        <option value="每周 10 小时以上">每周 10 小时以上</option>
+                        <option value="暂时只了解">暂时只了解</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>本次体验不会把你自动加入人才库，也不会上传输入内容。</strong>首次结果统一标为 L0“初步推测”；正式入库与企业可见范围会单独征得授权。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
+                  <button class="btn btn-primary btn-large btn-block" id="decode-btn" type="submit">生成初步能力定位</button>
+                </form>
+
+                <div class="loading-state" id="talent-loading" hidden aria-live="polite">
+                  <div class="loader-ring" aria-hidden="true"></div>
+                  <h3 id="talent-loading-title">正在识别你完成过的任务</h3>
+                  <p id="talent-loading-detail">区分你的角色、方法与结果</p>
+                  <div class="progress-bar"><div class="progress-fill" id="talent-progress"></div></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="builder-panel" aria-live="polite">
+              <header class="panel-header">
+                <div><h2>出海能力定位报告（初步版）</h2><p>只作初步梳理，不等于认证或收入承诺</p></div>
+                <span class="status-badge" id="talent-output-status">待生成</span>
+              </header>
+              <div class="panel-body" id="talent-output">
+                <div class="empty-state">
+                  <div class="empty-state-inner">
+                    <div class="empty-visual" aria-hidden="true">能</div>
+                    <h3>你的经验会被拆成能力证据卡</h3>
+                    <p>每项能力说明任务、方法、适配场景和下一步需要补充的证据。</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <section class="evidence-form" id="evidence-form" hidden aria-labelledby="evidence-form-title">
+            <h2 id="evidence-form-title" tabindex="-1">把“初步推测”升级为可审核的能力</h2>
+            <p>当前公开页不接收文件。你可以先生成一份补证准备清单，明确材料类型、说明重点和可见范围，再决定是否进入正式审核。</p>
+            <form id="evidence-prep-form" novalidate>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="evidence-type">可提供的证明类型</label>
+                  <select class="form-select" id="evidence-type">
+                    <option>作品或交付物摘要</option>
+                    <option>脱敏数据截图</option>
+                    <option>推荐人</option>
+                    <option>公开案例链接</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="evidence-visibility">希望的可见范围</label>
+                  <select class="form-select" id="evidence-visibility">
+                    <option>仅平台审核可见</option>
+                    <option>匹配企业确认后可见</option>
+                    <option>可以公开展示</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label class="form-label" for="evidence-description"><span>材料能证明什么 *</span><span class="optional">不要粘贴敏感原文</span></label>
+                  <textarea class="form-textarea compact" id="evidence-description" maxlength="300" required aria-describedby="evidence-description-hint evidence-description-error" placeholder="例如：一份脱敏账号审计摘要，可证明我独立完成了数据诊断、问题排序和 14 天行动方案。"></textarea>
+                  <p class="form-hint" id="evidence-description-hint">写清对应任务、本人角色、结果与可核验方式；20 字以上。</p>
+                  <p class="field-error" id="evidence-description-error" role="alert"></p>
+                </div>
+              </div>
+              <label class="checkbox-row">
+                <input type="checkbox" id="evidence-sanitized">
+                <span>我会先去除企业名称、账号、个人联系方式和未授权数据，再进入正式提交流程。</span>
+              </label>
+              <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>这里生成的是准备清单，不会上传或提交材料。</strong>正式入口开放后，提交前会另行说明身份核验、可见范围、保存与删除规则。</p></div>
+              <button class="btn btn-primary" type="submit">生成补证准备清单</button>
+            </form>
+            <div class="evidence-output" id="evidence-output" hidden aria-live="polite"></div>
+          </section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer compact-footer">
+    <div class="container footer-bottom">
+      <span>© 2026 嘟嘟嗨 Duduhire</span>
+      <span><a href="/service-notice.html">数据与服务说明</a> · 当前公开页为自助体验，不自动产生服务申请。</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/js/skill-builder.js"></script>
+</body>
+</html>
