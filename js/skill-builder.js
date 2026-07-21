@@ -16,7 +16,8 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let currentRole = validRoles.has(params.get('role')) ? params.get('role') : '';
 let enterpriseCopy = '';
 let talentCopy = '';
-let evidenceCopy = '';
+let pendingTalentValues = null;
+let activeTalentSkills = [];
 let toastTimer;
 
 const draftConfig = {
@@ -24,13 +25,13 @@ const draftConfig = {
     key: 'duduhire-enterprise-draft-v1',
     form: 'enterprise-form',
     status: 'enterprise-draft-status',
-    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-deadline', 'enterprise-budget', 'enterprise-sensitive'],
+    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-deadline', 'enterprise-sensitive'],
   },
   talent: {
     key: 'duduhire-talent-draft-v1',
     form: 'talent-form',
     status: 'talent-draft-status',
-    fields: ['talent-experience', 'talent-market', 'talent-field', 'talent-cooperation', 'talent-availability'],
+    fields: ['talent-experience', 'talent-market', 'talent-field'],
   },
 };
 
@@ -144,11 +145,11 @@ function setRole(role, updateUrl = true) {
   switchTalent.classList.toggle('active', !enterpriseActive);
   switchEnterprise.setAttribute('aria-pressed', String(enterpriseActive));
   switchTalent.setAttribute('aria-pressed', String(!enterpriseActive));
-  appEyebrow.textContent = enterpriseActive ? 'FOR BUSINESS' : 'FOR TALENT';
+  appEyebrow.textContent = enterpriseActive ? 'DESCRIBE THE PAIN' : 'DISCOVER YOUR SKILLS';
   appTitle.innerHTML = enterpriseActive
-    ? '<span class="app-title-line">把模糊问题，</span><span class="app-title-line">变成可确认的任务</span>'
-    : '<span class="app-title-line">把做过的事，</span><span class="app-title-line">变成可验证的能力</span>';
-  document.title = enterpriseActive ? '企业问题诊断｜嘟嘟嗨 Duduhire' : '人才能力定位｜嘟嘟嗨 Duduhire';
+    ? '<span class="app-title-line">描述我的痛点，</span><span class="app-title-line">先把问题说清楚</span>'
+    : '<span class="app-title-line">挖掘我的能力，</span><span class="app-title-line">看见真正做过的事</span>';
+  document.title = enterpriseActive ? '描述我的痛点｜嘟嘟嗨 Duduhire' : '挖掘我的能力｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);
     next.searchParams.set('role', role);
@@ -189,12 +190,11 @@ function setError(inputId, message) {
 
 const fieldValidators = {
   'enterprise-problem': (value) => value.trim().length < 20 ? '请至少用 20 个字说明具体现象与变化。' : '',
-  'enterprise-market': (value) => value.trim() ? '' : '请填写本次任务涉及的目标市场。',
+  'enterprise-market': (value) => value.trim() ? '' : '请填写这个痛点发生的具体场景。',
   'enterprise-stage': (value) => value ? '' : '请选择业务当前所处阶段。',
   'enterprise-impact': (value) => value.trim() ? '' : '请说明这个问题正在影响什么。',
   'enterprise-result': (value) => value.trim() ? '' : '请说明这次希望获得的结果。',
   'talent-experience': (value) => value.trim().length < 40 ? '请至少用 40 个字说明任务、你的具体动作与结果。' : '',
-  'evidence-description': (value) => value.trim().length < 20 ? '请至少用 20 个字说明材料对应的任务、角色和结果。' : '',
 };
 
 function validateField(id) {
@@ -262,8 +262,7 @@ function scoreCapabilities(text) {
   return matched.length ? matched : capabilityCatalog.slice(0, 3);
 }
 
-function getService(id, deadline) {
-  if (id) return serviceSkus.find((service) => service.id === id) || serviceSkus[1];
+function getService(deadline) {
   if (deadline === '1-3 天') return serviceSkus[0];
   if (deadline === '2-4 周') return serviceSkus[2];
   return serviceSkus[1];
@@ -280,7 +279,6 @@ enterpriseForm.addEventListener('submit', async (event) => {
     tried: document.getElementById('enterprise-tried').value.trim(),
     result: document.getElementById('enterprise-result').value.trim(),
     deadline: document.getElementById('enterprise-deadline').value,
-    budget: document.getElementById('enterprise-budget').value,
     sensitive: document.getElementById('enterprise-sensitive').checked,
   };
 
@@ -303,9 +301,9 @@ enterpriseForm.addEventListener('submit', async (event) => {
   document.getElementById('enterprise-status').className = 'status-badge warning';
   updateSteps('e', 1);
   await runLoading('enterprise', [
-    { title: '正在整理问题事实', detail: '区分现象、影响与期望结果', progress: 28 },
-    { title: '正在收缩任务边界', detail: '判断适合快诊、微任务还是付费试用', progress: 62 },
-    { title: '正在识别能力与风险', detail: '生成待人工核验的能力组合与追问', progress: 100 },
+    { title: '正在整理痛点事实', detail: '区分现象、影响与期望结果', progress: 28 },
+    { title: '正在收缩问题边界', detail: '判断适合诊断、微任务还是协作验证', progress: 62 },
+    { title: '正在识别所需能力', detail: '生成待人工确认的能力方向与追问', progress: 100 },
   ]);
   document.getElementById('enterprise-loading').hidden = true;
   submit.disabled = false;
@@ -313,26 +311,26 @@ enterpriseForm.addEventListener('submit', async (event) => {
 });
 
 function renderEnterpriseResult(values) {
-  const service = getService(values.budget, values.deadline);
+  const service = getService(values.deadline);
   const capabilities = scoreCapabilities(`${values.problem} ${values.result} ${values.market}`);
   const questions = [
     values.tried ? '哪些已尝试动作产生过短期改善，哪些完全无效？' : '团队已经尝试过哪些动作，分别有什么结果？',
     '完成任务所需的最小数据、账号权限或协作人员有哪些？',
-    '谁负责日常沟通，谁是最终验收人？',
+    '谁会使用最终结果，谁能确认它是否真正解决了问题？',
   ];
   if (values.sensitive) questions.unshift('哪些信息属于敏感范围，专家可以看到什么、不能看到什么？');
 
   enterpriseCopy = [
-    '《业务问题诊断草稿》',
-    `市场与阶段：${values.market} / ${values.stage}`,
-    `业务现象：${values.problem}`,
-    `业务影响：${values.impact}`,
+    '《痛点需求卡｜草稿》',
+    `发生场景与状态：${values.market} / ${values.stage}`,
+    `痛点描述：${values.problem}`,
+    `造成影响：${values.impact}`,
     `已尝试：${values.tried || '待补充'}`,
     `期望结果：${values.result}`,
-    `建议方式：${service.name}（${service.duration}，参考 ${service.price}）`,
-    `初步能力：${capabilities.map((item) => item.name).join('、')}`,
+    `建议下一步：${service.name}（${service.duration}）`,
+    `可能需要的能力：${capabilities.map((item) => item.name).join('、')}`,
     `敏感材料：${values.sensitive ? '涉及，需先确认保密与权限' : '暂未标记'}`,
-    '说明：本草稿需经 15 分钟需求访谈和人工资格判断后方可立项。',
+    '说明：本草稿需经人工确认问题范围、必要信息与服务边界后，才能进入下一步。',
   ].join('\n');
 
   document.getElementById('enterprise-output').innerHTML = `
@@ -340,27 +338,27 @@ function renderEnterpriseResult(values) {
       <section class="result-summary">
         <div class="result-summary-top">
           <div>
-            <span class="mini-label">建议合作方式</span>
+            <span class="mini-label">建议下一步</span>
             <h3>${escapeHTML(service.name)}</h3>
             <p>${escapeHTML(service.deliverable)} · ${escapeHTML(service.duration)}</p>
           </div>
-          <strong class="result-price">${escapeHTML(service.price)}</strong>
+          <strong class="result-price">待人工确认</strong>
         </div>
-        <div class="disclaimer">参考价格不构成固定报价。人工确认任务范围、依赖条件、证据要求与风险后再给出正式方案。</div>
+        <div class="disclaimer">当前版本不提供在线付费。人工确认问题范围、依赖条件、证据要求与风险后，再决定是否进入下一步。</div>
       </section>
       <section class="result-section">
-        <h3>问题诊断草稿</h3>
+        <h3>痛点需求卡</h3>
         <div class="brief-result">
-          <div class="brief-result-row"><span>市场与阶段</span><p>${escapeHTML(values.market)} · ${escapeHTML(values.stage)}</p></div>
-          <div class="brief-result-row"><span>业务现象</span><p>${escapeHTML(values.problem)}</p></div>
-          <div class="brief-result-row"><span>业务影响</span><p>${escapeHTML(values.impact)}</p></div>
+          <div class="brief-result-row"><span>场景与状态</span><p>${escapeHTML(values.market)} · ${escapeHTML(values.stage)}</p></div>
+          <div class="brief-result-row"><span>痛点描述</span><p>${escapeHTML(values.problem)}</p></div>
+          <div class="brief-result-row"><span>造成影响</span><p>${escapeHTML(values.impact)}</p></div>
           <div class="brief-result-row"><span>已尝试</span><p>${escapeHTML(values.tried || '尚未填写，需在访谈中补充')}</p></div>
           <div class="brief-result-row"><span>期望结果</span><p>${escapeHTML(values.result)}</p></div>
           <div class="brief-result-row"><span>完成时间</span><p>${escapeHTML(values.deadline)}</p></div>
         </div>
       </section>
       <section class="result-section">
-        <h3>初步能力组合</h3>
+        <h3>可能需要的能力</h3>
         <div class="capability-tags">${capabilities.map((item) => `<span class="capability-tag">${escapeHTML(item.name)}</span>`).join('')}</div>
         <p class="form-hint">这些是待核验方向，不代表平台已经确认候选人或档期。</p>
       </section>
@@ -369,21 +367,29 @@ function renderEnterpriseResult(values) {
         <ol class="question-list">${questions.map((question) => `<li>${escapeHTML(question)}</li>`).join('')}</ol>
       </section>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制问题单</button>
+        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制需求卡</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
         <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改输入</button>
       </div>
-      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>当前公开页只生成本地草稿，不会发起人工服务申请。</strong>请先复制或下载问题单；人工入口开放后，会再次确认联系人、资料用途和服务条款。合格需求确认后，平台目标是在 48 小时内给出首批推荐，或明确无法匹配。</p></div>
+      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>当前公开页只生成本地草稿，不会发起人工服务申请。</strong>人工入口开放后，会再次确认联系人、资料用途和服务条款。</p></div>
     </div>
   `;
   document.getElementById('enterprise-status').textContent = '已生成';
   document.getElementById('enterprise-status').className = 'status-badge success';
-  document.getElementById('enterprise-output-status').textContent = '诊断草稿';
+  document.getElementById('enterprise-output-status').textContent = '需求草稿';
   document.getElementById('enterprise-output-status').className = 'status-badge success';
+  const layout = enterpriseFlow.querySelector('.builder-layout');
+  const inputPanel = enterpriseForm.closest('.builder-panel');
+  const outputPanel = document.getElementById('enterprise-output').closest('.builder-panel');
+  inputPanel.hidden = true;
+  layout.classList.add('result-mode');
   updateSteps('e', 2);
+  scrollToElement(outputPanel);
 }
 
 function resetEnterprise() {
+  enterpriseForm.closest('.builder-panel').hidden = false;
+  enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
   document.getElementById('enterprise-output').innerHTML = `
     <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">问</div><h3>修改后重新生成</h3><p>你的输入仍保留在左侧，调整任何字段后再次提交即可。</p></div></div>`;
@@ -397,14 +403,77 @@ function resetEnterprise() {
 }
 
 const talentForm = document.getElementById('talent-form');
+
+function getTalentSkills(text) {
+  const normalized = text.toLowerCase();
+  const scored = talentSkillTemplates.map((skill, index) => ({
+    skill,
+    index,
+    score: skill.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
+  }));
+  scored.sort((a, b) => b.score - a.score || a.index - b.index);
+  const matches = scored.filter((item) => item.score > 0).slice(0, 5).map((item) => item.skill);
+  const selected = [...matches];
+  for (const item of scored) {
+    if (selected.length >= 3) break;
+    if (!selected.some((skill) => skill.id === item.skill.id)) selected.push(item.skill);
+  }
+  return selected.slice(0, 5);
+}
+
+function getSkillQuestion(skill) {
+  return `在“${skill.task}”这类事情中，你本人具体负责哪一步？用了什么方法，最终结果怎样被确认？`;
+}
+
+function renderSkillQuestions(values, skills) {
+  pendingTalentValues = values;
+  activeTalentSkills = skills;
+  document.getElementById('talent-output').innerHTML = `
+    <div class="result-wrap skill-question-stage">
+      <section class="result-summary">
+        <span class="mini-label">第一轮提炼</span>
+        <h3>识别到 ${skills.length} 项核心技能</h3>
+        <p>技能名称来自固定分类。请补充真实解决过程，再生成能力图谱。</p>
+        <div class="capability-tags">${skills.map((skill) => `<span class="capability-tag">${escapeHTML(skill.category)} · ${escapeHTML(skill.name)}</span>`).join('')}</div>
+      </section>
+      <form class="skill-questions-form" id="skill-questions-form" novalidate>
+        ${skills.map((skill, index) => `
+          <section class="skill-question-card">
+            <div class="skill-question-head"><span>${String(index + 1).padStart(2, '0')}</span><div><small>${escapeHTML(skill.category)}</small><h3>${escapeHTML(skill.name)}</h3></div></div>
+            <label class="form-label" for="skill-answer-${escapeHTML(skill.id)}">${escapeHTML(getSkillQuestion(skill))}</label>
+            <div class="textarea-with-action">
+              <textarea class="form-textarea compact" id="skill-answer-${escapeHTML(skill.id)}" data-skill-answer="${escapeHTML(skill.id)}" maxlength="420" aria-describedby="skill-error-${escapeHTML(skill.id)}" placeholder="例如：我负责数据诊断和策略判断；先按内容类型对照近 30 天数据，再排除发布节奏和素材质量问题，最后用两周测试确认调整方向。"></textarea>
+              <button class="voice-button" type="button" data-voice-target="skill-answer-${escapeHTML(skill.id)}" aria-label="使用语音回答 ${escapeHTML(skill.name)} 的追问"><span aria-hidden="true">◉</span> 语音回答</button>
+            </div>
+            <p class="field-error" id="skill-error-${escapeHTML(skill.id)}" role="alert"></p>
+          </section>
+        `).join('')}
+        <div class="result-actions">
+          <button class="btn btn-primary btn-large" type="submit">生成能力图谱报告</button>
+          <button class="btn btn-ghost" type="button" data-action="reset-talent">返回修改经历</button>
+        </div>
+      </form>
+    </div>`;
+  document.getElementById('talent-status').textContent = '待确认';
+  document.getElementById('talent-status').className = 'status-badge warning';
+  document.getElementById('talent-output-status').textContent = `${skills.length} 项技能`;
+  document.getElementById('talent-output-status').className = 'status-badge warning';
+  const layout = talentFlow.querySelector('.builder-layout');
+  const inputPanel = talentForm.closest('.builder-panel');
+  const outputPanel = document.getElementById('talent-output').closest('.builder-panel');
+  inputPanel.hidden = true;
+  layout.classList.add('result-mode');
+  updateSteps('t', 2);
+  scrollToElement(outputPanel);
+  document.querySelector('[data-skill-answer]')?.focus({ preventScroll: true });
+}
+
 talentForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const values = {
     experience: document.getElementById('talent-experience').value.trim(),
     market: document.getElementById('talent-market').value.trim(),
     field: document.getElementById('talent-field').value.trim(),
-    cooperation: document.getElementById('talent-cooperation').value,
-    availability: document.getElementById('talent-availability').value,
   };
   const experienceError = validateField('talent-experience');
   setError('talent-experience', experienceError);
@@ -417,123 +486,108 @@ talentForm.addEventListener('submit', async (event) => {
   const submit = document.getElementById('decode-btn');
   submit.disabled = true;
   talentForm.hidden = true;
-  document.getElementById('talent-status').textContent = '分析中';
+  document.getElementById('talent-status').textContent = '提炼中';
   document.getElementById('talent-status').className = 'status-badge warning';
   updateSteps('t', 1);
   await runLoading('talent', [
-    { title: '正在识别你完成过的任务', detail: '区分你的角色、方法与结果', progress: 30 },
-    { title: '正在拆解可复用能力', detail: '匹配适合的任务类型与场景', progress: 64 },
-    { title: '正在标记证据缺口', detail: '所有首次结果均保持为 L0 初步推测', progress: 100 },
+    { title: '正在识别做过的任务', detail: '区分岗位描述与本人实际动作', progress: 30 },
+    { title: '正在匹配固定技能分类', detail: '从预设技能名称中选择 3-5 项', progress: 66 },
+    { title: '正在生成针对性追问', detail: '继续确认方法、结果与贡献边界', progress: 100 },
   ]);
   document.getElementById('talent-loading').hidden = true;
   submit.disabled = false;
-  renderTalentResult(values);
+  const skills = getTalentSkills(`${values.experience} ${values.market} ${values.field}`);
+  renderSkillQuestions(values, skills);
 });
 
-function getTalentSkills(text) {
-  const normalized = text.toLowerCase();
-  const scored = talentSkillTemplates.map((skill, index) => ({
-    skill,
-    index,
-    score: skill.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
-  }));
-  scored.sort((a, b) => b.score - a.score || a.index - b.index);
-  const highestScore = scored[0]?.score || 0;
-  const minimumScore = highestScore >= 2 ? 2 : 1;
-  const matched = scored.filter((item) => item.score >= minimumScore).slice(0, 2).map((item) => item.skill);
-  return matched.length ? matched : talentSkillTemplates.slice(0, 2);
-}
+document.addEventListener('submit', (event) => {
+  if (event.target.id !== 'skill-questions-form') return;
+  event.preventDefault();
+  const answers = {};
+  let firstInvalid = null;
+  event.target.querySelectorAll('[data-skill-answer]').forEach((field) => {
+    const value = field.value.trim();
+    answers[field.dataset.skillAnswer] = value;
+    const error = document.getElementById(`skill-error-${field.dataset.skillAnswer}`);
+    const message = value.length < 12 ? '请至少用 12 个字说明你本人做了什么、怎么做或结果如何。' : '';
+    field.setAttribute('aria-invalid', message ? 'true' : 'false');
+    error.textContent = message;
+    if (message && !firstInvalid) firstInvalid = field;
+  });
+  if (firstInvalid) {
+    firstInvalid.focus();
+    return;
+  }
+  renderTalentResult(pendingTalentValues, activeTalentSkills, answers);
+});
 
-function renderTalentResult(values) {
-  const skills = getTalentSkills(`${values.experience} ${values.market} ${values.field}`);
-  const selectedService = values.cooperation === 'flexible'
-    ? { name: '按任务灵活确认', price: '不输出单一“身价”' }
-    : serviceSkus.find((service) => service.id === values.cooperation) || serviceSkus[1];
-  const title = values.field || skills[0].name;
-  const scene = [values.market || '目标市场待补充', values.availability].join(' · ');
-
+function renderTalentResult(values, skills, answers) {
+  const scene = [values.market || '场景待补充', values.field || '方向由技能提炼'].join(' · ');
   talentCopy = [
-    '《出海能力定位报告｜初步版》',
-    `定位方向：${title}`,
-    `市场与档期：${scene}`,
-    `偏好合作：${selectedService.name}${selectedService.price ? `（${selectedService.price}）` : ''}`,
+    '《能力图谱报告｜初步版》',
+    `场景：${scene}`,
+    `核心技能：${skills.map((skill) => skill.name).join('、')}`,
     '',
     ...skills.map((skill, index) => [
-      `${index + 1}. ${skill.name}｜L0 初步推测`,
-      `任务：${skill.task}`,
-      `方法：${skill.method}`,
+      `${index + 1}. ${skill.name}｜${skill.category}｜L0 初步推测`,
+      `一句话：${skill.task}`,
+      `本人补充：${answers[skill.id]}`,
       `典型产出：${skill.deliverables.join('、')}`,
-      `适合：${skill.fit}`,
       `可核验证据：${skill.evidenceExamples}`,
-      `待补证据：${skill.evidencePrompt}`,
       `能力边界：${skill.boundary}`,
     ].join('\n')),
     '',
-    '说明：本报告来自当前自述，不等于认证、收入承诺或企业推荐。正式入库需另行授权并完成人工审核。',
+    '说明：本报告来自简历、经历自述与针对性追问，不等于能力认证或企业推荐。正式公开或匹配前需另行授权并人工审核。',
   ].join('\n');
 
   document.getElementById('talent-output').innerHTML = `
-    <div class="result-wrap">
-      <section class="result-summary">
-        <div class="result-summary-top">
-          <div>
-            <span class="mini-label">初步定位</span>
-            <h3>${escapeHTML(title)}</h3>
-            <p>${escapeHTML(scene)}</p>
-          </div>
-          <strong class="result-price">${escapeHTML(selectedService.name)}</strong>
-        </div>
-        <div class="disclaimer">不输出单一、绝对的“身价”。如展示价格，只采用具体任务的参考区间，并以范围、周期、市场与证据等级为前提。</div>
+    <div class="result-wrap capability-graph-report">
+      <section class="capability-report-head">
+        <div><span class="mini-label">能力图谱报告</span><h3>${skills.length} 项核心技能</h3><p>${escapeHTML(scene)}</p></div>
+        <span class="level-pill">L0 · 待验证</span>
       </section>
-      <section class="result-section">
-        <h3>识别到 ${skills.length} 项待验证能力</h3>
+      <section class="capability-namecard-grid" aria-label="能力图谱卡片">
         ${skills.map((skill) => `
-          <article class="skill-result">
-            <div class="skill-result-head"><strong>${escapeHTML(skill.name)}</strong><span class="level-pill">L0 · 初步推测</span></div>
-            <dl>
-              <div><dt>可做任务</dt><dd>${escapeHTML(skill.task)}</dd></div>
-              <div><dt>可能方法</dt><dd>${escapeHTML(skill.method)}</dd></div>
-              <div><dt>典型产出</dt><dd>${escapeHTML(skill.deliverables.join('、'))}</dd></div>
-              <div><dt>适合场景</dt><dd>${escapeHTML(skill.fit)}</dd></div>
-              <div><dt>可核验证据</dt><dd>${escapeHTML(skill.evidenceExamples)}</dd></div>
-              <div><dt>补证建议</dt><dd>${escapeHTML(skill.evidencePrompt)}</dd></div>
-              <div><dt>能力边界</dt><dd>${escapeHTML(skill.boundary)}</dd></div>
-            </dl>
+          <article class="capability-namecard">
+            <div class="capability-namecard-top"><span>${escapeHTML(skill.category)}</span><span>L0</span></div>
+            <h3>${escapeHTML(skill.name)}</h3>
+            <p>${escapeHTML(skill.task)}</p>
+            <details>
+              <summary>查看任务与证据</summary>
+              <dl>
+                <div><dt>本人补充</dt><dd>${escapeHTML(answers[skill.id])}</dd></div>
+                <div><dt>常用方法</dt><dd>${escapeHTML(skill.method)}</dd></div>
+                <div><dt>典型产出</dt><dd>${escapeHTML(skill.deliverables.join('、'))}</dd></div>
+                <div><dt>可核验证据</dt><dd>${escapeHTML(skill.evidenceExamples)}</dd></div>
+                <div><dt>能力边界</dt><dd>${escapeHTML(skill.boundary)}</dd></div>
+              </dl>
+            </details>
           </article>
         `).join('')}
       </section>
-      <section class="result-section">
-        <h3>进入可推荐人才池前，还需要</h3>
-        <ol class="question-list">
-          <li>确认每个案例中你本人承担的职责与贡献边界。</li>
-          <li>补充至少一种可核验材料：作品、数据、推荐人或公开案例。</li>
-          <li>选择企业可见范围，并确认档期、报价与利益冲突。</li>
-        </ol>
-      </section>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="show-evidence">查看补证步骤</button>
-        <button class="btn btn-secondary" type="button" data-action="copy-talent">复制报告摘要</button>
+        <button class="btn btn-primary" type="button" data-action="copy-talent">复制报告摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-talent">下载 TXT</button>
-        <button class="btn btn-ghost" type="button" data-action="reset-talent">修改经历</button>
+        <button class="btn btn-ghost" type="button" data-action="reset-talent">重新挖掘</button>
       </div>
-    </div>
-  `;
+      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>报告只保存在当前页面。</strong>进入人才库、对外展示或匹配前，会再次确认身份、材料和可见范围。</p></div>
+    </div>`;
   document.getElementById('talent-status').textContent = '已生成';
   document.getElementById('talent-status').className = 'status-badge success';
-  document.getElementById('talent-output-status').textContent = 'L0 · 初步版';
-  document.getElementById('talent-output-status').className = 'status-badge warning';
-  updateSteps('t', 2);
+  document.getElementById('talent-output-status').textContent = '图谱草稿';
+  document.getElementById('talent-output-status').className = 'status-badge success';
+  updateSteps('t', 3);
+  scrollToElement(document.getElementById('talent-output').closest('.builder-panel'));
 }
 
 function resetTalent() {
+  talentForm.closest('.builder-panel').hidden = false;
+  talentFlow.querySelector('.builder-layout').classList.remove('result-mode');
   talentForm.hidden = false;
-  document.getElementById('evidence-form').hidden = true;
-  evidencePrepForm.hidden = false;
-  evidencePrepForm.reset();
-  document.getElementById('evidence-output').hidden = true;
-  setError('evidence-description', '');
+  pendingTalentValues = null;
+  activeTalentSkills = [];
   document.getElementById('talent-output').innerHTML = `
-    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">能</div><h3>修改后重新生成</h3><p>你的经历仍保留在左侧。建议补充本人角色、可量化结果与证明方式。</p></div></div>`;
+    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">能</div><h3>修改后重新挖掘</h3><p>你的经历仍保留在左侧。建议补充本人角色、可量化结果与证明方式。</p></div></div>`;
   document.getElementById('talent-status').textContent = '可修改';
   document.getElementById('talent-status').className = 'status-badge';
   document.getElementById('talent-output-status').textContent = '待生成';
@@ -543,66 +597,85 @@ function resetTalent() {
   document.getElementById('talent-experience').focus();
 }
 
-const evidencePrepForm = document.getElementById('evidence-prep-form');
-const evidenceDescription = document.getElementById('evidence-description');
-evidenceDescription.addEventListener('input', () => setError('evidence-description', ''));
-evidenceDescription.addEventListener('blur', () => validateField('evidence-description'));
-
-const evidenceGuidance = {
-  '作品或交付物摘要': ['只保留与目标能力直接相关的页面或片段', '说明你本人负责的部分与协作者边界', '标出交付时间、采用情况或可确认结果'],
-  '脱敏数据截图': ['遮盖账号、客户、订单与个人身份信息', '保留时间范围、指标口径和对比基准', '说明数据与你采取的动作之间有什么关系'],
-  '推荐人': ['先获得推荐人同意，再提供联系方式', '说明推荐人与项目的关系及可核验范围', '不要要求推荐人披露未授权的企业信息'],
-  '公开案例链接': ['确认页面可以公开访问且未违反原项目约定', '标注你在案例中的具体职责', '补充链接无法直接证明的结果或方法'],
-};
-
-evidencePrepForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const descriptionError = validateField('evidence-description');
-  if (descriptionError) {
-    evidenceDescription.focus();
+const resumeUpload = document.getElementById('resume-upload');
+const resumeUploadStatus = document.getElementById('resume-upload-status');
+resumeUpload.addEventListener('change', async () => {
+  const [file] = resumeUpload.files;
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    resumeUploadStatus.textContent = '文件超过 5MB，请选择更小的文件或直接粘贴经历。';
+    resumeUpload.value = '';
     return;
   }
-  const type = document.getElementById('evidence-type').value;
-  const visibility = document.getElementById('evidence-visibility').value;
-  const description = evidenceDescription.value.trim();
-  const sanitized = document.getElementById('evidence-sanitized').checked;
-  const guidance = evidenceGuidance[type];
-  evidenceCopy = [
-    '《能力补证准备清单》',
-    `材料类型：${type}`,
-    `希望的可见范围：${visibility}`,
-    `材料说明：${description}`,
-    `脱敏确认：${sanitized ? '已确认会先脱敏' : '尚未确认，请在正式提交前完成'}`,
-    '',
-    '准备要点：',
-    ...guidance.map((item, index) => `${index + 1}. ${item}`),
-    '',
-    '说明：本清单仅保存在当前页面，不代表材料已上传、审核或获得能力认证。',
-  ].join('\n');
-  document.getElementById('evidence-output').hidden = false;
-  document.getElementById('evidence-output').innerHTML = `
-    <div class="evidence-output-head">
-      <div><span class="mini-label">准备清单</span><h3>${escapeHTML(type)}</h3></div>
-      <span class="status-badge ${sanitized ? 'success' : 'warning'}">${sanitized ? '已确认脱敏' : '待确认脱敏'}</span>
-    </div>
-    <dl class="evidence-summary">
-      <div><dt>可见范围</dt><dd>${escapeHTML(visibility)}</dd></div>
-      <div><dt>材料说明</dt><dd>${escapeHTML(description)}</dd></div>
-    </dl>
-    <ol class="question-list">${guidance.map((item) => `<li>${escapeHTML(item)}</li>`).join('')}</ol>
-    <div class="result-actions">
-      <button class="btn btn-primary" type="button" data-action="copy-evidence">复制清单</button>
-      <button class="btn btn-secondary" type="button" data-action="download-evidence">下载 TXT</button>
-      <button class="btn btn-ghost" type="button" data-action="reset-evidence">重新填写</button>
-    </div>`;
-  evidencePrepForm.hidden = true;
-  updateSteps('t', 4);
-  scrollToElement(document.getElementById('evidence-output'), 'nearest');
+  const extension = file.name.split('.').pop()?.toLowerCase();
+  if (extension === 'txt' || extension === 'md') {
+    const text = (await file.text()).trim();
+    if (!text) {
+      resumeUploadStatus.textContent = `${file.name} 没有可读取的文字，请选择其他文件或直接填写经历。`;
+      return;
+    }
+    const experience = document.getElementById('talent-experience');
+    experience.value = text.slice(0, experience.maxLength);
+    experience.dispatchEvent(new Event('input', { bubbles: true }));
+    resumeUploadStatus.textContent = `已读取 ${file.name}${text.length > experience.maxLength ? '，内容已截取至 1800 字' : ''}`;
+    showToast('简历文本已导入');
+    return;
+  }
+  resumeUploadStatus.textContent = `已选择 ${file.name}。演示版不会上传此文件，暂时无法读取该格式；请粘贴关键经历继续。`;
 });
+
+let activeRecognition = null;
+let activeVoiceButton = null;
+
+function resetVoiceButton() {
+  if (!activeVoiceButton) return;
+  activeVoiceButton.classList.remove('active');
+  activeVoiceButton.innerHTML = `<span aria-hidden="true">◉</span> ${escapeHTML(activeVoiceButton.dataset.voiceIdleLabel || '语音输入')}`;
+  activeVoiceButton = null;
+}
+
+function startVoiceInput(button) {
+  if (!button.dataset.voiceIdleLabel) button.dataset.voiceIdleLabel = button.textContent.trim();
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition) {
+    showToast('当前浏览器暂不支持语音输入，请使用键盘填写');
+    return;
+  }
+  if (activeRecognition) {
+    activeRecognition.stop();
+    activeRecognition = null;
+    resetVoiceButton();
+    return;
+  }
+  const target = document.getElementById(button.dataset.voiceTarget);
+  if (!target) return;
+  const recognition = new Recognition();
+  recognition.lang = 'zh-CN';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  activeRecognition = recognition;
+  activeVoiceButton = button;
+  button.classList.add('active');
+  button.innerHTML = '<span aria-hidden="true">■</span> 停止录音';
+  recognition.addEventListener('result', (event) => {
+    const transcript = [...event.results].map((result) => result[0].transcript).join('');
+    const separator = target.value.trim() ? '。' : '';
+    target.value = `${target.value.trim()}${separator}${transcript}`.slice(0, target.maxLength || 2000);
+    target.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  recognition.addEventListener('error', () => showToast('没有识别到有效语音，请重试或改用键盘'));
+  recognition.addEventListener('end', () => {
+    activeRecognition = null;
+    resetVoiceButton();
+  });
+  recognition.start();
+}
 
 function clearEnterpriseDraft() {
   removeDraft(draftConfig.enterprise);
   enterpriseForm.reset();
+  enterpriseForm.closest('.builder-panel').hidden = false;
+  enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
   enterpriseCopy = '';
   ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-result'].forEach((id) => setError(id, ''));
@@ -618,17 +691,16 @@ function clearEnterpriseDraft() {
 function clearTalentDraft() {
   removeDraft(draftConfig.talent);
   talentForm.reset();
+  talentForm.closest('.builder-panel').hidden = false;
+  talentFlow.querySelector('.builder-layout').classList.remove('result-mode');
   talentForm.hidden = false;
   talentCopy = '';
-  evidenceCopy = '';
+  pendingTalentValues = null;
+  activeTalentSkills = [];
   setError('talent-experience', '');
   setErrorSummary('talent-error-summary', false);
-  document.getElementById('experience-count').textContent = '0 / 800';
-  document.getElementById('evidence-form').hidden = true;
-  evidencePrepForm.hidden = false;
-  evidencePrepForm.reset();
-  document.getElementById('evidence-output').hidden = true;
-  setError('evidence-description', '');
+  document.getElementById('experience-count').textContent = '0 / 1800';
+  document.getElementById('resume-upload-status').textContent = '尚未选择文件';
   document.getElementById('talent-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">能</div><h3>草稿已清除</h3><p>从一段你亲自完成、结果明确的经历重新开始。</p></div></div>';
   document.getElementById('talent-status').textContent = '未开始';
   document.getElementById('talent-output-status').textContent = '待生成';
@@ -637,32 +709,22 @@ function clearTalentDraft() {
 }
 
 document.addEventListener('click', (event) => {
+  const voiceButton = event.target.closest('[data-voice-target]');
+  if (voiceButton) {
+    startVoiceInput(voiceButton);
+    return;
+  }
   const button = event.target.closest('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
-  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-业务问题诊断草稿.txt');
+  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-痛点需求卡草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();
   if (action === 'copy-talent') copyText(talentCopy);
-  if (action === 'download-talent') downloadText(talentCopy, '嘟嘟嗨-出海能力定位初步报告.txt');
+  if (action === 'download-talent') downloadText(talentCopy, '嘟嘟嗨-能力图谱报告.txt');
   if (action === 'reset-talent') resetTalent();
   if (action === 'clear-enterprise-draft') clearEnterpriseDraft();
   if (action === 'clear-talent-draft') clearTalentDraft();
-  if (action === 'copy-evidence') copyText(evidenceCopy, '清单已复制');
-  if (action === 'download-evidence') downloadText(evidenceCopy, '嘟嘟嗨-能力补证准备清单.txt');
-  if (action === 'reset-evidence') {
-    document.getElementById('evidence-output').hidden = true;
-    evidencePrepForm.hidden = false;
-    updateSteps('t', 3);
-    evidenceDescription.focus();
-  }
-  if (action === 'show-evidence') {
-    const evidenceForm = document.getElementById('evidence-form');
-    evidenceForm.hidden = false;
-    updateSteps('t', 3);
-    scrollToElement(evidenceForm);
-    document.getElementById('evidence-form-title').focus({ preventScroll: true });
-  }
 });
 
 const prefillDemandId = params.get('demand');
@@ -674,11 +736,10 @@ if (prefillDemandId) {
     const values = {
       'enterprise-problem': demand.example,
       'enterprise-market': demand.markets.find((market) => market !== '多市场' && market !== '东南亚') || demand.markets[0],
-      'enterprise-stage': demand.stage.includes('规模化') ? '规模化' : demand.stage.includes('增长期') ? '增长期' : '验证期',
+      'enterprise-stage': demand.stage.includes('规模化') ? '需要提升效率' : demand.stage.includes('增长期') ? '已经在推进' : '刚开始验证',
       'enterprise-impact': demand.impact,
       'enterprise-result': demand.goal,
       'enterprise-deadline': demand.duration.includes('2-4 周') ? '2-4 周' : demand.duration.includes('1-3 天') ? '1-3 天' : '3-10 天',
-      'enterprise-budget': demand.service.includes('付费试用') && !demand.service.includes('标准微任务') ? 'paid-trial' : demand.service.includes('标准微任务') ? 'micro-task' : 'diagnosis',
     };
     if (!document.getElementById('enterprise-problem').value.trim()) {
       Object.entries(values).forEach(([id, value]) => {
@@ -692,13 +753,17 @@ if (prefillDemandId) {
 } else if (prefillCapabilityId) {
   const capability = capabilityCatalog.find((item) => item.id === prefillCapabilityId);
   if (capability) {
-    const problemInput = document.getElementById('enterprise-problem');
-    const marketInput = document.getElementById('enterprise-market');
-    if (!problemInput.value.trim()) {
-      problemInput.value = `我们希望解决“${capability.name}”相关问题。当前具体现象是：`;
+    const experienceInput = document.getElementById('talent-experience');
+    const marketInput = document.getElementById('talent-market');
+    const fieldInput = document.getElementById('talent-field');
+    if (!experienceInput.value.trim()) {
+      experienceInput.value = `我做过与“${capability.name}”相关的项目。我的具体职责、做法与结果是：`;
       marketInput.value = capability.markets[0] === '多市场' ? '' : capability.markets[0];
-      problemInput.dispatchEvent(new Event('input'));
+      fieldInput.value = capability.category;
+      experienceInput.dispatchEvent(new Event('input'));
       marketInput.dispatchEvent(new Event('input'));
+      fieldInput.dispatchEvent(new Event('input'));
+      showToast('已带入能力方向，请补充你的真实经历');
     }
   }
 }

@@ -24,6 +24,13 @@ function escapeHTML(value = '') {
   })[character]);
 }
 
+function publicServiceLabel(value = '') {
+  return String(value)
+    .replaceAll('标准微任务', '微任务')
+    .replaceAll('付费试用项目', '协作验证')
+    .replaceAll('付费试用', '协作验证');
+}
+
 function getDataset() {
   return currentView === 'demand' ? enterpriseDemandCatalog : capabilityCatalog;
 }
@@ -68,13 +75,12 @@ function renderDemandCard(item) {
       </div>
       <h3>${escapeHTML(item.title)}</h3>
       <p>${escapeHTML(item.summary)}</p>
-      <blockquote class="asset-example"><span>企业可能这样描述</span><p>${escapeHTML(item.example)}</p></blockquote>
+      <blockquote class="asset-example"><span>需求方可能这样描述</span><p>${escapeHTML(item.example)}</p></blockquote>
       <div class="deliverable-list" aria-label="典型交付物">${item.deliverables.map((deliverable) => `<span>${escapeHTML(deliverable)}</span>`).join('')}</div>
       <div class="directory-facts asset-facts">
         <div><span>业务阶段</span><strong>${escapeHTML(item.stage)}</strong></div>
         <div><span>参考周期</span><strong>${escapeHTML(item.duration)}</strong></div>
-        <div><span>建议方式</span><strong>${escapeHTML(item.service)}</strong></div>
-        <div><span>参考预算</span><strong>${escapeHTML(item.budget)}</strong></div>
+        <div><span>建议方式</span><strong>${escapeHTML(publicServiceLabel(item.service))}</strong></div>
       </div>
       <details class="asset-details">
         <summary>查看完整任务结构</summary>
@@ -86,7 +92,7 @@ function renderDemandCard(item) {
           <div><dt>不包含</dt><dd>${escapeHTML(item.boundary)}</dd></div>
         </dl>
       </details>
-      <a class="text-link" href="/skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例生成我的问题单 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="/skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例描述我的痛点 <span aria-hidden="true">→</span></a>
     </article>`;
 }
 
@@ -99,25 +105,22 @@ function renderCapabilityCard(item) {
       </div>
       <h3>${escapeHTML(item.name)}</h3>
       <p>${escapeHTML(item.description)}</p>
-      <div class="asset-task-list">
-        <span>常见任务</span>
-        <ul>${item.tasks.map((task) => `<li>${escapeHTML(task)}</li>`).join('')}</ul>
-      </div>
-      <div class="deliverable-list" aria-label="典型交付物">${item.deliverables.map((deliverable) => `<span>${escapeHTML(deliverable)}</span>`).join('')}</div>
       <div class="directory-facts">
-        <div><span>常见合作</span><strong>${escapeHTML(item.service)}</strong></div>
+        <div><span>常见合作</span><strong>${escapeHTML(publicServiceLabel(item.service))}</strong></div>
         <div><span>参考周期</span><strong>${escapeHTML(item.duration)}</strong></div>
       </div>
       <details class="asset-details">
-        <summary>查看能力证据标准</summary>
+        <summary>查看任务与证据</summary>
         <dl>
+          <div><dt>常见任务</dt><dd>${escapeHTML(item.tasks.join('、'))}</dd></div>
           <div><dt>常用方法</dt><dd>${escapeHTML(item.methods)}</dd></div>
+          <div><dt>典型产出</dt><dd>${escapeHTML(item.deliverables.join('、'))}</dd></div>
           <div><dt>交付验收</dt><dd>${escapeHTML(item.acceptance)}</dd></div>
           <div><dt>推荐前核验</dt><dd>${escapeHTML(item.evidence)}</dd></div>
           <div><dt>能力边界</dt><dd>${escapeHTML(item.boundary)}</dd></div>
         </dl>
       </details>
-      <a class="text-link" href="/skill-builder.html?role=enterprise&capability=${encodeURIComponent(item.id)}">用这个方向诊断我的问题 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="/skill-builder.html?role=talent&capability=${encodeURIComponent(item.id)}">用这个方向挖掘我的能力 <span aria-hidden="true">→</span></a>
     </article>`;
 }
 
@@ -146,7 +149,7 @@ function render() {
 
   updateUrl(query, category, market);
   renderShortcuts([...new Set(getDataset().map((item) => item.category))]);
-  const unit = currentView === 'demand' ? '条企业需求样例' : '项人才能力方向';
+  const unit = currentView === 'demand' ? '条痛点需求样例' : '项人才能力方向';
   resultCount.textContent = `共找到 ${filtered.length} ${unit}`;
   noResults.hidden = filtered.length !== 0;
   grid.hidden = filtered.length === 0;
@@ -162,7 +165,7 @@ function setView(view, requestedCategory = '全部', requestedMarket = '全部')
   });
   grid.setAttribute('aria-labelledby', view === 'demand' ? 'demand-tab' : 'capability-tab');
   assetGuide.textContent = view === 'demand'
-    ? '企业需求样例帮助你把一句“做得不好”写成可以判断范围和验收方式的问题。'
+    ? '痛点需求样例帮助你把一句“做得不好”写成可以判断范围和验收方式的问题。'
     : '人才能力图谱说明一项能力能完成什么任务、常用什么方法，以及推荐前需要核验什么证据。';
   resultNote.textContent = view === 'demand'
     ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'

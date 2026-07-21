@@ -1,5 +1,6 @@
 const navToggle = document.getElementById('nav-toggle');
 const nav = document.getElementById('main-nav');
+const loginDialog = document.getElementById('login-dialog');
 
 function closeNav() {
   nav?.classList.remove('open');
@@ -24,9 +25,22 @@ document.addEventListener('keydown', (event) => {
   }
 });
 document.addEventListener('click', (event) => {
+  const action = event.target.closest('[data-action]')?.dataset.action;
+  if (action === 'open-login') {
+    closeNav();
+    if (typeof loginDialog?.showModal === 'function') loginDialog.showModal();
+    return;
+  }
+  if (action === 'close-login') {
+    loginDialog?.close();
+    return;
+  }
   if (navToggle?.getAttribute('aria-expanded') === 'true' && !event.target.closest('.site-header')) {
     closeNav();
   }
+});
+loginDialog?.addEventListener('click', (event) => {
+  if (event.target === loginDialog) loginDialog.close();
 });
 window.addEventListener('resize', () => {
   if (window.innerWidth > 860) closeNav();

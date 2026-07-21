@@ -5,27 +5,24 @@
 export const serviceSkus = [
   {
     id: 'diagnosis',
-    name: '专家快诊',
+    name: '问题诊断',
     fit: '问题已经发生，但根因和下一步还不清楚',
     deliverable: '会前问题单、60-90 分钟诊断、行动纪要',
     duration: '1-3 天',
-    price: '¥999-3,999',
   },
   {
     id: 'micro-task',
-    name: '标准微任务',
+    name: '微任务',
     fit: '范围清楚，需要一份可直接使用的成果',
     deliverable: '调研、诊断、文案、名单或方案等明确交付物',
     duration: '3-10 天',
-    price: '¥3,000-30,000',
   },
   {
-    id: 'paid-trial',
-    name: '付费试用项目',
-    fit: '准备长期合作或招聘，希望先验证真实协作',
+    id: 'collaboration',
+    name: '协作验证',
+    fit: '准备长期合作或招聘，希望先观察真实协作',
     deliverable: '2-4 周真实项目、里程碑、周报与复盘',
     duration: '2-4 周',
-    price: '¥10,000-50,000',
   },
 ];
 
@@ -547,6 +544,7 @@ export const capabilityCatalog = [
 export const talentSkillTemplates = [
   {
     id: 'content-diagnosis',
+    category: '内容增长',
     name: '海外内容与账号诊断',
     task: '识别账号、内容结构或增长链路中的主要问题',
     method: '内容审计、数据对照、竞品拆解与优先级判断',
@@ -559,6 +557,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'localization',
+    category: '本地化',
     name: '市场本地化与内容适配',
     task: '把产品、品牌或内容调整为当地用户可理解的表达',
     method: '用户语境分析、本地表达校准、样稿测试',
@@ -571,6 +570,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'research',
+    category: '用户研究',
     name: '海外用户研究与市场洞察',
     task: '通过研究和访谈回答进入、定位或用户需求问题',
     method: '研究设计、访谈、竞品与结论归纳',
@@ -583,6 +583,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'commerce',
+    category: '电商运营',
     name: '跨境电商运营诊断',
     task: '定位选品、店铺、转化或活动运营中的增长卡点',
     method: '数据拆解、商品与页面审计、运营复盘',
@@ -595,6 +596,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'automation',
+    category: 'AI 提效',
     name: '海外业务 AI 提效设计',
     task: '将重复业务流程拆成知识、规则、自动化与人工复核节点',
     method: '流程梳理、知识库、工作流编排与效果评估',
@@ -607,6 +609,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'creator-operations',
+    category: '达人合作',
     name: '海外达人筛选与合作运营',
     task: '根据目标人群、内容质量、预算和品牌风险建立达人合作机制',
     method: '受众匹配、内容审计、互动真实性检查、报价对照和合作复盘',
@@ -619,6 +622,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'growth-experiments',
+    category: '增长策略',
     name: '海外增长实验与漏斗优化',
     task: '把增长目标拆成可测试假设、实验动作、指标和停止条件',
     method: '问题树、漏斗分析、实验优先级、指标设计和结果归因',
@@ -631,6 +635,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'channel-development',
+    category: '渠道拓展',
     name: '海外渠道与合作伙伴开发',
     task: '识别渠道角色、筛选潜在伙伴并完成首轮资格验证',
     method: '生态映射、候选调研、价值主张设计、触达和访谈验证',
@@ -643,6 +648,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'b2b-generation',
+    category: 'B2B 增长',
     name: '海外 B2B 线索与销售触达',
     task: '定义目标账户，研究线索并设计合规的多轮触达和资格判断',
     method: 'ICP 拆解、账户研究、信号分层、消息测试和销售反馈闭环',
@@ -655,6 +661,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'retention-operations',
+    category: '用户运营',
     name: '用户生命周期与复购运营',
     task: '识别留存节点、用户分层和流失信号，设计复购或召回动作',
     method: '队列分析、行为分层、生命周期映射、触达策略和退出规则',
@@ -667,6 +674,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'measurement',
+    category: '数据分析',
     name: '业务指标与数据分析',
     task: '把业务问题转成可计算指标、分析框架和可共同使用的数据口径',
     method: '指标树、数据字典、漏斗与队列分析、异常检查和结果解释',
@@ -679,6 +687,7 @@ export const talentSkillTemplates = [
   },
   {
     id: 'delivery-management',
+    category: '项目交付',
     name: '跨市场项目交付与协作',
     task: '协调总部、当地团队、供应商与渠道，控制范围、依赖和里程碑',
     method: '工作分解、RACI、风险登记、决策日志、里程碑和变更管理',
