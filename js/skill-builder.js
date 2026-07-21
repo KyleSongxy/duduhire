@@ -537,7 +537,7 @@ function renderTalentResult(values, skills, answers) {
       `能力边界：${skill.boundary}`,
     ].join('\n')),
     '',
-    '说明：本报告来自简历、经历自述与针对性追问，不等于能力认证或企业推荐。正式公开或匹配前需另行授权并人工审核。',
+    '说明：本报告来自简历、经历自述与针对性追问，不等于能力认证或平台推荐。正式公开或匹配前需另行授权并人工审核。',
   ].join('\n');
 
   document.getElementById('talent-output').innerHTML = `
