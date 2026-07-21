@@ -1,9 +1,5 @@
-import { capabilityCatalog, enterpriseDemandCatalog } from './data.js';
-
 const navToggle = document.getElementById('nav-toggle');
 const nav = document.getElementById('main-nav');
-const preview = document.getElementById('capability-preview');
-const demandPreview = document.getElementById('demand-preview');
 
 function closeNav() {
   nav?.classList.remove('open');
@@ -35,27 +31,3 @@ document.addEventListener('click', (event) => {
 window.addEventListener('resize', () => {
   if (window.innerWidth > 860) closeNav();
 });
-
-if (preview) {
-  preview.innerHTML = capabilityCatalog.slice(0, 3).map((item) => `
-    <a class="capability-card reveal" href="/skill-builder.html?role=enterprise&capability=${encodeURIComponent(item.id)}">
-      <span class="capability-symbol" aria-hidden="true">${item.category}</span>
-      <span>
-        <h3>${item.name}</h3>
-        <p>${item.deliverables.slice(0, 2).join('、')}</p>
-      </span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-  `).join('');
-}
-
-if (demandPreview) {
-  demandPreview.innerHTML = enterpriseDemandCatalog.slice(0, 4).map((item) => `
-    <a class="demand-preview-item" href="/skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">
-      <span>${item.category}</span>
-      <strong>${item.title}</strong>
-      <p>${item.example}</p>
-      <small>${item.deliverables.slice(0, 2).join(' · ')}</small>
-    </a>
-  `).join('');
-}
