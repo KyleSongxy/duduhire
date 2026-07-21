@@ -670,6 +670,10 @@ p, li, dd, figcaption, blockquote, summary {
 .directory-meta { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; color: var(--muted); font-size: 12px; }
 .directory-meta p { margin: 0; }
 .directory-meta p:first-child { color: var(--ink-soft); font-weight: 750; }
+.directory-meta-note { display: flex; align-items: center; justify-content: flex-end; gap: 10px; text-align: right; }
+.context-clear { min-height: 40px; flex: 0 0 auto; padding: 7px 11px; border: 1px solid #b7d5ca; border-radius: 9px; color: var(--accent-deep); background: #f5faf8; cursor: pointer; font: inherit; font-weight: 750; }
+.context-clear:hover { border-color: var(--accent); background: var(--accent-soft); }
+.context-clear:focus-visible { outline: 3px solid rgba(47, 138, 114, 0.2); outline-offset: 2px; }
 .directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .directory-card { display: flex; flex-direction: column; min-width: 0; padding: 27px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,0.92); box-shadow: 0 12px 34px rgba(18,20,38,0.035); transition: transform var(--motion-fast) var(--motion-enter), border-color var(--motion-ui) ease, box-shadow var(--motion-ui) ease; }
 .directory-card:hover { border-color: #c8c4ea; box-shadow: var(--shadow-md); }
@@ -701,6 +705,7 @@ p, li, dd, figcaption, blockquote, summary {
 .asset-details dt { color: var(--subtle); font-size: 10px; font-weight: 750; }
 .asset-details dd { margin: 0; color: var(--ink-soft); font-size: 12px; }
 .directory-card .text-link { margin-top: 18px; font-size: 12px; }
+.directory-card-status { margin: 18px 0 0 !important; color: var(--subtle) !important; font-size: 11px !important; font-weight: 650; }
 .no-results { padding: 70px 20px; border: 1px dashed var(--line-strong); border-radius: 20px; color: var(--muted); text-align: center; background: rgba(255,255,255,0.45); }
 .no-results-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
 
@@ -908,6 +913,8 @@ p, li, dd, figcaption, blockquote, summary {
   .asset-shortcuts button { flex: 0 0 auto; }
   .asset-shortcuts button { min-height: 42px; }
   .directory-meta { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .directory-meta-note { width: 100%; align-items: flex-start; flex-direction: column; text-align: left; }
+  .context-clear { min-height: 44px; }
   .directory-card { min-height: 0; padding: 21px; }
   .asset-details dl div,
   .asset-standard dl div { grid-template-columns: 1fr; gap: 3px; }

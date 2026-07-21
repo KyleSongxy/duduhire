@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="浏览嘟嘟嗨整理的痛点需求样例与人才能力图谱，查看典型现象、交付物、验收方式和证据要求。">
+  <meta name="description" content="浏览嘟嘟嗨整理的痛点需求样例与能力卡片，查看典型现象、任务、交付物、验收方式和证据要求。">
   <meta name="theme-color" content="#f7f7f3">
   <title>痛点需求与能力库｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="/assets/duduhire-mark.svg">
@@ -41,9 +41,9 @@
           <p>从业务现象出发，明确目标、交付、验收和边界。</p>
         </div>
         <div>
-          <span>人才能力方向</span>
+          <span>能力卡片</span>
           <strong id="capability-total">15</strong>
-          <p>连接任务、方法、结果与可核验证据。</p>
+          <p>平台已沉淀的任务、方法、产出与证据结构。</p>
         </div>
         <div>
           <span>验证等级</span>
@@ -60,7 +60,7 @@
           </div>
           <div class="asset-tabs" role="tablist" aria-label="切换资产类型">
             <button type="button" role="tab" id="demand-tab" aria-selected="true" aria-controls="directory-grid" data-view="demand">痛点需求样例</button>
-            <button type="button" role="tab" id="capability-tab" aria-selected="false" aria-controls="directory-grid" data-view="capability">人才能力图谱</button>
+            <button type="button" role="tab" id="capability-tab" aria-selected="false" aria-controls="directory-grid" data-view="capability">能力卡片</button>
           </div>
         </div>
 
@@ -89,7 +89,10 @@
 
         <div class="directory-meta">
           <p id="result-count" aria-live="polite">正在加载资产库…</p>
-          <p id="result-note">所有内容都是问题模板，不代表真实客户案例或当前需求量。</p>
+          <div class="directory-meta-note">
+            <p id="result-note">所有内容都是问题模板，不代表真实客户案例或当前需求量。</p>
+            <button class="context-clear" id="clear-match-context" type="button" hidden>查看全部需求</button>
+          </div>
         </div>
 
         <section class="directory-grid" id="directory-grid" role="tabpanel" aria-labelledby="demand-tab" aria-live="polite"></section>
@@ -111,7 +114,7 @@
         </div>
         <dl>
           <div><dt>痛点需求</dt><dd>必须说清业务现象、影响、目标、约束与验收方式。</dd></div>
-          <div><dt>人才能力</dt><dd>必须连接具体任务、使用方法、本人角色、结果和证据。</dd></div>
+          <div><dt>能力卡片</dt><dd>必须连接具体任务、使用方法、本人角色、结果和证据。</dd></div>
           <div><dt>推荐关系</dt><dd>只有场景、档期、证据和风险经过人工确认后才成立。</dd></div>
         </dl>
       </section>

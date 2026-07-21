@@ -8,6 +8,7 @@ const resultCount = document.getElementById('result-count');
 const resultNote = document.getElementById('result-note');
 const noResults = document.getElementById('no-results');
 const clearFilters = document.getElementById('clear-filters');
+const clearMatchContext = document.getElementById('clear-match-context');
 const assetGuide = document.getElementById('asset-guide');
 const assetShortcuts = document.getElementById('asset-shortcuts');
 const tabButtons = [...document.querySelectorAll('[data-view]')];
@@ -17,6 +18,7 @@ document.getElementById('demand-total').textContent = enterpriseDemandCatalog.le
 document.getElementById('capability-total').textContent = capabilityCatalog.length;
 
 let currentView = params.get('view') === 'capability' ? 'capability' : 'demand';
+let matchedCapabilityId = currentView === 'demand' ? params.get('capability') || '' : '';
 
 function escapeHTML(value = '') {
   return String(value).replace(/[&<>'"]/g, (character) => ({
@@ -33,6 +35,15 @@ function publicServiceLabel(value = '') {
 
 function getDataset() {
   return currentView === 'demand' ? enterpriseDemandCatalog : capabilityCatalog;
+}
+
+function getMatchedCapability() {
+  return capabilityCatalog.find((item) => item.id === matchedCapabilityId) || null;
+}
+
+function getRelatedDemands(capability) {
+  if (!capability) return enterpriseDemandCatalog;
+  return enterpriseDemandCatalog.filter((item) => item.capabilityIds?.includes(capability.id));
 }
 
 function getSearchableText(item) {
@@ -97,6 +108,10 @@ function renderDemandCard(item) {
 }
 
 function renderCapabilityCard(item) {
+  const relatedCount = getRelatedDemands(item).length;
+  const relatedDemandAction = relatedCount
+    ? `<a class="text-link" href="/skill-leaderboard.html?view=demand&amp;capability=${encodeURIComponent(item.id)}">查看相关需求样例（${relatedCount}） <span aria-hidden="true">→</span></a>`
+    : '<p class="directory-card-status">当前暂无关联的需求样例</p>';
   return `
     <article class="directory-card capability-directory-card">
       <div class="directory-card-top">
@@ -120,7 +135,7 @@ function renderCapabilityCard(item) {
           <div><dt>能力边界</dt><dd>${escapeHTML(item.boundary)}</dd></div>
         </dl>
       </details>
-      <a class="text-link" href="/skill-builder.html?role=talent&capability=${encodeURIComponent(item.id)}">用这个方向挖掘我的能力 <span aria-hidden="true">→</span></a>
+      ${relatedDemandAction}
     </article>`;
 }
 
@@ -133,43 +148,67 @@ function updateUrl(query, category, market) {
   else nextUrl.searchParams.delete('category');
   if (market !== '全部') nextUrl.searchParams.set('market', market);
   else nextUrl.searchParams.delete('market');
+  if (currentView === 'demand' && getMatchedCapability()) nextUrl.searchParams.set('capability', matchedCapabilityId);
+  else nextUrl.searchParams.delete('capability');
   window.history.replaceState({}, '', nextUrl);
+}
+
+function updateViewCopy() {
+  const matchedCapability = getMatchedCapability();
+  if (currentView === 'demand' && matchedCapability) {
+    assetGuide.textContent = `以下需求与“${matchedCapability.name}”存在任务关联，可以继续查看范围、交付与验收方式。`;
+    resultNote.textContent = '关联来自需求卡所需能力；是否适合合作，仍需核验证据、档期与具体边界。';
+    clearMatchContext.hidden = false;
+    return;
+  }
+
+  assetGuide.textContent = currentView === 'demand'
+    ? '痛点需求样例帮助你把一句“做得不好”写成可以判断范围和验收方式的问题。'
+    : '这里展示平台已经沉淀的能力卡片。展开即可查看任务、方法、产出和证据要求。';
+  resultNote.textContent = currentView === 'demand'
+    ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'
+    : '这些是已有能力卡片，不是个人能力挖掘入口；“当前重点”只表示首发服务范围。';
+  clearMatchContext.hidden = true;
 }
 
 function render() {
   const query = searchInput.value.trim().toLowerCase();
   const category = categoryFilter.value;
   const market = marketFilter.value;
+  const matchedCapability = getMatchedCapability();
+  const relatedDemandIds = new Set(getRelatedDemands(matchedCapability).map((item) => item.id));
   const filtered = getDataset().filter((item) => {
     const matchesQuery = !query || getSearchableText(item).includes(query);
     const matchesCategory = category === '全部' || item.category === category;
     const matchesMarket = market === '全部' || item.markets.includes(market);
-    return matchesQuery && matchesCategory && matchesMarket;
+    const matchesCapability = currentView !== 'demand' || !matchedCapability || relatedDemandIds.has(item.id);
+    return matchesQuery && matchesCategory && matchesMarket && matchesCapability;
   });
 
   updateUrl(query, category, market);
   renderShortcuts([...new Set(getDataset().map((item) => item.category))]);
-  const unit = currentView === 'demand' ? '条痛点需求样例' : '项人才能力方向';
-  resultCount.textContent = `共找到 ${filtered.length} ${unit}`;
+  const unit = currentView === 'demand' ? '条痛点需求样例' : '张能力卡片';
+  resultCount.textContent = matchedCapability
+    ? `与“${matchedCapability.name}”相关的需求：${filtered.length} 条`
+    : `共找到 ${filtered.length} ${unit}`;
   noResults.hidden = filtered.length !== 0;
   grid.hidden = filtered.length === 0;
   grid.innerHTML = filtered.map((item) => currentView === 'demand' ? renderDemandCard(item) : renderCapabilityCard(item)).join('');
 }
 
-function setView(view, requestedCategory = '全部', requestedMarket = '全部') {
+function setView(view, requestedCategory = '全部', requestedMarket = '全部', requestedCapability = '') {
   currentView = view;
+  const requestedCapabilityItem = capabilityCatalog.find((item) => item.id === requestedCapability);
+  matchedCapabilityId = view === 'demand' && requestedCapabilityItem && getRelatedDemands(requestedCapabilityItem).length
+    ? requestedCapabilityItem.id
+    : '';
   tabButtons.forEach((button) => {
     const active = button.dataset.view === view;
     button.setAttribute('aria-selected', String(active));
     button.tabIndex = active ? 0 : -1;
   });
   grid.setAttribute('aria-labelledby', view === 'demand' ? 'demand-tab' : 'capability-tab');
-  assetGuide.textContent = view === 'demand'
-    ? '痛点需求样例帮助你把一句“做得不好”写成可以判断范围和验收方式的问题。'
-    : '人才能力图谱说明一项能力能完成什么任务、常用什么方法，以及推荐前需要核验什么证据。';
-  resultNote.textContent = view === 'demand'
-    ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'
-    : '目录不按热度给人才排名，“当前重点”只表示首发服务范围。';
+  updateViewCopy();
   searchInput.placeholder = view === 'demand'
     ? '搜索业务现象，例如：流量下滑、复购、渠道'
     : '搜索任务或能力，例如：本地化、用户研究、数据';
@@ -178,7 +217,7 @@ function setView(view, requestedCategory = '全部', requestedMarket = '全部')
 }
 
 searchInput.value = params.get('q') || '';
-setView(currentView, params.get('category') || '全部', params.get('market') || '全部');
+setView(currentView, params.get('category') || '全部', params.get('market') || '全部', params.get('capability') || '');
 
 searchInput.addEventListener('input', render);
 categoryFilter.addEventListener('change', render);
@@ -210,6 +249,14 @@ clearFilters.addEventListener('click', () => {
   searchInput.value = '';
   categoryFilter.value = '全部';
   marketFilter.value = '全部';
+  matchedCapabilityId = '';
+  updateViewCopy();
   searchInput.focus();
+  render();
+});
+
+clearMatchContext.addEventListener('click', () => {
+  matchedCapabilityId = '';
+  updateViewCopy();
   render();
 });
