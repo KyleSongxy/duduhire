@@ -36,51 +36,77 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-grid">
+      <div class="container hero-stage">
+        <figure class="hero-media reveal">
+          <img src="/assets/cross-border-collaboration-hero.webp" width="1536" height="1024" alt="两位专业人士围绕项目资料共同梳理问题" fetchpriority="high">
+        </figure>
         <div class="hero-copy reveal">
           <p class="eyebrow">痛点与能力匹配平台</p>
-          <h1 id="hero-title">先解决一个问题，<br><span>再决定是否招人</span></h1>
-          <p class="hero-lead">把真实问题说清楚，让做过相似事情的人被看见。平台负责梳理、核验与撮合。</p>
+          <h1 id="hero-title"><span>先解决问题，</span><span>再决定是否招人。</span></h1>
+          <p class="hero-lead">把问题说清楚，把做过的人找出来。平台负责梳理、核验与撮合。</p>
           <div class="hero-actions">
-            <a class="btn btn-large path-button" href="/skill-builder.html?role=enterprise">描述我的痛点 <span aria-hidden="true">→</span></a>
-            <a class="btn btn-large path-button" href="/skill-builder.html?role=talent">挖掘我的能力 <span aria-hidden="true">→</span></a>
+            <a class="btn btn-large btn-primary" href="/skill-builder.html?role=enterprise">描述我的痛点 <span aria-hidden="true">→</span></a>
+            <a class="btn btn-large btn-secondary" href="/skill-builder.html?role=talent">挖掘我的能力 <span aria-hidden="true">→</span></a>
           </div>
         </div>
-
-        <figure class="hero-media reveal">
-          <div class="hero-media-frame">
-            <img src="/assets/cross-border-collaboration-hero.webp" width="1536" height="1024" alt="两位专业人士围绕项目资料共同梳理问题" fetchpriority="high">
-          </div>
-        </figure>
+        <dl class="hero-ledger reveal" aria-label="平台三方关系">
+          <div><dt>需求方</dt><dd>说清真正卡住的问题</dd></div>
+          <div><dt>能力方</dt><dd>呈现做过什么和怎样证明</dd></div>
+          <div><dt>平台</dt><dd>梳理信息、核验证据、撮合双方</dd></div>
+        </dl>
       </div>
     </section>
 
     <section class="section audience-section" aria-labelledby="choose-title">
       <div class="container">
         <div class="section-heading reveal">
-          <p class="eyebrow">双边入口</p>
-          <h2 id="choose-title">一边说清问题，一边拿出能力证据</h2>
-          <p>提出问题和展示能力是并行的两端。平台负责梳理信息、核验证据，并寻找合适的连接。</p>
+          <span class="section-index">01 / 双边入口</span>
+          <h2 id="choose-title">不是先后两步，<br>而是供需两端。</h2>
+          <p>你可以带着一个问题来，也可以带着一段做成过的经历来。平台在中间完成对齐。</p>
         </div>
-        <div class="audience-grid marketplace-grid">
-          <article class="audience-card business-card reveal" id="demand">
-            <p class="role-label">需求方 <span>组织 · 团队 · 个人</span></p>
+        <div class="marketplace-board">
+          <article class="audience-card reveal" id="demand">
+            <div class="role-label"><span>需求方</span><small>组织、团队或个人</small></div>
             <h3>描述我的痛点</h3>
-            <p>把一句“卡住了”，整理成包含场景、影响、目标与时间要求的痛点需求卡。</p>
-            <p class="audience-outcome"><span>形成</span>一份可继续访谈、匹配或拆成微任务的结构化草稿。</p>
-            <a class="text-link" href="/skill-builder.html?role=enterprise">开始描述痛点 <span aria-hidden="true">→</span></a>
+            <p>把一句“卡住了”整理成包含场景、影响、目标和时间要求的需求卡。</p>
+            <div class="audience-outcome"><span>你会得到</span><strong>可访谈、可匹配、可拆成微任务的结构化草稿</strong></div>
+            <a class="text-link" href="/skill-builder.html?role=enterprise">开始描述 <span aria-hidden="true">→</span></a>
           </article>
-          <div class="match-hub reveal" aria-label="平台负责梳理、核验与撮合">
-            <span>平台负责</span>
-            <strong>梳理 · 核验<br>撮合</strong>
+
+          <div class="match-rail reveal" aria-label="平台负责梳理、核验与撮合">
+            <span>平台</span>
+            <ol>
+              <li>梳理</li>
+              <li>核验</li>
+              <li>撮合</li>
+            </ol>
           </div>
+
           <article class="audience-card talent-card reveal" id="capability">
-            <p class="role-label">能力方 <span>专业人才 · 实战团队</span></p>
+            <div class="role-label"><span>能力方</span><small>专业人才或实战团队</small></div>
             <h3>挖掘我的能力</h3>
-            <p>导入简历或讲述经历，先提炼 3-5 项核心技能，再通过针对性追问补全真实过程。</p>
-            <p class="audience-outcome"><span>形成</span>一组名片式能力图谱卡片，以及仍需补充的证据与能力边界。</p>
-            <a class="text-link" href="/skill-builder.html?role=talent">开始挖掘能力 <span aria-hidden="true">→</span></a>
+            <p>从简历和经历中提炼 3 至 5 项核心技能，再用针对性追问补全真实过程。</p>
+            <div class="audience-outcome"><span>你会得到</span><strong>名片式能力图谱，以及仍需补充的证据与边界</strong></div>
+            <a class="text-link" href="/skill-builder.html?role=talent">开始挖掘 <span aria-hidden="true">→</span></a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section platform-section" aria-labelledby="platform-title">
+      <div class="container platform-layout">
+        <figure class="platform-photo reveal">
+          <img src="/assets/cross-border-workshop.webp" width="960" height="1200" loading="lazy" alt="专业人士在真实项目资料前共同分析业务问题">
+          <figcaption>从事实、动作和证据出发，而不是从岗位名称出发。</figcaption>
+        </figure>
+        <div class="platform-copy reveal">
+          <span class="section-index">02 / 平台负责什么</span>
+          <h2 id="platform-title">不替双方做决定，<br>只把关键信息对齐。</h2>
+          <div class="platform-ledger">
+            <div><span>01</span><strong>梳理</strong><p>把模糊描述整理成双方都能理解的结构。</p></div>
+            <div><span>02</span><strong>核验</strong><p>确认做过什么、本人角色、结果与可用证据。</p></div>
+            <div><span>03</span><strong>撮合</strong><p>在场景、能力、档期和边界一致后再建立连接。</p></div>
+          </div>
         </div>
       </div>
     </section>
@@ -88,25 +114,20 @@
     <section class="section resource-section" id="assets" aria-labelledby="resource-title">
       <div class="container resource-layout">
         <div class="section-heading reveal">
-          <p class="eyebrow">平台资产</p>
+          <span class="section-index">03 / 平台资产</span>
           <h2 id="resource-title">痛点需求与能力库</h2>
-          <p>不知道如何表达时，先看平台沉淀的结构化样例。它们不是职位标签，而是能被理解、核验和复用的问题与能力。</p>
-          <div class="asset-topic-list" aria-label="部分内容方向">
-            <span>内容增长</span><span>本地化</span><span>用户研究</span><span>电商运营</span><span>AI 提效</span><span>渠道拓展</span>
-          </div>
+          <p>从真实任务出发，查看问题怎样被描述，能力怎样被证明。这里没有职位榜单，也没有空泛标签。</p>
         </div>
-        <div class="resource-grid">
-          <a class="resource-card reveal" href="/skill-leaderboard.html?view=demand">
+        <div class="resource-list">
+          <a class="resource-row reveal" href="/skill-leaderboard.html?view=demand">
             <span class="resource-count">12 个样例</span>
-            <h3>痛点需求库</h3>
-            <p>从业务现象出发，查看目标、影响、交付、验收与边界可以怎样被说清楚。</p>
-            <span class="resource-link">浏览痛点需求 <b aria-hidden="true">→</b></span>
+            <span><strong>痛点需求库</strong><small>业务现象、目标、交付、验收与边界</small></span>
+            <b aria-hidden="true">→</b>
           </a>
-          <a class="resource-card reveal" href="/skill-leaderboard.html?view=capability">
+          <a class="resource-row reveal" href="/skill-leaderboard.html?view=capability">
             <span class="resource-count">15 项能力</span>
-            <h3>人才能力库</h3>
-            <p>从真实任务出发，查看方法、本人角色、结果与可核验证据如何连接。</p>
-            <span class="resource-link">浏览人才能力 <b aria-hidden="true">→</b></span>
+            <span><strong>人才能力库</strong><small>真实任务、使用方法、本人角色与证据</small></span>
+            <b aria-hidden="true">→</b>
           </a>
         </div>
       </div>
@@ -115,13 +136,13 @@
     <section class="final-cta">
       <div class="container final-cta-inner reveal">
         <div>
-          <p class="eyebrow">选择你所在的一端</p>
-          <h2><span>让问题找到解法，</span><span>让能力找到场景。</span></h2>
-          <p>需求方描述真实问题，能力方梳理真实经验。平台负责连接双方。</p>
+          <span class="section-index">现在开始</span>
+          <h2>让问题找到解法，<br>让能力找到场景。</h2>
+          <p>选择你所在的一端，先生成一份可以继续讨论的结构化草稿。</p>
         </div>
         <div class="final-actions">
-          <a class="btn btn-large path-button" href="/skill-builder.html?role=enterprise">描述我的痛点</a>
-          <a class="btn btn-large path-button" href="/skill-builder.html?role=talent">挖掘我的能力</a>
+          <a class="btn btn-large btn-primary" href="/skill-builder.html?role=enterprise">描述我的痛点</a>
+          <a class="btn btn-large btn-inverse" href="/skill-builder.html?role=talent">挖掘我的能力</a>
         </div>
       </div>
     </section>
