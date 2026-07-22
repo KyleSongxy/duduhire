@@ -10,6 +10,7 @@ export default defineConfig(async () => {
 
   return {
     appType: 'mpa',
+    base: './',
     plugins: [
       sites(),
       cloudflare({

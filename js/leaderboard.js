@@ -103,14 +103,14 @@ function renderDemandCard(item) {
           <div><dt>不包含</dt><dd>${escapeHTML(item.boundary)}</dd></div>
         </dl>
       </details>
-      <a class="text-link" href="/skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例描述我的痛点 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="./skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例描述我的痛点 <span aria-hidden="true">→</span></a>
     </article>`;
 }
 
 function renderCapabilityCard(item) {
   const relatedCount = getRelatedDemands(item).length;
   const relatedDemandAction = relatedCount
-    ? `<a class="text-link" href="/skill-leaderboard.html?view=demand&amp;capability=${encodeURIComponent(item.id)}">查看相关需求样例（${relatedCount}） <span aria-hidden="true">→</span></a>`
+    ? `<a class="text-link" href="./skill-leaderboard.html?view=demand&amp;capability=${encodeURIComponent(item.id)}">查看相关需求样例（${relatedCount}） <span aria-hidden="true">→</span></a>`
     : '<p class="directory-card-status">当前暂无关联的需求样例</p>';
   return `
     <article class="directory-card capability-directory-card">
