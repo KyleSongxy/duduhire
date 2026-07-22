@@ -324,7 +324,7 @@ function renderEnterpriseResult(values) {
   if (values.sensitive) questions.unshift('哪些信息属于敏感范围，专家可以看到什么、不能看到什么？');
 
   enterpriseCopy = [
-    '《结构化任务卡｜草稿》',
+    '《结构化痛点描述｜草稿》',
     `发生场景与状态：${values.market} / ${values.stage}`,
     `痛点描述：${values.problem}`,
     `造成影响：${values.impact}`,
@@ -342,15 +342,15 @@ function renderEnterpriseResult(values) {
         <div class="result-summary-top">
           <div>
             <span class="mini-label">AI 初步解析</span>
-            <h3>已生成结构化任务卡</h3>
+            <h3>已生成结构化痛点描述</h3>
             <p>根据你提供的文字或语音内容自动提取</p>
           </div>
           <strong class="result-price">待你确认</strong>
         </div>
-        <div class="disclaimer">自动解析可能遗漏上下文。请核对任务卡，并通过下方问题补充关键信息。</div>
+        <div class="disclaimer">自动解析可能遗漏上下文。请核对痛点描述，并通过下方问题补充关键信息。</div>
       </section>
       <section class="result-section">
-        <h3>结构化任务卡</h3>
+        <h3>结构化痛点描述</h3>
         <div class="brief-result">
           <div class="brief-result-row"><span>场景与状态</span><p>${escapeHTML(values.market)} · ${escapeHTML(values.stage)}</p></div>
           <div class="brief-result-row"><span>痛点描述</span><p>${escapeHTML(values.problem)}</p></div>
@@ -371,7 +371,7 @@ function renderEnterpriseResult(values) {
         <ol class="question-list">${questions.map((question) => `<li>${escapeHTML(question)}</li>`).join('')}</ol>
       </section>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制任务卡</button>
+        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制痛点描述</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
         <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改原文并重新解析</button>
       </div>
@@ -380,7 +380,7 @@ function renderEnterpriseResult(values) {
   `;
   document.getElementById('enterprise-status').textContent = '已生成';
   document.getElementById('enterprise-status').className = 'status-badge success';
-  document.getElementById('enterprise-output-status').textContent = '任务卡草稿';
+  document.getElementById('enterprise-output-status').textContent = '痛点描述草稿';
   document.getElementById('enterprise-output-status').className = 'status-badge success';
   const layout = enterpriseFlow.querySelector('.builder-layout');
   const inputPanel = enterpriseForm.closest('.builder-panel');
@@ -730,7 +730,7 @@ document.addEventListener('click', (event) => {
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
-  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化任务卡草稿.txt');
+  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化痛点描述草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();
   if (action === 'copy-talent') copyText(talentCopy);
   if (action === 'download-talent') downloadText(talentCopy, '嘟嘟嗨-个人能力名片.txt');

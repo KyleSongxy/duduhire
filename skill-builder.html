@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="通过文字、语音或简历描述真实痛点与项目经历，由 AI 自动解析结构化任务卡或个人能力名片。">
+  <meta name="description" content="通过文字、语音或简历描述真实痛点与项目经历，由 AI 自动解析结构化痛点描述或个人能力名片。">
   <meta name="theme-color" content="#f7f7f3">
   <title>开始使用｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="./assets/duduhire-mark.svg">
@@ -19,7 +19,7 @@
       </a>
       <nav class="main-nav" aria-label="辅助导航">
         <a href="./">首页</a>
-        <a href="./skill-leaderboard.html">任务卡与能力原子库</a>
+        <a href="./skill-leaderboard.html">痛点描述与能力原子库</a>
       </nav>
       <a class="back-link" href="./">← 返回首页</a>
     </div>
@@ -69,7 +69,7 @@
             <i class="step-line" aria-hidden="true"></i>
             <div class="progress-step" id="e-step-2"><span>2</span>AI 解析</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="e-step-3"><span>3</span>确认任务卡</div>
+            <div class="progress-step" id="e-step-3"><span>3</span>确认痛点描述</div>
           </div>
 
           <div class="builder-layout">
@@ -134,7 +134,7 @@
                       </label>
                     </div>
                   </details>
-                  <button class="btn btn-primary btn-large btn-block ai-submit" id="analyze-btn" type="submit"><span>AI 解析我的痛点</span><small>生成结构化任务卡</small></button>
+                  <button class="btn btn-primary btn-large btn-block ai-submit" id="analyze-btn" type="submit"><span>AI 解析我的痛点</span><small>生成结构化痛点描述</small></button>
                   <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>公开体验只在当前浏览器内生成解析草稿，不会自动提交。</strong>正式匹配仍需人工确认。<a href="./service-notice.html">查看数据与服务说明</a></p></div>
                 </form>
 
@@ -149,7 +149,7 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>AI 解析结果</h2><p>自动生成可确认的结构化任务卡</p></div>
+                <div><h2>AI 解析结果</h2><p>自动生成可确认的结构化痛点描述</p></div>
                 <span class="status-badge" id="enterprise-output-status">待生成</span>
               </header>
               <div class="panel-body" id="enterprise-output">

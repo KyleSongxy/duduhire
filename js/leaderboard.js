@@ -157,13 +157,13 @@ function updateViewCopy() {
   const matchedCapability = getMatchedCapability();
   if (currentView === 'demand' && matchedCapability) {
     assetGuide.textContent = `以下需求与“${matchedCapability.name}”存在任务关联，可以继续查看范围、交付与验收方式。`;
-    resultNote.textContent = '关联来自任务卡所需能力；是否适合合作，仍需核验证据、档期与具体边界。';
+    resultNote.textContent = '关联来自痛点描述所需能力；是否适合合作，仍需核验证据、档期与具体边界。';
     clearMatchContext.hidden = false;
     return;
   }
 
   assetGuide.textContent = currentView === 'demand'
-    ? '任务卡样例帮助你把一句“做得不好”写成可以判断范围、交付和验收方式的问题。'
+    ? '痛点描述样例帮助你把一句“做得不好”写成可以判断范围、交付和验收方式的问题。'
     : '这里展示平台已经沉淀的能力原子样例。展开即可查看任务、方法、产出和证据要求。';
   resultNote.textContent = currentView === 'demand'
     ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'
@@ -187,7 +187,7 @@ function render() {
 
   updateUrl(query, category, market);
   renderShortcuts([...new Set(getDataset().map((item) => item.category))]);
-  const unit = currentView === 'demand' ? '张任务卡样例' : '项能力原子';
+  const unit = currentView === 'demand' ? '条痛点描述样例' : '项能力原子';
   resultCount.textContent = matchedCapability
     ? `与“${matchedCapability.name}”相关的需求：${filtered.length} 条`
     : `共找到 ${filtered.length} ${unit}`;
