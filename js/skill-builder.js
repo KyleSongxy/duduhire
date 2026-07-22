@@ -1,4 +1,5 @@
 import { capabilityCatalog, enterpriseDemandCatalog, serviceSkus, talentSkillTemplates } from './data.js';
+import { inferTalentContext, parseDemandText } from './ai-parser.js';
 
 const params = new URLSearchParams(window.location.search);
 const validRoles = new Set(['enterprise', 'talent']);
@@ -145,10 +146,10 @@ function setRole(role, updateUrl = true) {
   switchTalent.classList.toggle('active', !enterpriseActive);
   switchEnterprise.setAttribute('aria-pressed', String(enterpriseActive));
   switchTalent.setAttribute('aria-pressed', String(!enterpriseActive));
-  appEyebrow.textContent = enterpriseActive ? 'DESCRIBE THE PAIN' : 'DISCOVER YOUR SKILLS';
+  appEyebrow.textContent = enterpriseActive ? 'AI PAIN PARSING' : 'AI CAPABILITY PARSING';
   appTitle.innerHTML = enterpriseActive
-    ? '<span class="app-title-line">描述我的痛点，</span><span class="app-title-line">先把问题说清楚</span>'
-    : '<span class="app-title-line">挖掘我的能力，</span><span class="app-title-line">把经历拆成能力原子</span>';
+    ? '<span class="app-title-line">说一段真实情况，</span><span class="app-title-line">让 AI 自动整理痛点</span>'
+    : '<span class="app-title-line">提供一段真实经历，</span><span class="app-title-line">让 AI 自动解析能力</span>';
   document.title = enterpriseActive ? '描述我的痛点｜嘟嘟嗨 Duduhire' : '挖掘我的能力｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);
@@ -189,11 +190,7 @@ function setError(inputId, message) {
 }
 
 const fieldValidators = {
-  'enterprise-problem': (value) => value.trim().length < 20 ? '请至少用 20 个字说明具体现象与变化。' : '',
-  'enterprise-market': (value) => value.trim() ? '' : '请填写这个痛点发生的具体场景。',
-  'enterprise-stage': (value) => value ? '' : '请选择业务当前所处阶段。',
-  'enterprise-impact': (value) => value.trim() ? '' : '请说明这个问题正在影响什么。',
-  'enterprise-result': (value) => value.trim() ? '' : '请说明这次希望获得的结果。',
+  'enterprise-problem': (value) => value.trim().length < 30 ? '请至少用 30 个字说明发生了什么，以及它正在影响什么。' : '',
   'talent-experience': (value) => value.trim().length < 40 ? '请至少用 40 个字说明任务、你的具体动作与结果。' : '',
 };
 
@@ -209,7 +206,7 @@ function setErrorSummary(id, visible) {
   summary.hidden = !visible;
 }
 
-['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-result', 'talent-experience'].forEach((id) => {
+['enterprise-problem', 'talent-experience'].forEach((id) => {
   document.getElementById(id).addEventListener('input', () => setError(id, ''));
   document.getElementById(id).addEventListener('change', () => setError(id, ''));
   document.getElementById(id).addEventListener('blur', () => validateField(id));
@@ -268,42 +265,48 @@ function getService(deadline) {
   return serviceSkus[1];
 }
 
+function syncParsedDemandFields(values) {
+  const parsedFields = {
+    'enterprise-market': values.market,
+    'enterprise-stage': values.stage,
+    'enterprise-impact': values.impact,
+    'enterprise-tried': values.tried,
+    'enterprise-result': values.result,
+    'enterprise-deadline': values.deadline,
+  };
+  Object.entries(parsedFields).forEach(([id, value]) => {
+    const field = document.getElementById(id);
+    field.value = value;
+    field.dispatchEvent(new Event(field.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true }));
+  });
+}
+
 const enterpriseForm = document.getElementById('enterprise-form');
 enterpriseForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const values = {
-    problem: document.getElementById('enterprise-problem').value.trim(),
-    market: document.getElementById('enterprise-market').value.trim(),
-    stage: document.getElementById('enterprise-stage').value,
-    impact: document.getElementById('enterprise-impact').value.trim(),
-    tried: document.getElementById('enterprise-tried').value.trim(),
-    result: document.getElementById('enterprise-result').value.trim(),
-    deadline: document.getElementById('enterprise-deadline').value,
-    sensitive: document.getElementById('enterprise-sensitive').checked,
-  };
-
-  const errors = Object.fromEntries(
-    ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-result']
-      .map((id) => [id, validateField(id)]),
-  );
-  Object.entries(errors).forEach(([id, message]) => setError(id, message));
-  const firstError = Object.keys(errors).find((id) => errors[id]);
-  setErrorSummary('enterprise-error-summary', Boolean(firstError));
-  if (firstError) {
-    document.getElementById(firstError).focus();
+  const problem = document.getElementById('enterprise-problem').value.trim();
+  const error = validateField('enterprise-problem');
+  setErrorSummary('enterprise-error-summary', Boolean(error));
+  if (error) {
+    document.getElementById('enterprise-problem').focus();
     return;
   }
+  const values = parseDemandText(problem, {
+    fallbackDeadline: document.getElementById('enterprise-deadline').value,
+    sensitive: document.getElementById('enterprise-sensitive').checked,
+  });
+  syncParsedDemandFields(values);
 
   const submit = document.getElementById('analyze-btn');
   submit.disabled = true;
   enterpriseForm.hidden = true;
-  document.getElementById('enterprise-status').textContent = '整理中';
+  document.getElementById('enterprise-status').textContent = 'AI 解析中';
   document.getElementById('enterprise-status').className = 'status-badge warning';
   updateSteps('e', 1);
   await runLoading('enterprise', [
-    { title: '正在整理痛点事实', detail: '区分现象、影响与期望结果', progress: 28 },
-    { title: '正在收缩问题边界', detail: '判断适合诊断、微任务还是协作验证', progress: 62 },
-    { title: '正在识别所需能力', detail: '生成待人工确认的能力方向与追问', progress: 100 },
+    { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 28 },
+    { title: 'AI 正在拆解任务结构', detail: '提取影响、预期交付与时间约束', progress: 62 },
+    { title: 'AI 正在生成确认问题', detail: '标记缺失信息与待核验能力方向', progress: 100 },
   ]);
   document.getElementById('enterprise-loading').hidden = true;
   submit.disabled = false;
@@ -338,13 +341,13 @@ function renderEnterpriseResult(values) {
       <section class="result-summary">
         <div class="result-summary-top">
           <div>
-            <span class="mini-label">建议下一步</span>
-            <h3>${escapeHTML(service.name)}</h3>
-            <p>${escapeHTML(service.deliverable)} · ${escapeHTML(service.duration)}</p>
+            <span class="mini-label">AI 初步解析</span>
+            <h3>已生成结构化任务卡</h3>
+            <p>根据你提供的文字或语音内容自动提取</p>
           </div>
-          <strong class="result-price">待人工确认</strong>
+          <strong class="result-price">待你确认</strong>
         </div>
-        <div class="disclaimer">当前版本不提供在线付费。人工确认问题范围、依赖条件、证据要求与风险后，再决定是否进入下一步。</div>
+        <div class="disclaimer">自动解析可能遗漏上下文。请核对任务卡，并通过下方问题补充关键信息。</div>
       </section>
       <section class="result-section">
         <h3>结构化任务卡</h3>
@@ -355,6 +358,7 @@ function renderEnterpriseResult(values) {
           <div class="brief-result-row"><span>已尝试</span><p>${escapeHTML(values.tried || '尚未填写，需在访谈中补充')}</p></div>
           <div class="brief-result-row"><span>期望结果</span><p>${escapeHTML(values.result)}</p></div>
           <div class="brief-result-row"><span>完成时间</span><p>${escapeHTML(values.deadline)}</p></div>
+          <div class="brief-result-row"><span>建议协作方式</span><p>${escapeHTML(service.name)} · ${escapeHTML(service.duration)}</p></div>
         </div>
       </section>
       <section class="result-section">
@@ -363,13 +367,13 @@ function renderEnterpriseResult(values) {
         <p class="form-hint">这些是待核验方向，不代表平台已经确认合适人员或档期。</p>
       </section>
       <section class="result-section">
-        <h3>人工访谈需要继续确认</h3>
+        <h3>AI 标记的待确认问题</h3>
         <ol class="question-list">${questions.map((question) => `<li>${escapeHTML(question)}</li>`).join('')}</ol>
       </section>
       <div class="result-actions">
         <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制任务卡</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
-        <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改输入</button>
+        <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改原文并重新解析</button>
       </div>
       <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>当前公开页只生成本地草稿，不会发起人工服务申请。</strong>人工入口开放后，会再次确认联系人、资料用途和服务条款。</p></div>
     </div>
@@ -383,7 +387,7 @@ function renderEnterpriseResult(values) {
   const outputPanel = document.getElementById('enterprise-output').closest('.builder-panel');
   inputPanel.hidden = true;
   layout.classList.add('result-mode');
-  updateSteps('e', 2);
+  updateSteps('e', 3);
   scrollToElement(outputPanel);
 }
 
@@ -392,7 +396,7 @@ function resetEnterprise() {
   enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
   document.getElementById('enterprise-output').innerHTML = `
-    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">问</div><h3>修改后重新生成</h3><p>你的输入仍保留在左侧，调整任何字段后再次提交即可。</p></div></div>`;
+    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>原文仍保留在左侧。补充背景、影响或目标后，再让 AI 重新整理。</p></div></div>`;
   document.getElementById('enterprise-status').textContent = '可修改';
   document.getElementById('enterprise-status').className = 'status-badge';
   document.getElementById('enterprise-output-status').textContent = '待生成';
@@ -431,9 +435,9 @@ function renderSkillQuestions(values, skills) {
   document.getElementById('talent-output').innerHTML = `
     <div class="result-wrap skill-question-stage">
       <section class="result-summary">
-        <span class="mini-label">第一轮提炼</span>
+        <span class="mini-label">AI 初步解析</span>
         <h3>识别到 ${skills.length} 项能力原子</h3>
-        <p>能力原子名称来自固定分类。请补充真实解决过程，再生成个人能力名片。</p>
+        <p>请核对 AI 提炼的能力方向，并补充本人行动、结果与证据。</p>
         <div class="capability-tags">${skills.map((skill) => `<span class="capability-tag">${escapeHTML(skill.category)} · ${escapeHTML(skill.name)}</span>`).join('')}</div>
       </section>
       <form class="skill-questions-form" id="skill-questions-form" novalidate>
@@ -463,7 +467,7 @@ function renderSkillQuestions(values, skills) {
   const outputPanel = document.getElementById('talent-output').closest('.builder-panel');
   inputPanel.hidden = true;
   layout.classList.add('result-mode');
-  updateSteps('t', 2);
+  updateSteps('t', 3);
   scrollToElement(outputPanel);
   document.querySelector('[data-skill-answer]')?.focus({ preventScroll: true });
 }
@@ -472,8 +476,8 @@ talentForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const values = {
     experience: document.getElementById('talent-experience').value.trim(),
-    market: document.getElementById('talent-market').value.trim(),
-    field: document.getElementById('talent-field').value.trim(),
+    market: '',
+    field: '',
   };
   const experienceError = validateField('talent-experience');
   setError('talent-experience', experienceError);
@@ -486,17 +490,24 @@ talentForm.addEventListener('submit', async (event) => {
   const submit = document.getElementById('decode-btn');
   submit.disabled = true;
   talentForm.hidden = true;
-  document.getElementById('talent-status').textContent = '提炼中';
+  document.getElementById('talent-status').textContent = 'AI 解析中';
   document.getElementById('talent-status').className = 'status-badge warning';
   updateSteps('t', 1);
   await runLoading('talent', [
-    { title: '正在识别做过的任务', detail: '区分岗位描述与本人实际动作', progress: 30 },
-    { title: '正在提炼能力原子', detail: '从预设能力名称中选择 3-5 项', progress: 66 },
-    { title: '正在生成针对性追问', detail: '继续确认方法、结果与贡献边界', progress: 100 },
+    { title: 'AI 正在阅读你的经历', detail: '区分岗位描述与本人实际行动', progress: 30 },
+    { title: 'AI 正在提炼能力原子', detail: '连接任务、方法、结果与证据', progress: 66 },
+    { title: 'AI 正在生成针对性追问', detail: '继续确认贡献边界与熟练程度', progress: 100 },
   ]);
   document.getElementById('talent-loading').hidden = true;
   submit.disabled = false;
-  const skills = getTalentSkills(`${values.experience} ${values.market} ${values.field}`);
+  const skills = getTalentSkills(values.experience);
+  const inferredContext = inferTalentContext(values.experience, skills, document.getElementById('talent-market').value);
+  values.market = inferredContext.market;
+  values.field = inferredContext.field;
+  document.getElementById('talent-market').value = values.market;
+  document.getElementById('talent-field').value = values.field;
+  document.getElementById('talent-market').dispatchEvent(new Event('input', { bubbles: true }));
+  document.getElementById('talent-field').dispatchEvent(new Event('input', { bubbles: true }));
   renderSkillQuestions(values, skills);
 });
 
@@ -570,7 +581,7 @@ function renderTalentResult(values, skills, answers) {
         <button class="btn btn-secondary" type="button" data-action="download-talent">下载 TXT</button>
         <button class="btn btn-ghost" type="button" data-action="reset-talent">重新挖掘</button>
       </div>
-      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>名片只保存在当前页面。</strong>进入能力库、对外展示或匹配前，会再次确认身份、材料和可见范围。</p></div>
+      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>这是一份 AI 解析草稿，只保存在当前页面。</strong>进入能力库、对外展示或匹配前，会再次确认身份、材料和可见范围。</p></div>
     </div>`;
   document.getElementById('talent-status').textContent = '已生成';
   document.getElementById('talent-status').className = 'status-badge success';
@@ -587,7 +598,7 @@ function resetTalent() {
   pendingTalentValues = null;
   activeTalentSkills = [];
   document.getElementById('talent-output').innerHTML = `
-    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">能</div><h3>修改后重新挖掘</h3><p>你的经历仍保留在左侧。建议补充本人角色、可量化结果与证明方式。</p></div></div>`;
+    <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>你的经历仍保留在左侧。补充本人行动、可量化结果与证明方式后再试一次。</p></div></div>`;
   document.getElementById('talent-status').textContent = '可修改';
   document.getElementById('talent-status').className = 'status-badge';
   document.getElementById('talent-output-status').textContent = '待生成';
@@ -662,6 +673,7 @@ function startVoiceInput(button) {
     const separator = target.value.trim() ? '。' : '';
     target.value = `${target.value.trim()}${separator}${transcript}`.slice(0, target.maxLength || 2000);
     target.dispatchEvent(new Event('input', { bubbles: true }));
+    showToast('语音已转成文字，请检查后开始 AI 解析');
   });
   recognition.addEventListener('error', () => showToast('没有识别到有效语音，请重试或改用键盘'));
   recognition.addEventListener('end', () => {
@@ -678,10 +690,10 @@ function clearEnterpriseDraft() {
   enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
   enterpriseCopy = '';
-  ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-result'].forEach((id) => setError(id, ''));
+  setError('enterprise-problem', '');
   setErrorSummary('enterprise-error-summary', false);
-  document.getElementById('problem-count').textContent = '0 / 500';
-  document.getElementById('enterprise-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">问</div><h3>草稿已清除</h3><p>从一个具体、可观察的业务现象重新开始。</p></div></div>';
+  document.getElementById('problem-count').textContent = '0 / 1000';
+  document.getElementById('enterprise-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>草稿已清除</h3><p>重新讲一段具体、可观察的真实情况。</p></div></div>';
   document.getElementById('enterprise-status').textContent = '未开始';
   document.getElementById('enterprise-output-status').textContent = '待生成';
   updateSteps('e', 1);
@@ -701,7 +713,7 @@ function clearTalentDraft() {
   setErrorSummary('talent-error-summary', false);
   document.getElementById('experience-count').textContent = '0 / 1800';
   document.getElementById('resume-upload-status').textContent = '尚未选择文件';
-  document.getElementById('talent-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual" aria-hidden="true">能</div><h3>草稿已清除</h3><p>从一段你亲自完成、结果明确的经历重新开始。</p></div></div>';
+  document.getElementById('talent-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>草稿已清除</h3><p>重新提供一段你亲自完成、结果明确的经历。</p></div></div>';
   document.getElementById('talent-status').textContent = '未开始';
   document.getElementById('talent-output-status').textContent = '待生成';
   updateSteps('t', 1);

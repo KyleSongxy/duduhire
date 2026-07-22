@@ -2670,6 +2670,108 @@ h3 {
 .dialog-close { border-radius: 8px; }
 .dialog-mark { border-radius: 10px; box-shadow: none; }
 
+/* AI text and voice parsing workspace */
+.ai-composer {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid #aac9bc;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f5faf7 0%, #ffffff 34%);
+}
+.ai-composer::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--accent);
+}
+.ai-composer-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  color: var(--subtle);
+  font-size: 10px;
+  font-weight: 680;
+}
+.ai-mode-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-deep);
+  font-size: 11px;
+  font-weight: 820;
+  letter-spacing: 0.02em;
+}
+.ai-mode-label i {
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 0 0 4px rgba(47, 138, 114, 0.1);
+}
+.ai-primary-input { margin-bottom: 10px; }
+.ai-composer .form-label { font-size: 13px; }
+.ai-composer .form-textarea { min-height: 230px; border-color: #bed4cb; background: rgba(255, 255, 255, 0.92); font-size: 15px; }
+.ai-composer .form-hint { font-size: 12px; line-height: 1.65; }
+.ai-composer[data-composer="talent"] .form-textarea { min-height: 250px; }
+.input-cues { display: flex; flex-wrap: wrap; gap: 7px; }
+.input-cues span {
+  padding: 6px 9px;
+  border: 1px solid #d4e3dd;
+  border-radius: 999px;
+  color: var(--muted);
+  background: #f7faf8;
+  font-size: 10px;
+  font-weight: 720;
+}
+.optional-context {
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+.optional-context summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 760;
+  list-style: none;
+}
+.optional-context summary::-webkit-details-marker { display: none; }
+.optional-context summary::after { content: "+"; color: var(--accent-deep); font-size: 18px; font-weight: 500; }
+.optional-context[open] summary::after { content: "−"; }
+.optional-context summary small { margin-left: auto; color: var(--subtle); font-size: 9px; font-weight: 650; }
+.optional-context-body { padding: 0 14px 14px; border-top: 1px solid var(--line); }
+.optional-context-body .form-group { margin: 14px 0; }
+.ai-submit {
+  min-height: 64px;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+.ai-submit span { font-size: 15px; }
+.ai-submit small { font-size: 9px; font-weight: 650; opacity: 0.76; }
+.ai-submit + .privacy-note { margin-top: 12px; }
+.ai-empty-visual {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+.ai-resume-import { margin-bottom: 14px; }
+
 .landing-page .hero-copy { animation: editorial-rise 460ms var(--motion-enter) both; }
 .landing-page .hero-media { animation: editorial-fade 520ms ease-out both; }
 @keyframes editorial-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
@@ -2733,7 +2835,7 @@ h3 {
   .landing-page .hero-media img { object-position: 67% center; filter: saturate(0.64) contrast(1.02) brightness(0.96); }
   .landing-page .hero-copy { padding: 42px 22px 250px; }
   .landing-page .hero-copy .eyebrow { margin-bottom: 20px; }
-  .landing-page .hero h1 { margin-bottom: 20px; font-size: clamp(38px, 10vw, 42px); line-height: 1.1; }
+  .landing-page .hero h1 { margin-bottom: 20px; font-size: clamp(32px, 9vw, 38px); line-height: 1.1; }
   .landing-page .hero-lead { margin-bottom: 24px; font-size: 16px; }
   .landing-page .hero-actions { display: grid; grid-template-columns: 1fr; }
   .landing-page .hero-actions .btn { width: 100%; }
@@ -2767,6 +2869,8 @@ h3 {
   .mobile-action-bar a { border-radius: 8px; }
   .page-main { padding-top: 108px; }
   .page-hero h1 { font-size: 42px; }
+  .app-heading h1 { font-size: 30px; }
+  .app-title-line { white-space: normal; }
   .role-card { min-height: 320px; padding: 30px 26px; }
   .role-icon,
   .role-card:last-child .role-icon { margin-bottom: 48px; }
@@ -2786,6 +2890,12 @@ h3 {
   .asset-ledger > div:last-child { border-bottom: 0; }
   .notice-card { grid-template-columns: 1fr; gap: 12px; padding: 32px 4px; }
   .notice-callout { align-items: stretch; flex-direction: column; }
+  .ai-composer { padding: 14px; }
+  .ai-composer-topline { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .ai-composer .form-textarea,
+  .ai-composer[data-composer="talent"] .form-textarea { min-height: 240px; }
+  .ai-composer .form-textarea,
+  .optional-context .form-select { font-size: 16px; }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -2851,6 +2961,11 @@ h3 {
   .result-summary,
   .skill-question-stage .result-summary,
   .capability-report-head { background: #1b2b24; }
+  .ai-composer { border-color: #43665a; background: linear-gradient(180deg, #1a2d26 0%, #16211d 36%); }
+  .ai-composer .form-textarea { border-color: #3c554c; background: #111a17; }
+  .ai-mode-label i { background: #16211d; }
+  .input-cues span { color: var(--muted); border-color: #344a42; background: #1a2823; }
+  .optional-context { border-color: var(--line); background: var(--paper); }
   .asset-ledger-primary { color: var(--ink) !important; background: transparent !important; }
   .directory-tools,
   .notice-nav { background: rgba(22, 33, 29, 0.96); }

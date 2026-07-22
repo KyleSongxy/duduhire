@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="描述一个真实痛点并生成结构化任务卡，或从简历与项目经历中提炼能力原子并生成个人能力名片。">
+  <meta name="description" content="通过文字、语音或简历描述真实痛点与项目经历，由 AI 自动解析结构化任务卡或个人能力名片。">
   <meta name="theme-color" content="#f7f7f3">
   <title>开始使用｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="/assets/duduhire-mark.svg">
@@ -37,13 +37,13 @@
           <a class="role-card" href="?role=enterprise">
             <span class="role-icon" aria-hidden="true">需</span>
             <h2>我有一个痛点</h2>
-            <p>组织、团队或个人都可以描述正在影响结果的问题，形成可继续确认的任务边界。</p>
+            <p>用文字或语音讲述真实情况，由 AI 自动提取场景、影响、目标和任务边界。</p>
             <span class="text-link">描述我的痛点 <span aria-hidden="true">→</span></span>
           </a>
           <a class="role-card" href="?role=talent">
             <span class="role-icon" aria-hidden="true">能</span>
             <h2>我想挖掘能力</h2>
-            <p>导入简历或描述一段经历，提炼能力原子，再通过追问补齐本人行动、结果与证据。</p>
+            <p>上传简历、粘贴经历或直接讲述，由 AI 自动提炼能力原子并生成针对性追问。</p>
             <span class="text-link">挖掘我的能力 <span aria-hidden="true">→</span></span>
           </a>
         </div>
@@ -64,90 +64,78 @@
         </div>
 
         <section id="enterprise-flow" hidden aria-labelledby="enterprise-title">
-          <div class="progress-steps" aria-label="痛点梳理进度">
-            <div class="progress-step active" id="e-step-1"><span>1</span>描述痛点</div>
+          <div class="progress-steps" aria-label="痛点解析进度">
+            <div class="progress-step active" id="e-step-1"><span>1</span>提供描述</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="e-step-2"><span>2</span>生成任务卡</div>
+            <div class="progress-step" id="e-step-2"><span>2</span>AI 解析</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="e-step-3"><span>3</span>人工确认</div>
+            <div class="progress-step" id="e-step-3"><span>3</span>确认任务卡</div>
           </div>
 
           <div class="builder-layout">
             <article class="builder-panel">
               <header class="panel-header">
                 <div>
-                  <h2 id="enterprise-title">描述你现在最想解决的痛点</h2>
-                  <p>先写事实和影响，不必先判断该找什么岗位或哪类人。</p>
+                  <h2 id="enterprise-title">把真实情况直接讲给 AI</h2>
+                  <p>输入文字或使用语音，不用逐项填写传统需求表。</p>
                 </div>
                 <span class="status-badge" id="enterprise-status">未开始</span>
               </header>
               <div class="panel-body">
                 <form id="enterprise-form" novalidate>
                   <div class="form-error-summary" id="enterprise-error-summary" role="alert" tabindex="-1" hidden>
-                    <strong>还需要补充几项信息</strong>
-                    <p>请检查下方标红字段后再生成结构化任务卡。</p>
+                    <strong>还需要多讲一点</strong>
+                    <p>请至少说明发生了什么，以及它正在影响什么。</p>
                   </div>
                   <div class="draft-bar" aria-live="polite">
                     <span><strong id="enterprise-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
                     <button class="text-button" type="button" data-action="clear-enterprise-draft">清除草稿</button>
                   </div>
-                  <div class="form-group">
-                    <label class="form-label" for="enterprise-problem"><span>痛点描述 *</span><span class="char-count" id="problem-count">0 / 500</span></label>
-                    <div class="textarea-with-action">
-                      <textarea class="form-textarea" id="enterprise-problem" maxlength="500" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="例如：我们的印尼 TikTok 账号连续三周自然流量下降，已经影响新品发布，但还不清楚是账号、内容还是运营节奏出了问题。"></textarea>
-                      <button class="voice-button" type="button" data-voice-target="enterprise-problem" aria-label="使用语音描述痛点"><span aria-hidden="true">◉</span> 语音输入</button>
+                  <div class="ai-composer" data-composer="demand">
+                    <div class="ai-composer-topline">
+                      <span class="ai-mode-label"><i aria-hidden="true"></i> AI 自动解析</span>
+                      <span>支持文字与语音</span>
                     </div>
-                    <p class="form-hint" id="enterprise-problem-hint">建议写清：什么时候开始、出现了什么变化、影响了什么。</p>
-                    <p class="field-error" id="enterprise-problem-error" role="alert"></p>
-                  </div>
-
-                  <div class="form-grid">
-                    <div class="form-group">
-                      <label class="form-label" for="enterprise-market">发生场景 *</label>
-                      <input class="form-input" id="enterprise-market" maxlength="60" required placeholder="如：印尼市场 / 个人求职">
-                      <p class="field-error" id="enterprise-market-error" role="alert"></p>
+                    <div class="form-group ai-primary-input">
+                      <label class="form-label" for="enterprise-problem"><span>描述真实痛点 *</span><span class="char-count" id="problem-count">0 / 1000</span></label>
+                      <div class="textarea-with-action">
+                        <textarea class="form-textarea" id="enterprise-problem" maxlength="1000" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="直接讲发生了什么。例如：我们的印尼 TikTok 账号连续三周自然流量下降，已经影响新品发布。试过更换题材和降低频次，但没有稳定改善，希望两周内找到主要原因并拿到一份调整方案。"></textarea>
+                        <button class="voice-button" type="button" data-voice-target="enterprise-problem" aria-label="使用语音描述痛点"><span aria-hidden="true">◉</span> 语音描述</button>
+                      </div>
+                      <p class="form-hint" id="enterprise-problem-hint">像和顾问聊天一样讲即可。AI 会识别场景、阻碍、影响、已尝试动作、预期交付和时间约束。</p>
+                      <p class="field-error" id="enterprise-problem-error" role="alert"></p>
                     </div>
-                    <div class="form-group">
-                      <label class="form-label" for="enterprise-stage">当前状态 *</label>
-                      <select class="form-select" id="enterprise-stage" required>
-                        <option value="">请选择</option>
-                        <option value="刚开始验证">刚开始验证：问题还不完全清楚</option>
-                        <option value="已经在推进">已经在推进：遇到具体阻力</option>
-                        <option value="需要提升效率">需要提升效率：希望稳定或放大结果</option>
-                      </select>
-                      <p class="field-error" id="enterprise-stage-error" role="alert"></p>
-                    </div>
-                    <div class="form-group full">
-                      <label class="form-label" for="enterprise-impact"><span>业务影响 *</span><span class="optional">收入 / 成本 / 增长 / 时效</span></label>
-                      <input class="form-input" id="enterprise-impact" maxlength="160" required placeholder="例如：新品内容无法按计划放量，预计影响本月 20% 的自然流量目标">
-                      <p class="field-error" id="enterprise-impact-error" role="alert"></p>
-                    </div>
-                    <div class="form-group full">
-                      <label class="form-label" for="enterprise-tried"><span>已经尝试过什么</span><span class="optional">选填</span></label>
-                      <textarea class="form-textarea compact" id="enterprise-tried" maxlength="240" placeholder="例如：提交申诉、降低发布频次、更换内容题材，但没有稳定改善"></textarea>
-                    </div>
-                    <div class="form-group full">
-                      <label class="form-label" for="enterprise-result">希望得到什么结果 *</label>
-                      <input class="form-input" id="enterprise-result" maxlength="160" required placeholder="例如：找出主要原因，并得到一份未来 14 天可执行的调整清单">
-                      <p class="field-error" id="enterprise-result-error" role="alert"></p>
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label" for="enterprise-deadline">希望完成时间</label>
-                      <select class="form-select" id="enterprise-deadline">
-                        <option value="1-3 天">1-3 天</option>
-                        <option value="3-10 天" selected>3-10 天</option>
-                        <option value="2-4 周">2-4 周</option>
-                        <option value="尚未确定">尚未确定</option>
-                      </select>
+                    <div class="input-cues" aria-label="建议包含的信息">
+                      <span>发生了什么</span><span>影响了什么</span><span>试过什么</span><span>希望得到什么</span>
                     </div>
                   </div>
 
-                  <label class="checkbox-row">
-                    <input type="checkbox" id="enterprise-sensitive">
-                    <span>这个问题涉及未公开数据或敏感材料。请先只写概况，正式提供材料前再确认保密与访问范围。</span>
-                  </label>
-                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>公开体验只在浏览器内生成草稿，不会自动提交。</strong>任务边界、风险和最终匹配都需要人工确认。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
-                  <button class="btn btn-primary btn-large btn-block" id="analyze-btn" type="submit">整理我的痛点</button>
+                  <input type="hidden" id="enterprise-market">
+                  <input type="hidden" id="enterprise-stage">
+                  <input type="hidden" id="enterprise-impact">
+                  <input type="hidden" id="enterprise-tried">
+                  <input type="hidden" id="enterprise-result">
+
+                  <details class="optional-context">
+                    <summary><span>补充时间与信息边界</span><small>可选</small></summary>
+                    <div class="optional-context-body">
+                      <div class="form-group">
+                        <label class="form-label" for="enterprise-deadline">希望完成时间</label>
+                        <select class="form-select" id="enterprise-deadline">
+                          <option value="1-3 天">1-3 天</option>
+                          <option value="3-10 天" selected>3-10 天</option>
+                          <option value="2-4 周">2-4 周</option>
+                          <option value="尚未确定">尚未确定</option>
+                        </select>
+                      </div>
+                      <label class="checkbox-row">
+                        <input type="checkbox" id="enterprise-sensitive">
+                        <span>涉及未公开数据或敏感材料，只解析概况，不提供具体材料。</span>
+                      </label>
+                    </div>
+                  </details>
+                  <button class="btn btn-primary btn-large btn-block ai-submit" id="analyze-btn" type="submit"><span>AI 解析我的痛点</span><small>生成结构化任务卡</small></button>
+                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>公开体验只在当前浏览器内生成解析草稿，不会自动提交。</strong>正式匹配仍需人工确认。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
                 </form>
 
                 <div class="loading-state" id="enterprise-loading" hidden aria-live="polite">
@@ -161,15 +149,15 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>结构化任务卡</h2><p>用于后续确认、拆解与匹配的草稿</p></div>
+                <div><h2>AI 解析结果</h2><p>自动生成可确认的结构化任务卡</p></div>
                 <span class="status-badge" id="enterprise-output-status">待生成</span>
               </header>
               <div class="panel-body" id="enterprise-output">
                 <div class="empty-state">
                   <div class="empty-state-inner">
-                    <div class="empty-visual" aria-hidden="true">问</div>
-                    <h3>先描述一个真实痛点</h3>
-                    <p>系统会整理业务场景、关键阻碍、预期交付、验收边界，以及需要继续确认的问题。</p>
+                    <div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div>
+                    <h3>一段描述，自动拆成任务结构</h3>
+                    <p>解析后将在这里呈现场景、关键阻碍、业务影响、预期交付、约束条件和待确认问题。</p>
                   </div>
                 </div>
               </div>
@@ -178,20 +166,20 @@
         </section>
 
         <section id="talent-flow" hidden aria-labelledby="talent-title">
-          <div class="progress-steps" aria-label="能力挖掘进度">
-            <div class="progress-step active" id="t-step-1"><span>1</span>导入经历</div>
+          <div class="progress-steps" aria-label="能力解析进度">
+            <div class="progress-step active" id="t-step-1"><span>1</span>提供经历</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="t-step-2"><span>2</span>确认能力原子</div>
+            <div class="progress-step" id="t-step-2"><span>2</span>AI 解析</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="t-step-3"><span>3</span>生成能力名片</div>
+            <div class="progress-step" id="t-step-3"><span>3</span>确认能力名片</div>
           </div>
 
           <div class="builder-layout">
             <article class="builder-panel">
               <header class="panel-header">
                 <div>
-                  <h2 id="talent-title">从简历和经历里，挖出真正的能力</h2>
-                  <p>先提炼 3-5 项能力原子，再追问你本人怎样行动、产出什么结果。</p>
+                  <h2 id="talent-title">把简历或经历直接交给 AI</h2>
+                  <p>上传文本、粘贴经历或使用语音，自动提炼能力原子。</p>
                 </div>
                 <span class="status-badge" id="talent-status">未开始</span>
               </header>
@@ -205,37 +193,38 @@
                     <span><strong id="talent-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
                     <button class="text-button" type="button" data-action="clear-talent-draft">清除草稿</button>
                   </div>
-                  <div class="resume-import">
+                  <div class="resume-import ai-resume-import">
                     <div class="resume-import-copy">
-                      <span class="mini-label">从简历开始</span>
-                      <strong>导入简历文本</strong>
-                      <p>演示版可直接读取 TXT、MD；PDF、DOC、DOCX 可选择但不会上传。</p>
+                      <span class="mini-label">方式 01</span>
+                      <strong>导入简历文字</strong>
+                      <p>当前体验可直接读取 TXT、MD；其他格式可改为粘贴关键经历。</p>
                     </div>
                     <label class="btn btn-secondary resume-upload-label" for="resume-upload">选择简历</label>
                     <input class="sr-only" id="resume-upload" type="file" accept=".txt,.md,.pdf,.doc,.docx,text/plain,text/markdown,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                     <p class="resume-upload-status" id="resume-upload-status" role="status">尚未选择文件</p>
                   </div>
-                  <div class="form-group">
-                    <label class="form-label" for="talent-experience"><span>简历或项目经历 *</span><span class="char-count" id="experience-count">0 / 1800</span></label>
-                    <div class="textarea-with-action">
-                      <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历中的关键经历，或讲一段你亲自完成的项目。例如：我负责印尼市场的 TikTok 内容运营，通过账号审计、竞品对照和内容结构调整，在 30 天内把自然播放量提升了 62%。"></textarea>
-                      <button class="voice-button" type="button" data-voice-target="talent-experience" aria-label="使用语音描述项目经历"><span aria-hidden="true">◉</span> 语音输入</button>
+                  <div class="ai-composer" data-composer="talent">
+                    <div class="ai-composer-topline">
+                      <span class="ai-mode-label"><i aria-hidden="true"></i> AI 自动解析</span>
+                      <span>粘贴文字或直接讲述</span>
                     </div>
-                    <p class="form-hint" id="talent-experience-hint">建议包含：市场与业务背景、你的具体职责、方法、结果，以及谁或什么材料可以证明。</p>
-                    <p class="field-error" id="talent-experience-error" role="alert"></p>
+                    <div class="form-group ai-primary-input">
+                      <label class="form-label" for="talent-experience"><span>简历、项目或工作经历 *</span><span class="char-count" id="experience-count">0 / 1800</span></label>
+                      <div class="textarea-with-action">
+                        <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历，或讲一段你亲自完成的项目。例如：我负责印尼市场的 TikTok 内容运营，通过账号审计、竞品对照和内容结构调整，在 30 天内把自然播放量提升了 62%，相关数据可由周报证明。"></textarea>
+                        <button class="voice-button" type="button" data-voice-target="talent-experience" aria-label="使用语音描述项目经历"><span aria-hidden="true">◉</span> 语音讲经历</button>
+                      </div>
+                      <p class="form-hint" id="talent-experience-hint">AI 会区分项目背景、你的具体行动、结果和证据，再生成针对性追问。</p>
+                      <p class="field-error" id="talent-experience-error" role="alert"></p>
+                    </div>
+                    <div class="input-cues" aria-label="建议包含的信息">
+                      <span>什么场景</span><span>你负责什么</span><span>怎么做的</span><span>结果如何证明</span>
+                    </div>
                   </div>
-                  <div class="form-grid">
-                    <div class="form-group">
-                      <label class="form-label" for="talent-market"><span>熟悉市场</span><span class="optional">选填</span></label>
-                      <input class="form-input" id="talent-market" maxlength="80" placeholder="如：印尼、泰国">
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label" for="talent-field"><span>业务方向</span><span class="optional">选填</span></label>
-                      <input class="form-input" id="talent-field" maxlength="80" placeholder="如：内容增长、本地化、电商">
-                    </div>
-                  </div>
-                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>简历与输入内容不会上传，也不会把你自动加入能力库。</strong>本次结果来自固定能力分类与本地规则，只用于演示能力挖掘流程。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
-                  <button class="btn btn-primary btn-large btn-block" id="decode-btn" type="submit">提炼 3-5 项能力原子</button>
+                  <input type="hidden" id="talent-market">
+                  <input type="hidden" id="talent-field">
+                  <button class="btn btn-primary btn-large btn-block ai-submit" id="decode-btn" type="submit"><span>AI 解析我的能力</span><small>提炼 3-5 项能力原子</small></button>
+                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>简历和经历只在当前浏览器内解析，不会自动加入能力库。</strong>解析结果需要你继续确认。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
                 </form>
 
                 <div class="loading-state" id="talent-loading" hidden aria-live="polite">
@@ -249,15 +238,15 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>个人能力名片</h2><p>先确认能力原子，再补充真实解决过程</p></div>
+                <div><h2>AI 解析结果</h2><p>先确认能力原子，再补充真实证据</p></div>
                 <span class="status-badge" id="talent-output-status">待生成</span>
               </header>
               <div class="panel-body" id="talent-output">
                 <div class="empty-state">
                   <div class="empty-state-inner">
-                    <div class="empty-visual" aria-hidden="true">能</div>
-                    <h3>你的经验会被整理成个人能力名片</h3>
-                    <p>先识别固定分类下的能力原子，再针对每一项追问本人行动、结果与证据。</p>
+                    <div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div>
+                    <h3>一段经历，自动拆成能力原子</h3>
+                    <p>解析后将在这里呈现能力名称、本人行动、结果证据、熟练度和仍需确认的问题。</p>
                   </div>
                 </div>
               </div>
