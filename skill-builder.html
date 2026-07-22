@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="描述一个真实痛点，或从简历与项目经历中挖掘 3-5 项核心技能，生成能力图谱报告。">
+  <meta name="description" content="描述一个真实痛点并生成结构化任务卡，或从简历与项目经历中提炼能力原子并生成个人能力名片。">
   <meta name="theme-color" content="#f7f7f3">
   <title>开始使用｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="/assets/duduhire-mark.svg">
@@ -19,7 +19,7 @@
       </a>
       <nav class="main-nav" aria-label="辅助导航">
         <a href="/">首页</a>
-        <a href="/skill-leaderboard.html">痛点需求与能力库</a>
+        <a href="/skill-leaderboard.html">任务卡与能力原子库</a>
       </nav>
       <a class="back-link" href="/">← 返回首页</a>
     </div>
@@ -37,13 +37,13 @@
           <a class="role-card" href="?role=enterprise">
             <span class="role-icon" aria-hidden="true">需</span>
             <h2>我有一个痛点</h2>
-            <p>组织、团队或个人都可以描述正在影响结果的问题，先获得清晰的问题边界。</p>
+            <p>组织、团队或个人都可以描述正在影响结果的问题，形成可继续确认的任务边界。</p>
             <span class="text-link">描述我的痛点 <span aria-hidden="true">→</span></span>
           </a>
           <a class="role-card" href="?role=talent">
             <span class="role-icon" aria-hidden="true">能</span>
             <h2>我想挖掘能力</h2>
-            <p>导入简历或描述一段经历，提炼核心技能，再通过追问补齐真实解决过程。</p>
+            <p>导入简历或描述一段经历，提炼能力原子，再通过追问补齐本人行动、结果与证据。</p>
             <span class="text-link">挖掘我的能力 <span aria-hidden="true">→</span></span>
           </a>
         </div>
@@ -67,7 +67,7 @@
           <div class="progress-steps" aria-label="痛点梳理进度">
             <div class="progress-step active" id="e-step-1"><span>1</span>描述痛点</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="e-step-2"><span>2</span>生成需求卡</div>
+            <div class="progress-step" id="e-step-2"><span>2</span>生成任务卡</div>
             <i class="step-line" aria-hidden="true"></i>
             <div class="progress-step" id="e-step-3"><span>3</span>人工确认</div>
           </div>
@@ -85,7 +85,7 @@
                 <form id="enterprise-form" novalidate>
                   <div class="form-error-summary" id="enterprise-error-summary" role="alert" tabindex="-1" hidden>
                     <strong>还需要补充几项信息</strong>
-                    <p>请检查下方标红字段后再生成痛点需求卡。</p>
+                    <p>请检查下方标红字段后再生成结构化任务卡。</p>
                   </div>
                   <div class="draft-bar" aria-live="polite">
                     <span><strong id="enterprise-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
@@ -161,7 +161,7 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>痛点需求卡</h2><p>用于后续确认与匹配的结构化草稿</p></div>
+                <div><h2>结构化任务卡</h2><p>用于后续确认、拆解与匹配的草稿</p></div>
                 <span class="status-badge" id="enterprise-output-status">待生成</span>
               </header>
               <div class="panel-body" id="enterprise-output">
@@ -169,7 +169,7 @@
                   <div class="empty-state-inner">
                     <div class="empty-visual" aria-hidden="true">问</div>
                     <h3>先描述一个真实痛点</h3>
-                    <p>系统会整理场景、影响、目标、初步能力组合，以及需要继续确认的问题。</p>
+                    <p>系统会整理业务场景、关键阻碍、预期交付、验收边界，以及需要继续确认的问题。</p>
                   </div>
                 </div>
               </div>
@@ -181,9 +181,9 @@
           <div class="progress-steps" aria-label="能力挖掘进度">
             <div class="progress-step active" id="t-step-1"><span>1</span>导入经历</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="t-step-2"><span>2</span>确认技能</div>
+            <div class="progress-step" id="t-step-2"><span>2</span>确认能力原子</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="t-step-3"><span>3</span>生成图谱</div>
+            <div class="progress-step" id="t-step-3"><span>3</span>生成能力名片</div>
           </div>
 
           <div class="builder-layout">
@@ -191,7 +191,7 @@
               <header class="panel-header">
                 <div>
                   <h2 id="talent-title">从简历和经历里，挖出真正的能力</h2>
-                  <p>先提炼 3-5 项核心技能，再追问你具体怎样解决过问题。</p>
+                  <p>先提炼 3-5 项能力原子，再追问你本人怎样行动、产出什么结果。</p>
                 </div>
                 <span class="status-badge" id="talent-status">未开始</span>
               </header>
@@ -199,7 +199,7 @@
                 <form id="talent-form" novalidate>
                   <div class="form-error-summary" id="talent-error-summary" role="alert" tabindex="-1" hidden>
                     <strong>经历描述还不够完整</strong>
-                    <p>请补充你亲自完成的动作与结果后再提炼技能。</p>
+                    <p>请补充你亲自完成的动作与结果后再提炼能力原子。</p>
                   </div>
                   <div class="draft-bar" aria-live="polite">
                     <span><strong id="talent-draft-status">草稿仅保存在当前浏览器会话</strong><small>不会同步到平台服务器</small></span>
@@ -234,8 +234,8 @@
                       <input class="form-input" id="talent-field" maxlength="80" placeholder="如：内容增长、本地化、电商">
                     </div>
                   </div>
-                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>简历与输入内容不会上传，也不会把你自动加入人才库。</strong>本次结果来自固定技能分类与本地规则，只用于演示能力挖掘流程。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
-                  <button class="btn btn-primary btn-large btn-block" id="decode-btn" type="submit">提炼 3-5 项核心技能</button>
+                  <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>简历与输入内容不会上传，也不会把你自动加入能力库。</strong>本次结果来自固定能力分类与本地规则，只用于演示能力挖掘流程。<a href="/service-notice.html">查看数据与服务说明</a></p></div>
+                  <button class="btn btn-primary btn-large btn-block" id="decode-btn" type="submit">提炼 3-5 项能力原子</button>
                 </form>
 
                 <div class="loading-state" id="talent-loading" hidden aria-live="polite">
@@ -249,15 +249,15 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>能力图谱报告</h2><p>先确认技能，再补充真实解决过程</p></div>
+                <div><h2>个人能力名片</h2><p>先确认能力原子，再补充真实解决过程</p></div>
                 <span class="status-badge" id="talent-output-status">待生成</span>
               </header>
               <div class="panel-body" id="talent-output">
                 <div class="empty-state">
                   <div class="empty-state-inner">
                     <div class="empty-visual" aria-hidden="true">能</div>
-                    <h3>你的经验会被整理成能力名片</h3>
-                    <p>先识别固定分类下的核心技能，再针对每项技能追问实际做法。</p>
+                    <h3>你的经验会被整理成个人能力名片</h3>
+                    <p>先识别固定分类下的能力原子，再针对每一项追问本人行动、结果与证据。</p>
                   </div>
                 </div>
               </div>

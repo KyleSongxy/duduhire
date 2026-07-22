@@ -148,7 +148,7 @@ function setRole(role, updateUrl = true) {
   appEyebrow.textContent = enterpriseActive ? 'DESCRIBE THE PAIN' : 'DISCOVER YOUR SKILLS';
   appTitle.innerHTML = enterpriseActive
     ? '<span class="app-title-line">描述我的痛点，</span><span class="app-title-line">先把问题说清楚</span>'
-    : '<span class="app-title-line">挖掘我的能力，</span><span class="app-title-line">看见真正做过的事</span>';
+    : '<span class="app-title-line">挖掘我的能力，</span><span class="app-title-line">把经历拆成能力原子</span>';
   document.title = enterpriseActive ? '描述我的痛点｜嘟嘟嗨 Duduhire' : '挖掘我的能力｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);
@@ -321,7 +321,7 @@ function renderEnterpriseResult(values) {
   if (values.sensitive) questions.unshift('哪些信息属于敏感范围，专家可以看到什么、不能看到什么？');
 
   enterpriseCopy = [
-    '《痛点需求卡｜草稿》',
+    '《结构化任务卡｜草稿》',
     `发生场景与状态：${values.market} / ${values.stage}`,
     `痛点描述：${values.problem}`,
     `造成影响：${values.impact}`,
@@ -347,7 +347,7 @@ function renderEnterpriseResult(values) {
         <div class="disclaimer">当前版本不提供在线付费。人工确认问题范围、依赖条件、证据要求与风险后，再决定是否进入下一步。</div>
       </section>
       <section class="result-section">
-        <h3>痛点需求卡</h3>
+        <h3>结构化任务卡</h3>
         <div class="brief-result">
           <div class="brief-result-row"><span>场景与状态</span><p>${escapeHTML(values.market)} · ${escapeHTML(values.stage)}</p></div>
           <div class="brief-result-row"><span>痛点描述</span><p>${escapeHTML(values.problem)}</p></div>
@@ -360,14 +360,14 @@ function renderEnterpriseResult(values) {
       <section class="result-section">
         <h3>可能需要的能力</h3>
         <div class="capability-tags">${capabilities.map((item) => `<span class="capability-tag">${escapeHTML(item.name)}</span>`).join('')}</div>
-        <p class="form-hint">这些是待核验方向，不代表平台已经确认候选人或档期。</p>
+        <p class="form-hint">这些是待核验方向，不代表平台已经确认合适人员或档期。</p>
       </section>
       <section class="result-section">
         <h3>人工访谈需要继续确认</h3>
         <ol class="question-list">${questions.map((question) => `<li>${escapeHTML(question)}</li>`).join('')}</ol>
       </section>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制需求卡</button>
+        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制任务卡</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
         <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改输入</button>
       </div>
@@ -376,7 +376,7 @@ function renderEnterpriseResult(values) {
   `;
   document.getElementById('enterprise-status').textContent = '已生成';
   document.getElementById('enterprise-status').className = 'status-badge success';
-  document.getElementById('enterprise-output-status').textContent = '需求草稿';
+  document.getElementById('enterprise-output-status').textContent = '任务卡草稿';
   document.getElementById('enterprise-output-status').className = 'status-badge success';
   const layout = enterpriseFlow.querySelector('.builder-layout');
   const inputPanel = enterpriseForm.closest('.builder-panel');
@@ -432,8 +432,8 @@ function renderSkillQuestions(values, skills) {
     <div class="result-wrap skill-question-stage">
       <section class="result-summary">
         <span class="mini-label">第一轮提炼</span>
-        <h3>识别到 ${skills.length} 项核心技能</h3>
-        <p>技能名称来自固定分类。请补充真实解决过程，再生成能力图谱。</p>
+        <h3>识别到 ${skills.length} 项能力原子</h3>
+        <p>能力原子名称来自固定分类。请补充真实解决过程，再生成个人能力名片。</p>
         <div class="capability-tags">${skills.map((skill) => `<span class="capability-tag">${escapeHTML(skill.category)} · ${escapeHTML(skill.name)}</span>`).join('')}</div>
       </section>
       <form class="skill-questions-form" id="skill-questions-form" novalidate>
@@ -449,14 +449,14 @@ function renderSkillQuestions(values, skills) {
           </section>
         `).join('')}
         <div class="result-actions">
-          <button class="btn btn-primary btn-large" type="submit">生成能力图谱报告</button>
+          <button class="btn btn-primary btn-large" type="submit">生成个人能力名片</button>
           <button class="btn btn-ghost" type="button" data-action="reset-talent">返回修改经历</button>
         </div>
       </form>
     </div>`;
   document.getElementById('talent-status').textContent = '待确认';
   document.getElementById('talent-status').className = 'status-badge warning';
-  document.getElementById('talent-output-status').textContent = `${skills.length} 项技能`;
+  document.getElementById('talent-output-status').textContent = `${skills.length} 项能力原子`;
   document.getElementById('talent-output-status').className = 'status-badge warning';
   const layout = talentFlow.querySelector('.builder-layout');
   const inputPanel = talentForm.closest('.builder-panel');
@@ -491,7 +491,7 @@ talentForm.addEventListener('submit', async (event) => {
   updateSteps('t', 1);
   await runLoading('talent', [
     { title: '正在识别做过的任务', detail: '区分岗位描述与本人实际动作', progress: 30 },
-    { title: '正在匹配固定技能分类', detail: '从预设技能名称中选择 3-5 项', progress: 66 },
+    { title: '正在提炼能力原子', detail: '从预设能力名称中选择 3-5 项', progress: 66 },
     { title: '正在生成针对性追问', detail: '继续确认方法、结果与贡献边界', progress: 100 },
   ]);
   document.getElementById('talent-loading').hidden = true;
@@ -522,11 +522,11 @@ document.addEventListener('submit', (event) => {
 });
 
 function renderTalentResult(values, skills, answers) {
-  const scene = [values.market || '场景待补充', values.field || '方向由技能提炼'].join(' · ');
+  const scene = [values.market || '场景待补充', values.field || '方向由能力提炼'].join(' · ');
   talentCopy = [
-    '《能力图谱报告｜初步版》',
+    '《个人能力名片｜初步版》',
     `场景：${scene}`,
-    `核心技能：${skills.map((skill) => skill.name).join('、')}`,
+    `能力原子：${skills.map((skill) => skill.name).join('、')}`,
     '',
     ...skills.map((skill, index) => [
       `${index + 1}. ${skill.name}｜${skill.category}｜L0 初步推测`,
@@ -537,16 +537,16 @@ function renderTalentResult(values, skills, answers) {
       `能力边界：${skill.boundary}`,
     ].join('\n')),
     '',
-    '说明：本报告来自简历、经历自述与针对性追问，不等于能力认证或平台推荐。正式公开或匹配前需另行授权并人工审核。',
+    '说明：本名片来自简历、经历自述与针对性追问，不等于能力认证或平台推荐。正式公开或匹配前需另行授权并人工审核。',
   ].join('\n');
 
   document.getElementById('talent-output').innerHTML = `
     <div class="result-wrap capability-graph-report">
       <section class="capability-report-head">
-        <div><span class="mini-label">能力图谱报告</span><h3>${skills.length} 项核心技能</h3><p>${escapeHTML(scene)}</p></div>
+        <div><span class="mini-label">个人能力名片</span><h3>${skills.length} 项能力原子</h3><p>${escapeHTML(scene)}</p></div>
         <span class="level-pill">L0 · 待验证</span>
       </section>
-      <section class="capability-namecard-grid" aria-label="能力图谱卡片">
+      <section class="capability-namecard-grid" aria-label="能力原子卡片">
         ${skills.map((skill) => `
           <article class="capability-namecard">
             <div class="capability-namecard-top"><span>${escapeHTML(skill.category)}</span><span>L0</span></div>
@@ -566,15 +566,15 @@ function renderTalentResult(values, skills, answers) {
         `).join('')}
       </section>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="copy-talent">复制报告摘要</button>
+        <button class="btn btn-primary" type="button" data-action="copy-talent">复制名片摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-talent">下载 TXT</button>
         <button class="btn btn-ghost" type="button" data-action="reset-talent">重新挖掘</button>
       </div>
-      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>报告只保存在当前页面。</strong>进入人才库、对外展示或匹配前，会再次确认身份、材料和可见范围。</p></div>
+      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>名片只保存在当前页面。</strong>进入能力库、对外展示或匹配前，会再次确认身份、材料和可见范围。</p></div>
     </div>`;
   document.getElementById('talent-status').textContent = '已生成';
   document.getElementById('talent-status').className = 'status-badge success';
-  document.getElementById('talent-output-status').textContent = '图谱草稿';
+  document.getElementById('talent-output-status').textContent = '名片草稿';
   document.getElementById('talent-output-status').className = 'status-badge success';
   updateSteps('t', 3);
   scrollToElement(document.getElementById('talent-output').closest('.builder-panel'));
@@ -718,10 +718,10 @@ document.addEventListener('click', (event) => {
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
-  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-痛点需求卡草稿.txt');
+  if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化任务卡草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();
   if (action === 'copy-talent') copyText(talentCopy);
-  if (action === 'download-talent') downloadText(talentCopy, '嘟嘟嗨-能力图谱报告.txt');
+  if (action === 'download-talent') downloadText(talentCopy, '嘟嘟嗨-个人能力名片.txt');
   if (action === 'reset-talent') resetTalent();
   if (action === 'clear-enterprise-draft') clearEnterpriseDraft();
   if (action === 'clear-talent-draft') clearTalentDraft();
