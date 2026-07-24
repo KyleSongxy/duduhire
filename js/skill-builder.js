@@ -1,5 +1,6 @@
 import { capabilityCatalog, enterpriseDemandCatalog, serviceSkus, talentSkillTemplates } from './data.js';
 import { inferTalentContext, parseDemandText } from './ai-parser.js';
+import { createContentKey, getUsageReceipt, recordUsage } from './usage-meter.js';
 
 const params = new URLSearchParams(window.location.search);
 const validRoles = new Set(['enterprise', 'talent']);
@@ -17,16 +18,25 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let currentRole = validRoles.has(params.get('role')) ? params.get('role') : '';
 let enterpriseCopy = '';
 let talentCopy = '';
+let pendingEnterpriseValues = null;
+let enterpriseContentKey = '';
 let pendingTalentValues = null;
 let activeTalentSkills = [];
+let talentContentKey = '';
 let toastTimer;
+
+const talentExamples = {
+  content: '我负责印尼市场的 TikTok 内容运营。账号自然流量连续下降后，我按内容类型审计近 30 天数据，对照竞品和发布时间，调整内容结构并设计两周测试。最终自然播放量提升 62%，过程和结果可由周报及后台数据证明。',
+  research: '我曾为一款面向东南亚的 SaaS 产品设计用户研究，在两周内完成 12 位目标用户访谈。我负责研究问题、招募标准、访谈和洞察整理，最终推动团队调整了试用引导与定价表达，相关结论可由研究报告和版本记录证明。',
+  delivery: '我负责协调总部、印尼团队和外部供应商完成三个市场的新品发布。我重新梳理依赖、负责人和里程碑，建立风险升级与验收机制，最终按期上线并减少了重复返工，相关过程可由项目计划和复盘记录证明。',
+};
 
 const draftConfig = {
   enterprise: {
     key: 'duduhire-enterprise-draft-v1',
     form: 'enterprise-form',
     status: 'enterprise-draft-status',
-    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-deadline', 'enterprise-sensitive'],
+    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-submitter-role', 'enterprise-owner-name', 'enterprise-deadline', 'enterprise-sensitive'],
   },
   talent: {
     key: 'duduhire-talent-draft-v1',
@@ -66,6 +76,24 @@ async function copyText(text, successMessage = '摘要已复制') {
     area.remove();
     showToast(copied ? successMessage : '复制失败，请手动选择文本');
   }
+}
+
+function copyCollaborationInvite() {
+  const owner = document.getElementById('enterprise-owner-name').value.trim() || '最了解实际情况的业务负责人';
+  const problem = document.getElementById('enterprise-problem').value.trim();
+  const excerpt = problem ? `\n目前的初步描述：${problem.slice(0, 180)}${problem.length > 180 ? '…' : ''}` : '';
+  const invite = [
+    `${owner}，我们正在整理一个需要解决的真实问题，不是请你写职位描述。`,
+    '请直接用文字或语音回答四件事：',
+    '1. 现在具体发生了什么？',
+    '2. 它正在影响哪个业务结果？',
+    '3. 团队已经尝试过什么？',
+    '4. 看到什么结果才算问题解决？',
+    excerpt,
+    '收到后我会把信息整理成可验证的痛点描述，再判断适合找专家、拆微任务还是招聘长期人才。',
+  ].filter(Boolean).join('\n');
+  copyText(invite, '补充邀请已复制');
+  document.getElementById('collaboration-status').textContent = '已复制，可直接发送给实际负责人。';
 }
 
 function downloadText(text, filename) {
@@ -171,6 +199,39 @@ if (currentRole) {
 bindDraft(draftConfig.enterprise);
 bindDraft(draftConfig.talent);
 
+function syncCollaborationFields() {
+  const role = document.getElementById('enterprise-submitter-role').value;
+  document.getElementById('collaboration-invite').hidden = role === 'owner';
+}
+
+document.getElementById('enterprise-submitter-role').addEventListener('change', syncCollaborationFields);
+syncCollaborationFields();
+
+function applyDemandExample(demandId) {
+  const demand = enterpriseDemandCatalog.find((item) => item.id === demandId);
+  if (!demand) return;
+  const input = document.getElementById('enterprise-problem');
+  input.value = demand.example;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  const deadline = document.getElementById('enterprise-deadline');
+  deadline.value = demand.duration.includes('2-4 周') ? '2-4 周' : demand.duration.includes('1-3 天') ? '1-3 天' : '3-10 天';
+  deadline.dispatchEvent(new Event('change', { bubbles: true }));
+  setError('enterprise-problem', '');
+  showToast('已带入痛点示例，可直接修改');
+  input.focus();
+}
+
+function applyTalentExample(exampleId) {
+  const example = talentExamples[exampleId];
+  if (!example) return;
+  const input = document.getElementById('talent-experience');
+  input.value = example;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  setError('talent-experience', '');
+  showToast('已带入经历示例，请替换成你的真实情况');
+  input.focus();
+}
+
 function bindCounter(inputId, outputId) {
   const input = document.getElementById(inputId);
   const output = document.getElementById(outputId);
@@ -213,7 +274,8 @@ function setErrorSummary(id, visible) {
 });
 
 function updateSteps(prefix, activeNumber) {
-  for (let index = 1; index <= 3; index += 1) {
+  const stepCount = document.querySelectorAll(`[id^="${prefix}-step-"]`).length;
+  for (let index = 1; index <= stepCount; index += 1) {
     const step = document.getElementById(`${prefix}-step-${index}`);
     step.classList.remove('active', 'done');
     step.removeAttribute('aria-current');
@@ -255,8 +317,28 @@ function scoreCapabilities(text) {
     score: capability.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
   }));
   scored.sort((a, b) => b.score - a.score || a.index - b.index);
-  const matched = scored.filter((item) => item.score > 0).slice(0, 3).map((item) => item.capability);
-  return matched.length ? matched : capabilityCatalog.slice(0, 3);
+  const selected = scored.filter((item) => item.score > 0).slice(0, 3).map((item) => item.capability);
+  for (const item of scored) {
+    if (selected.length >= 3) break;
+    if (!selected.some((capability) => capability.id === item.capability.id)) selected.push(item.capability);
+  }
+  return selected.slice(0, 3);
+}
+
+function scoreDemands(text) {
+  const normalized = text.toLowerCase();
+  const scored = enterpriseDemandCatalog.map((demand, index) => ({
+    demand,
+    index,
+    score: demand.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
+  }));
+  scored.sort((a, b) => b.score - a.score || a.index - b.index);
+  const selected = scored.filter((item) => item.score > 0).slice(0, 3).map((item) => item.demand);
+  for (const item of scored) {
+    if (selected.length >= 3) break;
+    if (!selected.some((demand) => demand.id === item.demand.id)) selected.push(item.demand);
+  }
+  return selected.slice(0, 3);
 }
 
 function getService(deadline) {
@@ -295,6 +377,10 @@ enterpriseForm.addEventListener('submit', async (event) => {
     fallbackDeadline: document.getElementById('enterprise-deadline').value,
     sensitive: document.getElementById('enterprise-sensitive').checked,
   });
+  values.submitterRole = document.getElementById('enterprise-submitter-role').value;
+  values.owner = document.getElementById('enterprise-owner-name').value.trim();
+  values.acceptance = '';
+  values.access = '';
   syncParsedDemandFields(values);
 
   const submit = document.getElementById('analyze-btn');
@@ -302,7 +388,7 @@ enterpriseForm.addEventListener('submit', async (event) => {
   enterpriseForm.hidden = true;
   document.getElementById('enterprise-status').textContent = 'AI 解析中';
   document.getElementById('enterprise-status').className = 'status-badge warning';
-  updateSteps('e', 1);
+  updateSteps('e', 2);
   await runLoading('enterprise', [
     { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 28 },
     { title: 'AI 正在拆解任务结构', detail: '提取影响、预期交付与时间约束', progress: 62 },
@@ -310,18 +396,165 @@ enterpriseForm.addEventListener('submit', async (event) => {
   ]);
   document.getElementById('enterprise-loading').hidden = true;
   submit.disabled = false;
-  renderEnterpriseResult(values);
+  renderEnterpriseQuestions(values);
+});
+
+function buildDemandQuestions(values) {
+  const questions = [];
+  if (values.impact === '具体业务影响待进一步确认') {
+    questions.push({
+      id: 'impact',
+      label: '这个问题正在影响哪个业务结果？',
+      hint: '例如：延误新品发布、增加获客成本、让团队无法判断下一步。',
+    });
+  } else {
+    questions.push({
+      id: 'acceptance',
+      label: '看到什么结果，才算这次问题真正被解决？',
+      hint: '尽量写可观察的判断标准，而不是“效果更好”。',
+    });
+  }
+  questions.push(values.tried ? {
+    id: 'tried-detail',
+    label: '已经尝试的动作中，哪些短期有效，哪些完全无效？',
+    hint: '这能避免匹配到的人重复做已经验证过的事情。',
+  } : {
+    id: 'tried',
+    label: '团队已经尝试过哪些动作，分别发生了什么？',
+    hint: '如果还没有尝试，可以直接填写“尚未尝试”。',
+  });
+  if (values.result === '明确主要原因，并形成可执行、可验收的下一步方案') {
+    questions.push({
+      id: 'result',
+      label: '你希望对方最终交付什么，而不只是提供建议？',
+      hint: '例如：诊断报告、两周行动清单、内容样稿或验证数据。',
+    });
+  } else {
+    questions.push({
+      id: 'access',
+      label: '完成任务最少需要哪些数据、权限或协作人员？',
+      hint: '只写必要范围，敏感信息可以先写类别，不需要粘贴原始材料。',
+    });
+  }
+  questions.push({
+    id: 'owner',
+    label: values.submitterRole === 'owner'
+      ? '谁会使用结果，并确认它是否解决了实际问题？'
+      : '哪位业务负责人最了解情况，并可以确认最终结果？',
+    hint: values.owner ? `当前填写：${values.owner}。可以补充其确认方式。` : '填写角色或团队即可，不需要提供联系方式。',
+  });
+  if (values.sensitive && questions.length < 5) {
+    questions.push({
+      id: 'sensitive-boundary',
+      label: '哪些信息可以用于诊断，哪些必须保持不可见？',
+      hint: '例如：可看脱敏趋势，不可看用户身份与完整订单。',
+    });
+  }
+  return questions.slice(0, 5);
+}
+
+function renderEnterpriseQuestions(values) {
+  pendingEnterpriseValues = values;
+  enterpriseContentKey = createContentKey('demand', values.problem);
+  recordUsage({
+    flow: 'demand',
+    stage: 'structure',
+    contentKey: enterpriseContentKey,
+    inputCharacters: values.problem.length,
+  });
+  const questions = buildDemandQuestions(values);
+  document.getElementById('enterprise-output').innerHTML = `
+    <div class="result-wrap demand-question-stage">
+      <section class="result-summary">
+        <div class="result-summary-top">
+          <div>
+            <span class="mini-label">智能整理演示</span>
+            <h3>问题结构已识别，还差 ${questions.length} 个关键答案</h3>
+            <p>只追问会影响匹配和验收的信息，不重复填写传统需求表。</p>
+          </div>
+          <strong class="result-price">${questions.length} 题</strong>
+        </div>
+        <div class="disclaimer">你可以回答后查看更完整的匹配，也可以先跳过，用现有信息预览结果。</div>
+      </section>
+      <form class="demand-followup-form" id="enterprise-followup-form" novalidate>
+        ${questions.map((question, index) => `
+          <section class="demand-question-card">
+            <div class="demand-question-number">${String(index + 1).padStart(2, '0')}</div>
+            <div>
+              <label class="form-label" for="demand-answer-${escapeHTML(question.id)}">${escapeHTML(question.label)}</label>
+              <textarea class="form-textarea compact" id="demand-answer-${escapeHTML(question.id)}" data-demand-answer="${escapeHTML(question.id)}" maxlength="420" aria-describedby="demand-hint-${escapeHTML(question.id)} demand-error-${escapeHTML(question.id)}" placeholder="${escapeHTML(question.hint)}"></textarea>
+              <p class="form-hint" id="demand-hint-${escapeHTML(question.id)}">${escapeHTML(question.hint)}</p>
+              <p class="field-error" id="demand-error-${escapeHTML(question.id)}" role="alert"></p>
+            </div>
+          </section>
+        `).join('')}
+        <div class="result-actions">
+          <button class="btn btn-primary btn-large" type="submit">确认信息并查看匹配</button>
+          <button class="btn btn-secondary" type="button" data-action="skip-enterprise-followup">先用现有信息预览</button>
+          <button class="btn btn-ghost" type="button" data-action="reset-enterprise">返回修改原文</button>
+        </div>
+      </form>
+    </div>`;
+  document.getElementById('enterprise-status').textContent = '待补充';
+  document.getElementById('enterprise-status').className = 'status-badge warning';
+  document.getElementById('enterprise-output-status').textContent = `${questions.length} 个确认问题`;
+  document.getElementById('enterprise-output-status').className = 'status-badge warning';
+  const layout = enterpriseFlow.querySelector('.builder-layout');
+  const inputPanel = enterpriseForm.closest('.builder-panel');
+  const outputPanel = document.getElementById('enterprise-output').closest('.builder-panel');
+  inputPanel.hidden = true;
+  layout.classList.add('result-mode');
+  updateSteps('e', 3);
+  scrollToElement(outputPanel);
+  document.querySelector('[data-demand-answer]')?.focus({ preventScroll: true });
+}
+
+function mergeDemandAnswers(values, answers) {
+  const next = { ...values };
+  if (answers.impact) next.impact = answers.impact;
+  if (answers.tried) next.tried = answers.tried;
+  if (answers['tried-detail']) next.tried = `${next.tried || '已尝试动作'}；补充：${answers['tried-detail']}`;
+  if (answers.result) next.result = answers.result;
+  if (answers.acceptance) next.acceptance = answers.acceptance;
+  if (answers.access) next.access = answers.access;
+  if (answers.owner) next.owner = answers.owner;
+  if (answers['sensitive-boundary']) next.sensitiveBoundary = answers['sensitive-boundary'];
+  return next;
+}
+
+document.addEventListener('submit', (event) => {
+  if (event.target.id !== 'enterprise-followup-form') return;
+  event.preventDefault();
+  const answers = {};
+  let firstInvalid = null;
+  event.target.querySelectorAll('[data-demand-answer]').forEach((field) => {
+    const value = field.value.trim();
+    answers[field.dataset.demandAnswer] = value;
+    const error = document.getElementById(`demand-error-${field.dataset.demandAnswer}`);
+    const message = value.length < 4 ? '请简短回答，或选择“先用现有信息预览”。' : '';
+    field.setAttribute('aria-invalid', message ? 'true' : 'false');
+    error.textContent = message;
+    if (message && !firstInvalid) firstInvalid = field;
+  });
+  if (firstInvalid) {
+    firstInvalid.focus();
+    return;
+  }
+  renderEnterpriseResult(mergeDemandAnswers(pendingEnterpriseValues, answers));
 });
 
 function renderEnterpriseResult(values) {
   const service = getService(values.deadline);
   const capabilities = scoreCapabilities(`${values.problem} ${values.result} ${values.market}`);
-  const questions = [
-    values.tried ? '哪些已尝试动作产生过短期改善，哪些完全无效？' : '团队已经尝试过哪些动作，分别有什么结果？',
-    '完成任务所需的最小数据、账号权限或协作人员有哪些？',
-    '谁会使用最终结果，谁能确认它是否真正解决了问题？',
-  ];
-  if (values.sensitive) questions.unshift('哪些信息属于敏感范围，专家可以看到什么、不能看到什么？');
+  const leadCapability = capabilities[0];
+  const contentKey = enterpriseContentKey || createContentKey('demand', values.problem);
+  recordUsage({
+    flow: 'demand',
+    stage: 'match',
+    contentKey,
+    inputCharacters: values.problem.length,
+  });
+  const usage = getUsageReceipt('demand', contentKey);
 
   enterpriseCopy = [
     '《结构化痛点描述｜草稿》',
@@ -330,24 +563,28 @@ function renderEnterpriseResult(values) {
     `造成影响：${values.impact}`,
     `已尝试：${values.tried || '待补充'}`,
     `期望结果：${values.result}`,
+    `验收方式：${values.acceptance || values.result}`,
+    `业务确认人：${values.owner || '待确认'}`,
+    `必要信息：${values.access || '待确认最小数据与权限范围'}`,
     `建议下一步：${service.name}（${service.duration}）`,
-    `可能需要的能力：${capabilities.map((item) => item.name).join('、')}`,
+    `优先核验能力：${capabilities.map((item) => item.name).join('、')}`,
     `敏感材料：${values.sensitive ? '涉及，需先确认保密与权限' : '暂未标记'}`,
-    '说明：本草稿需经人工确认问题范围、必要信息与服务边界后，才能进入下一步。',
+    `建议微任务：由“${leadCapability.name}”方向先完成${leadCapability.deliverables.slice(0, 3).join('、')}。`,
+    '说明：这是本地匹配演示，能力方向、真实人员、证据和档期仍需人工核验。',
   ].join('\n');
 
   document.getElementById('enterprise-output').innerHTML = `
-    <div class="result-wrap">
-      <section class="result-summary">
+    <div class="result-wrap demand-match-result">
+      <section class="result-summary match-result-summary">
         <div class="result-summary-top">
           <div>
-            <span class="mini-label">AI 初步解析</span>
-            <h3>已生成结构化痛点描述</h3>
-            <p>根据你提供的文字或语音内容自动提取</p>
+            <span class="mini-label">平台匹配演示</span>
+            <h3>已找到 ${capabilities.length} 个优先核验方向</h3>
+            <p>结果来自场景、任务、证据要求与合作边界的对照，不是简历关键词排序。</p>
           </div>
-          <strong class="result-price">待你确认</strong>
+          <strong class="result-price">待核验</strong>
         </div>
-        <div class="disclaimer">自动解析可能遗漏上下文。请核对痛点描述，并通过下方问题补充关键信息。</div>
+        <div class="disclaimer">当前公开页只展示匹配逻辑，不代表具体人员已通过审核或确认档期。</div>
       </section>
       <section class="result-section">
         <h3>结构化痛点描述</h3>
@@ -357,37 +594,91 @@ function renderEnterpriseResult(values) {
           <div class="brief-result-row"><span>造成影响</span><p>${escapeHTML(values.impact)}</p></div>
           <div class="brief-result-row"><span>已尝试</span><p>${escapeHTML(values.tried || '尚未填写，需在访谈中补充')}</p></div>
           <div class="brief-result-row"><span>期望结果</span><p>${escapeHTML(values.result)}</p></div>
+          <div class="brief-result-row"><span>业务确认人</span><p>${escapeHTML(values.owner || '待确认')}</p></div>
+          <div class="brief-result-row"><span>验收方式</span><p>${escapeHTML(values.acceptance || values.result)}</p></div>
+          <div class="brief-result-row"><span>必要信息</span><p>${escapeHTML(values.access || '待确认最小数据、权限与协作人员')}</p></div>
           <div class="brief-result-row"><span>完成时间</span><p>${escapeHTML(values.deadline)}</p></div>
-          <div class="brief-result-row"><span>建议协作方式</span><p>${escapeHTML(service.name)} · ${escapeHTML(service.duration)}</p></div>
+        </div>
+      </section>
+      <section class="result-section platform-work-section">
+        <div class="result-section-heading">
+          <div><span class="mini-label">平台在中间做什么</span><h3>说明为什么值得继续验证</h3></div>
+        </div>
+        <div class="platform-work-grid">
+          <div><span>整理</span><strong>把一句困扰变成可确认的任务边界</strong></div>
+          <div><span>对照</span><strong>比较相似场景、实际任务与证据要求</strong></div>
+          <div><span>验证</span><strong>用微任务确认能力、沟通与交付质量</strong></div>
         </div>
       </section>
       <section class="result-section">
-        <h3>可能需要的能力</h3>
-        <div class="capability-tags">${capabilities.map((item) => `<span class="capability-tag">${escapeHTML(item.name)}</span>`).join('')}</div>
-        <p class="form-hint">这些是待核验方向，不代表平台已经确认合适人员或档期。</p>
+        <div class="result-section-heading">
+          <div><span class="mini-label">能力匹配方向</span><h3>先看做过什么，再确认是谁</h3></div>
+          <small>${capabilities.length} 项待核验</small>
+        </div>
+        <div class="match-direction-grid">
+          ${capabilities.map((capability, index) => `
+            <article class="match-direction-card${index === 0 ? ' featured' : ''}">
+              <div class="match-direction-top">
+                <span>${index === 0 ? '优先核验' : '补充方向'}</span>
+                <small>${escapeHTML(capability.category)}</small>
+              </div>
+              <h3>${escapeHTML(capability.name)}</h3>
+              <p>${escapeHTML(capability.description)}</p>
+              <ul>
+                <li><span>场景</span><strong>${escapeHTML(capability.markets.slice(0, 3).join('、'))}</strong></li>
+                <li><span>任务</span><strong>${escapeHTML(capability.tasks[0])}</strong></li>
+                <li><span>证据</span><strong>${escapeHTML(capability.evidence)}</strong></li>
+              </ul>
+              <details>
+                <summary>查看能力边界与交付</summary>
+                <dl>
+                  <div><dt>典型交付</dt><dd>${escapeHTML(capability.deliverables.join('、'))}</dd></div>
+                  <div><dt>能力边界</dt><dd>${escapeHTML(capability.boundary)}</dd></div>
+                </dl>
+              </details>
+            </article>
+          `).join('')}
+        </div>
       </section>
-      <section class="result-section">
-        <h3>AI 标记的待确认问题</h3>
-        <ol class="question-list">${questions.map((question) => `<li>${escapeHTML(question)}</li>`).join('')}</ol>
+      <section class="microtask-recommendation">
+        <div>
+          <span class="mini-label">建议下一步 · 先验证再决定</span>
+          <h3>${escapeHTML(service.name)} · ${escapeHTML(service.duration)}</h3>
+          <p>由“${escapeHTML(leadCapability.name)}”方向先完成${escapeHTML(leadCapability.deliverables.slice(0, 3).join('、'))}，再决定扩大协作或进入招聘。</p>
+        </div>
+        <dl>
+          <div><dt>输入边界</dt><dd>${escapeHTML(values.access || '仅提供完成诊断所需的最小数据与脱敏材料')}</dd></div>
+          <div><dt>验收标准</dt><dd>${escapeHTML(values.acceptance || values.result)}</dd></div>
+          <div><dt>仍需确认</dt><dd>真实案例、证据有效性、可用档期与合作方式</dd></div>
+        </dl>
       </section>
+      <details class="usage-receipt">
+        <summary><span>本次处理记录</span><small>输入过程中 0 次模型调用</small></summary>
+        <div>
+          <span><strong>${usage.localOperations}</strong><small>本地演示步骤</small></span>
+          <span><strong>${usage.modelCalls}</strong><small>实际模型调用</small></span>
+          <span><strong>${usage.tokens}</strong><small>实际 Token</small></span>
+          <p>${usage.reused ? '检测到相同内容；会话已标记为可复用，正式接入模型时可避免重复计费。' : '调用只发生在“确认解析”和“查看匹配”两个明确动作；演示版使用本地规则，不产生 Token 成本。'}</p>
+        </div>
+      </details>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制痛点描述</button>
+        <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制痛点与匹配摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
         <button class="btn btn-secondary" type="button" data-action="reset-enterprise">修改原文并重新解析</button>
       </div>
-      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>当前公开页只生成本地草稿，不会发起人工服务申请。</strong>人工入口开放后，会再次确认联系人、资料用途和服务条款。</p></div>
+      <div class="privacy-note"><span aria-hidden="true">i</span><p><strong>当前结果只保存在本页面，不会自动发起服务申请。</strong>正式撮合前会再次确认材料用途、人员证据、档期和合作边界。</p></div>
     </div>
   `;
   document.getElementById('enterprise-status').textContent = '已生成';
   document.getElementById('enterprise-status').className = 'status-badge success';
-  document.getElementById('enterprise-output-status').textContent = '痛点描述草稿';
+  document.getElementById('enterprise-output-status').textContent = '匹配预览';
   document.getElementById('enterprise-output-status').className = 'status-badge success';
   const layout = enterpriseFlow.querySelector('.builder-layout');
   const inputPanel = enterpriseForm.closest('.builder-panel');
   const outputPanel = document.getElementById('enterprise-output').closest('.builder-panel');
   inputPanel.hidden = true;
   layout.classList.add('result-mode');
-  updateSteps('e', 3);
+  updateSteps('e', 4);
   scrollToElement(outputPanel);
 }
 
@@ -395,6 +686,8 @@ function resetEnterprise() {
   enterpriseForm.closest('.builder-panel').hidden = false;
   enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
+  pendingEnterpriseValues = null;
+  enterpriseContentKey = '';
   document.getElementById('enterprise-output').innerHTML = `
     <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>原文仍保留在左侧。补充背景、影响或目标后，再让 AI 重新整理。</p></div></div>`;
   document.getElementById('enterprise-status').textContent = '可修改';
@@ -487,6 +780,14 @@ talentForm.addEventListener('submit', async (event) => {
     return;
   }
 
+  talentContentKey = createContentKey('talent', values.experience);
+  recordUsage({
+    flow: 'talent',
+    stage: 'capability-structure',
+    contentKey: talentContentKey,
+    inputCharacters: values.experience.length,
+  });
+
   const submit = document.getElementById('decode-btn');
   submit.disabled = true;
   talentForm.hidden = true;
@@ -534,6 +835,15 @@ document.addEventListener('submit', (event) => {
 
 function renderTalentResult(values, skills, answers) {
   const scene = [values.market || '场景待补充', values.field || '方向由能力提炼'].join(' · ');
+  const matchingDemands = scoreDemands(`${values.experience} ${skills.map((skill) => `${skill.name} ${skill.task}`).join(' ')}`);
+  const contentKey = talentContentKey || createContentKey('talent', values.experience);
+  recordUsage({
+    flow: 'talent',
+    stage: 'evidence-card',
+    contentKey,
+    inputCharacters: values.experience.length,
+  });
+  const usage = getUsageReceipt('talent', contentKey);
   talentCopy = [
     '《个人能力名片｜初步版》',
     `场景：${scene}`,
@@ -547,6 +857,8 @@ function renderTalentResult(values, skills, answers) {
       `可核验证据：${skill.evidenceExamples}`,
       `能力边界：${skill.boundary}`,
     ].join('\n')),
+    '',
+    `可匹配痛点方向：${matchingDemands.map((demand) => demand.title).join('、')}`,
     '',
     '说明：本名片来自简历、经历自述与针对性追问，不等于能力认证或平台推荐。正式公开或匹配前需另行授权并人工审核。',
   ].join('\n');
@@ -576,6 +888,34 @@ function renderTalentResult(values, skills, answers) {
           </article>
         `).join('')}
       </section>
+      <section class="result-section">
+        <div class="result-section-heading">
+          <div><span class="mini-label">可匹配痛点方向</span><h3>这些真实问题值得进一步对照</h3></div>
+          <small>仍需确认档期与证据</small>
+        </div>
+        <div class="matched-demand-list">
+          ${matchingDemands.map((demand) => `
+            <article>
+              <div><span>${escapeHTML(demand.category)}</span><small>${escapeHTML(demand.markets.slice(0, 2).join(' / '))}</small></div>
+              <h3>${escapeHTML(demand.title)}</h3>
+              <p>${escapeHTML(demand.summary)}</p>
+              <dl>
+                <div><dt>期望交付</dt><dd>${escapeHTML(demand.deliverables.slice(0, 2).join('、'))}</dd></div>
+                <div><dt>匹配依据</dt><dd>能力任务与场景关键词相似，仍需核验真实案例与合作边界</dd></div>
+              </dl>
+            </article>
+          `).join('')}
+        </div>
+      </section>
+      <details class="usage-receipt">
+        <summary><span>本次处理记录</span><small>输入过程中 0 次模型调用</small></summary>
+        <div>
+          <span><strong>${usage.localOperations}</strong><small>本地演示步骤</small></span>
+          <span><strong>${usage.modelCalls}</strong><small>实际模型调用</small></span>
+          <span><strong>${usage.tokens}</strong><small>实际 Token</small></span>
+          <p>${usage.reused ? '检测到相同内容；会话已标记为可复用，正式接入模型时可避免重复计费。' : '能力提炼和名片生成只在明确确认后执行；演示版使用本地规则，不产生 Token 成本。'}</p>
+        </div>
+      </details>
       <div class="result-actions">
         <button class="btn btn-primary" type="button" data-action="copy-talent">复制名片摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-talent">下载 TXT</button>
@@ -597,6 +937,7 @@ function resetTalent() {
   talentForm.hidden = false;
   pendingTalentValues = null;
   activeTalentSkills = [];
+  talentContentKey = '';
   document.getElementById('talent-output').innerHTML = `
     <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>你的经历仍保留在左侧。补充本人行动、可量化结果与证明方式后再试一次。</p></div></div>`;
   document.getElementById('talent-status').textContent = '可修改';
@@ -686,6 +1027,9 @@ function startVoiceInput(button) {
 function clearEnterpriseDraft() {
   removeDraft(draftConfig.enterprise);
   enterpriseForm.reset();
+  pendingEnterpriseValues = null;
+  enterpriseContentKey = '';
+  syncCollaborationFields();
   enterpriseForm.closest('.builder-panel').hidden = false;
   enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
   enterpriseForm.hidden = false;
@@ -709,6 +1053,7 @@ function clearTalentDraft() {
   talentCopy = '';
   pendingTalentValues = null;
   activeTalentSkills = [];
+  talentContentKey = '';
   setError('talent-experience', '');
   setErrorSummary('talent-error-summary', false);
   document.getElementById('experience-count').textContent = '0 / 1800';
@@ -721,6 +1066,16 @@ function clearTalentDraft() {
 }
 
 document.addEventListener('click', (event) => {
+  const demandExample = event.target.closest('[data-demand-example]');
+  if (demandExample) {
+    applyDemandExample(demandExample.dataset.demandExample);
+    return;
+  }
+  const talentExample = event.target.closest('[data-talent-example]');
+  if (talentExample) {
+    applyTalentExample(talentExample.dataset.talentExample);
+    return;
+  }
   const voiceButton = event.target.closest('[data-voice-target]');
   if (voiceButton) {
     startVoiceInput(voiceButton);
@@ -729,6 +1084,8 @@ document.addEventListener('click', (event) => {
   const button = event.target.closest('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
+  if (action === 'copy-collaboration-invite') copyCollaborationInvite();
+  if (action === 'skip-enterprise-followup' && pendingEnterpriseValues) renderEnterpriseResult(pendingEnterpriseValues);
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
   if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化痛点描述草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();

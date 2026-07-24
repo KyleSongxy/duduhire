@@ -26,6 +26,7 @@
         <span></span><span></span>
       </button>
       <nav class="main-nav" id="main-nav" aria-label="主导航">
+        <a href="#match-demo">匹配演示</a>
         <a href="#demand">需求通道</a>
         <a href="#capability">能力通道</a>
         <a href="#assets">任务与能力库</a>
@@ -48,12 +49,88 @@
             <a class="btn btn-large btn-primary" href="./skill-builder.html?role=enterprise">描述我的痛点 <span aria-hidden="true">→</span></a>
             <a class="btn btn-large btn-secondary" href="./skill-builder.html?role=talent">挖掘我的能力 <span aria-hidden="true">→</span></a>
           </div>
+          <div class="hero-example-links" aria-label="查看示例匹配">
+            <span>不知道从哪里开始？</span>
+            <button type="button" data-demo-scenario="tiktok-organic-traffic-drop">TikTok 流量下降</button>
+            <button type="button" data-demo-scenario="localized-content-system">内容本地化</button>
+            <button type="button" data-demo-scenario="user-research-sprint">用户验证</button>
+          </div>
         </div>
         <dl class="hero-ledger reveal" aria-label="平台三方关系">
           <div><dt>需求方</dt><dd>从痛点生成结构化痛点描述</dd></div>
           <div><dt>能力方</dt><dd>从经历提炼可验证能力原子</dd></div>
           <div><dt>平台</dt><dd>对齐场景、证据与合作约束</dd></div>
         </dl>
+      </div>
+    </section>
+
+    <section class="section match-demo-section" id="match-demo" aria-labelledby="match-demo-title">
+      <div class="container">
+        <div class="match-demo-heading reveal">
+          <div>
+            <span class="section-index">一次匹配如何发生</span>
+            <h2 id="match-demo-title">从一句真实困扰，<br>到一项可验证的合作。</h2>
+          </div>
+          <p>选择一个常见场景，直接查看平台如何整理问题、解释匹配依据，并设计低风险的验证任务。</p>
+        </div>
+
+        <div class="demo-scenario-tabs reveal" role="tablist" aria-label="选择匹配示例">
+          <button type="button" role="tab" aria-selected="true" data-demo-scenario="tiktok-organic-traffic-drop">TikTok 流量下降</button>
+          <button type="button" role="tab" aria-selected="false" data-demo-scenario="localized-content-system">东南亚内容本地化</button>
+          <button type="button" role="tab" aria-selected="false" data-demo-scenario="user-research-sprint">海外用户验证</button>
+        </div>
+
+        <div class="match-demo-board reveal" id="match-demo-board" aria-live="polite">
+          <article class="demo-demand-sheet">
+            <div class="demo-sheet-topline">
+              <span>真实痛点</span>
+              <small id="demo-demand-meta">印尼 · 增长期</small>
+            </div>
+            <p class="demo-original-label">用户原话</p>
+            <blockquote id="demo-demand-example">我们的印尼 TikTok 官方账号连续三周自然流量下降，已经影响新品发布。团队做过申诉和内容调整，但还不清楚主要原因。</blockquote>
+            <dl class="demo-demand-structure">
+              <div><dt>业务影响</dt><dd id="demo-demand-impact">新品发布节奏、自然获客占比和团队判断效率受到影响。</dd></div>
+              <div><dt>期望结果</dt><dd id="demo-demand-goal">区分主要问题，明确先验证什么、暂时不做什么。</dd></div>
+            </dl>
+          </article>
+
+          <div class="demo-match-spine" aria-label="平台处理过程">
+            <span>平台</span>
+            <ol>
+              <li><b>01</b><strong>整理</strong><small>问题结构</small></li>
+              <li><b>02</b><strong>对照</strong><small>场景与证据</small></li>
+              <li><b>03</b><strong>验证</strong><small>合作边界</small></li>
+            </ol>
+          </div>
+
+          <article class="demo-capability-sheet">
+            <div class="demo-sheet-topline">
+              <span>优先核验方向</span>
+              <small>不是黑箱分数</small>
+            </div>
+            <span class="demo-capability-category" id="demo-capability-category">内容增长</span>
+            <h3 id="demo-capability-name">TikTok 账号增长诊断</h3>
+            <p id="demo-capability-description">定位自然流量、账号健康、内容结构或投放协同中的具体问题。</p>
+            <ul class="demo-match-reasons" id="demo-match-reasons">
+              <li><span>场景</span><strong>覆盖印尼与东南亚账号增长</strong></li>
+              <li><span>任务</span><strong>可完成账号审计与根因排序</strong></li>
+              <li><span>证据</span><strong>需核验后台数据与诊断记录</strong></li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="demo-verification-strip reveal">
+          <div>
+            <span class="mini-label">先做微任务，不急着招人</span>
+            <h3 id="demo-microtask-title">3 天问题快诊</h3>
+            <p id="demo-microtask-copy">先用一份账号审计、根因假设与行动优先级，验证判断是否建立在真实数据上。</p>
+          </div>
+          <dl>
+            <div><dt>需要确认</dt><dd id="demo-risk-copy">人员真实案例、可用档期和数据访问边界</dd></div>
+            <div><dt>验收方式</dt><dd id="demo-acceptance-copy">关键判断能对应后台数据或内容样本</dd></div>
+          </dl>
+          <a class="btn btn-large btn-primary" id="demo-try-link" href="./skill-builder.html?role=enterprise&demand=tiktok-organic-traffic-drop">用这个示例体验 <span aria-hidden="true">→</span></a>
+        </div>
       </div>
     </section>
 

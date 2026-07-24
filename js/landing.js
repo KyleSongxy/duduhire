@@ -1,6 +1,49 @@
+import { capabilityCatalog, enterpriseDemandCatalog } from './data.js';
+
 const navToggle = document.getElementById('nav-toggle');
 const nav = document.getElementById('main-nav');
 const loginDialog = document.getElementById('login-dialog');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function getDemoPair(demandId) {
+  const demand = enterpriseDemandCatalog.find((item) => item.id === demandId) || enterpriseDemandCatalog[0];
+  const capability = capabilityCatalog.find((item) => demand.capabilityIds.includes(item.id)) || capabilityCatalog[0];
+  return { demand, capability };
+}
+
+function renderMatchDemo(demandId, scrollIntoView = false) {
+  const { demand, capability } = getDemoPair(demandId);
+  document.querySelectorAll('[role="tab"][data-demo-scenario]').forEach((button) => {
+    button.setAttribute('aria-selected', String(button.dataset.demoScenario === demand.id));
+  });
+
+  document.getElementById('demo-demand-meta').textContent = `${demand.markets.slice(0, 2).join(' / ')} · ${demand.stage}`;
+  document.getElementById('demo-demand-example').textContent = demand.example;
+  document.getElementById('demo-demand-impact').textContent = demand.impact;
+  document.getElementById('demo-demand-goal').textContent = demand.goal;
+  document.getElementById('demo-capability-category').textContent = capability.category;
+  document.getElementById('demo-capability-name').textContent = capability.name;
+  document.getElementById('demo-capability-description').textContent = capability.description;
+  document.getElementById('demo-match-reasons').innerHTML = `
+    <li><span>场景</span><strong>覆盖 ${capability.markets.slice(0, 3).join('、')}</strong></li>
+    <li><span>任务</span><strong>${capability.tasks[0]}</strong></li>
+    <li><span>证据</span><strong>需核验${capability.evidence}</strong></li>
+  `;
+  document.getElementById('demo-microtask-title').textContent = `${demand.duration} · ${demand.service.split(' / ')[0]}`;
+  document.getElementById('demo-microtask-copy').textContent = `先交付${demand.deliverables.slice(0, 3).join('、')}，验证判断是否建立在真实材料与业务约束上。`;
+  document.getElementById('demo-risk-copy').textContent = `真实案例、可用档期，以及${demand.inputs}`;
+  document.getElementById('demo-acceptance-copy').textContent = demand.acceptance;
+  document.getElementById('demo-try-link').href = `./skill-builder.html?role=enterprise&demand=${encodeURIComponent(demand.id)}`;
+
+  if (scrollIntoView) {
+    document.getElementById('match-demo').scrollIntoView({
+      behavior: reduceMotion.matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  }
+}
+
+renderMatchDemo('tiktok-organic-traffic-drop');
 
 function closeNav() {
   nav?.classList.remove('open');
@@ -25,6 +68,11 @@ document.addEventListener('keydown', (event) => {
   }
 });
 document.addEventListener('click', (event) => {
+  const scenarioButton = event.target.closest('[data-demo-scenario]');
+  if (scenarioButton) {
+    renderMatchDemo(scenarioButton.dataset.demoScenario, !scenarioButton.matches('[role="tab"]'));
+    return;
+  }
   const action = event.target.closest('[data-action]')?.dataset.action;
   if (action === 'open-login') {
     closeNav();

@@ -69,7 +69,9 @@
             <i class="step-line" aria-hidden="true"></i>
             <div class="progress-step" id="e-step-2"><span>2</span>AI 解析</div>
             <i class="step-line" aria-hidden="true"></i>
-            <div class="progress-step" id="e-step-3"><span>3</span>确认痛点描述</div>
+            <div class="progress-step" id="e-step-3"><span>3</span>补充关键信息</div>
+            <i class="step-line" aria-hidden="true"></i>
+            <div class="progress-step" id="e-step-4"><span>4</span>查看匹配</div>
           </div>
 
           <div class="builder-layout">
@@ -108,6 +110,12 @@
                     <div class="input-cues" aria-label="建议包含的信息">
                       <span>发生了什么</span><span>影响了什么</span><span>试过什么</span><span>希望得到什么</span>
                     </div>
+                    <div class="example-prompt-row" aria-label="痛点描述示例">
+                      <span>一键带入示例</span>
+                      <button type="button" data-demand-example="tiktok-organic-traffic-drop">TikTok 流量下降</button>
+                      <button type="button" data-demand-example="localized-content-system">内容本地化</button>
+                      <button type="button" data-demand-example="user-research-sprint">用户验证</button>
+                    </div>
                   </div>
 
                   <input type="hidden" id="enterprise-market">
@@ -117,8 +125,31 @@
                   <input type="hidden" id="enterprise-result">
 
                   <details class="optional-context">
-                    <summary><span>补充时间与信息边界</span><small>可选</small></summary>
+                    <summary><span>补充协作人、时间与信息边界</span><small>可选</small></summary>
                     <div class="optional-context-body">
+                      <div class="collaboration-fields">
+                        <div class="form-group">
+                          <label class="form-label" for="enterprise-submitter-role">你与这个问题的关系</label>
+                          <select class="form-select" id="enterprise-submitter-role">
+                            <option value="owner" selected>我是实际问题负责人</option>
+                            <option value="recruiter">我是 HR / 招募负责人</option>
+                            <option value="coordinator">我在代团队收集问题</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label class="form-label" for="enterprise-owner-name">谁最了解实际情况</label>
+                          <input class="form-input" id="enterprise-owner-name" maxlength="80" placeholder="例如：印尼市场负责人 / 内容运营负责人">
+                        </div>
+                      </div>
+                      <div class="collaboration-invite" id="collaboration-invite" hidden>
+                        <div>
+                          <span class="mini-label">协作补充</span>
+                          <strong>让实际负责人直接回答关键问题</strong>
+                          <p>复制一段简短邀请，通过微信或企业聊天工具发送，不需要对方理解招聘术语。</p>
+                        </div>
+                        <button class="btn btn-secondary" type="button" data-action="copy-collaboration-invite">复制补充邀请</button>
+                        <p class="collaboration-status" id="collaboration-status" role="status"></p>
+                      </div>
                       <div class="form-group">
                         <label class="form-label" for="enterprise-deadline">希望完成时间</label>
                         <select class="form-select" id="enterprise-deadline">
@@ -149,15 +180,15 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>AI 解析结果</h2><p>自动生成可确认的结构化痛点描述</p></div>
+                <div><h2>智能整理与匹配</h2><p>确认问题结构、能力方向与验证任务</p></div>
                 <span class="status-badge" id="enterprise-output-status">待生成</span>
               </header>
               <div class="panel-body" id="enterprise-output">
                 <div class="empty-state">
                   <div class="empty-state-inner">
                     <div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div>
-                    <h3>一段描述，自动拆成任务结构</h3>
-                    <p>解析后将在这里呈现场景、关键阻碍、业务影响、预期交付、约束条件和待确认问题。</p>
+                    <h3>一段描述，先变成可确认的问题</h3>
+                    <p>整理后将在这里呈现动态追问、痛点结构、匹配依据、待核验能力和建议微任务。</p>
                   </div>
                 </div>
               </div>
@@ -220,6 +251,12 @@
                     <div class="input-cues" aria-label="建议包含的信息">
                       <span>什么场景</span><span>你负责什么</span><span>怎么做的</span><span>结果如何证明</span>
                     </div>
+                    <div class="example-prompt-row" aria-label="经历描述示例">
+                      <span>一键带入示例</span>
+                      <button type="button" data-talent-example="content">账号增长诊断</button>
+                      <button type="button" data-talent-example="research">海外用户研究</button>
+                      <button type="button" data-talent-example="delivery">跨市场项目交付</button>
+                    </div>
                   </div>
                   <input type="hidden" id="talent-market">
                   <input type="hidden" id="talent-field">
@@ -238,7 +275,7 @@
 
             <article class="builder-panel" aria-live="polite">
               <header class="panel-header">
-                <div><h2>AI 解析结果</h2><p>先确认能力原子，再补充真实证据</p></div>
+                <div><h2>能力解析与需求对照</h2><p>先确认能力原子，再查看可匹配痛点</p></div>
                 <span class="status-badge" id="talent-output-status">待生成</span>
               </header>
               <div class="panel-body" id="talent-output">
