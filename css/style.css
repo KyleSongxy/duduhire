@@ -3083,7 +3083,12 @@ h3 {
   padding: 38px;
 }
 .demo-demand-sheet { display: flex; flex-direction: column; background: #fcfdf9; }
-.demo-capability-sheet { color: #eaf3ef; background: #18392e; }
+.demo-capability-sheet {
+  display: flex;
+  flex-direction: column;
+  color: #eaf3ef;
+  background: #18392e;
+}
 .demo-sheet-topline {
   min-height: 28px;
   display: flex;
@@ -3151,17 +3156,6 @@ h3 {
   color: #fff;
   background: var(--ink);
 }
-.demo-match-spine::before,
-.demo-match-spine::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 22px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.36);
-}
-.demo-match-spine::before { left: -22px; }
-.demo-match-spine::after { right: -22px; }
 .demo-match-spine > span {
   color: #9cc5b5;
   font-size: 10px;
@@ -3213,20 +3207,21 @@ h3 {
 .demo-match-reasons {
   display: grid;
   gap: 0;
-  margin: 42px 0 0;
+  margin: auto 0 0;
   padding: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.16);
   list-style: none;
 }
 .demo-match-reasons li {
   display: grid;
-  grid-template-columns: 58px 1fr;
-  gap: 14px;
-  padding: 15px 0;
+  grid-template-columns: 76px 1fr;
+  align-items: start;
+  gap: 16px;
+  padding: 17px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.13);
 }
 .demo-match-reasons span { color: #83ad9d; font-size: 10px; font-weight: 720; }
-.demo-match-reasons strong { color: #e2eee9; font-size: 11px; font-weight: 630; line-height: 1.55; }
+.demo-match-reasons strong { color: #e2eee9; font-size: 11px; font-weight: 630; line-height: 1.6; }
 .demo-verification-strip {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.95fr) auto;
@@ -3270,8 +3265,6 @@ h3 {
     gap: 32px;
     padding: 22px 30px;
   }
-  .demo-match-spine::before,
-  .demo-match-spine::after { display: none; }
   .demo-match-spine ol { grid-template-columns: repeat(3, 1fr); }
   .demo-match-spine li { grid-template-columns: 22px 1fr; padding: 8px 14px; border-top: 0; border-left: 1px solid rgba(255, 255, 255, 0.16); }
   .demo-verification-strip { grid-template-columns: 1fr; gap: 28px; }
@@ -3288,6 +3281,7 @@ h3 {
   .demo-demand-sheet,
   .demo-capability-sheet { min-height: 0; padding: 27px 22px; }
   .demo-sheet-topline { margin-bottom: 34px; }
+  .demo-match-reasons { margin-top: 36px; }
   .demo-demand-sheet blockquote { font-size: 21px; }
   .demo-match-spine { grid-template-columns: 1fr; gap: 10px; }
   .demo-match-spine li:first-child { border-left: 0; }
