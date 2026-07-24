@@ -30,7 +30,9 @@ export function extractMarket(text) {
   const found = marketCatalog
     .filter((market) => market.aliases.some((alias) => text.includes(alias)))
     .map((market) => market.label);
-  return found.length ? found.slice(0, 3).join(' / ') : '具体场景待确认';
+  if (found.length) return found.slice(0, 3).join(' / ');
+  if (/(AI|人工智能|大模型|模型|Token|token|智能体|Agent|agent)/.test(text)) return 'AI 产品场景';
+  return '具体场景待确认';
 }
 
 function inferStage(text) {

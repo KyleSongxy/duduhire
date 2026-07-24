@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="通过文字、语音或简历描述真实痛点与项目经历，由 AI 自动解析结构化痛点描述或个人能力名片。">
+  <meta name="description" content="描述 AI 产品从 Demo 到真实业务时遇到的卡点，或提交亲自做过的 AI 项目，由 AI 整理痛点描述与能力名片。">
   <meta name="theme-color" content="#f7f7f3">
   <title>开始使用｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="./assets/duduhire-mark.svg">
@@ -19,7 +19,7 @@
       </a>
       <nav class="main-nav" aria-label="辅助导航">
         <a href="./">首页</a>
-        <a href="./skill-leaderboard.html">痛点描述与能力原子库</a>
+        <a href="./skill-leaderboard.html">AI 痛点与能力库</a>
       </nav>
       <a class="back-link" href="./">← 返回首页</a>
     </div>
@@ -31,20 +31,20 @@
         <div class="role-intro">
           <p class="eyebrow">选择你的目标</p>
           <h1>从一件现在就想解决的事开始</h1>
-          <p>有问题，先把痛点说清楚；有经验，先把真正做过的能力挖出来。首次体验无需注册。</p>
+          <p>AI 产品遇到卡点，先把问题说清楚；做过相关项目，就把真正完成过的任务和证据整理出来。</p>
         </div>
         <div class="role-grid">
           <a class="role-card" href="?role=enterprise">
             <span class="role-icon" aria-hidden="true">需</span>
-            <h2>我有一个痛点</h2>
-            <p>用文字或语音讲述真实情况，由 AI 自动提取场景、影响、目标和任务边界。</p>
-            <span class="text-link">描述我的痛点 <span aria-hidden="true">→</span></span>
+            <h2>AI 产品遇到卡点</h2>
+            <p>用文字或语音说明真实情况，由 AI 自动提取场景、影响、目标和任务边界。</p>
+            <span class="text-link">描述当前卡点 <span aria-hidden="true">→</span></span>
           </a>
           <a class="role-card" href="?role=talent">
             <span class="role-icon" aria-hidden="true">能</span>
-            <h2>我想挖掘能力</h2>
+            <h2>我做过 AI 项目</h2>
             <p>上传简历、粘贴经历或直接讲述，由 AI 自动提炼能力原子并生成针对性追问。</p>
-            <span class="text-link">挖掘我的能力 <span aria-hidden="true">→</span></span>
+            <span class="text-link">提交实战能力 <span aria-hidden="true">→</span></span>
           </a>
         </div>
       </div>
@@ -58,8 +58,8 @@
             <h1 id="app-title">把输入变成下一步可执行的信息</h1>
           </div>
           <div class="segmented-control" role="group" aria-label="切换使用身份">
-            <button type="button" id="switch-enterprise" data-role="enterprise">描述痛点</button>
-            <button type="button" id="switch-talent" data-role="talent">挖掘能力</button>
+            <button type="button" id="switch-enterprise" data-role="enterprise">描述卡点</button>
+            <button type="button" id="switch-talent" data-role="talent">提交能力</button>
           </div>
         </div>
 
@@ -99,9 +99,9 @@
                       <span>支持文字与语音</span>
                     </div>
                     <div class="form-group ai-primary-input">
-                      <label class="form-label" for="enterprise-problem"><span>描述真实痛点 *</span><span class="char-count" id="problem-count">0 / 1000</span></label>
+                      <label class="form-label" for="enterprise-problem"><span>描述当前业务卡点 *</span><span class="char-count" id="problem-count">0 / 1000</span></label>
                       <div class="textarea-with-action">
-                        <textarea class="form-textarea" id="enterprise-problem" maxlength="1000" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="直接讲发生了什么。例如：我们的印尼 TikTok 账号连续三周自然流量下降，已经影响新品发布。试过更换题材和降低频次，但没有稳定改善，希望两周内找到主要原因并拿到一份调整方案。"></textarea>
+                        <textarea class="form-textarea" id="enterprise-problem" maxlength="1000" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="直接讲发生了什么。例如：AI 产品 Demo 已经能演示，但客户试点两个月仍无法上线。数据接入、权限和人工复核都没有跑通，希望先找到最关键的阻塞点。"></textarea>
                         <button class="voice-button" type="button" data-voice-target="enterprise-problem" aria-label="使用语音描述痛点"><span aria-hidden="true">◉</span> 语音描述</button>
                       </div>
                       <p class="form-hint" id="enterprise-problem-hint">像和顾问聊天一样讲即可。AI 会识别场景、阻碍、影响、已尝试动作、预期交付和时间约束。</p>
@@ -112,9 +112,9 @@
                     </div>
                     <div class="example-prompt-row" aria-label="痛点描述示例">
                       <span>一键带入示例</span>
-                      <button type="button" data-demand-example="tiktok-organic-traffic-drop">TikTok 流量下降</button>
-                      <button type="button" data-demand-example="localized-content-system">内容本地化</button>
-                      <button type="button" data-demand-example="user-research-sprint">用户验证</button>
+                      <button type="button" data-demand-example="ai-pilot-to-production">试点难转上线</button>
+                      <button type="button" data-demand-example="ai-inference-cost-stability">Token 成本过高</button>
+                      <button type="button" data-demand-example="ai-roi-pilot-conversion">ROI 说不清</button>
                     </div>
                   </div>
 
@@ -242,7 +242,7 @@
                     <div class="form-group ai-primary-input">
                       <label class="form-label" for="talent-experience"><span>简历、项目或工作经历 *</span><span class="char-count" id="experience-count">0 / 1800</span></label>
                       <div class="textarea-with-action">
-                        <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历，或讲一段你亲自完成的项目。例如：我负责印尼市场的 TikTok 内容运营，通过账号审计、竞品对照和内容结构调整，在 30 天内把自然播放量提升了 62%，相关数据可由周报证明。"></textarea>
+                        <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历，或讲一段你亲自完成的项目。例如：我负责把一个 AI 客服 Demo 接入客户工单流程，补齐权限、人工复核和错误回退，最终通过试点验收并正式上线。"></textarea>
                         <button class="voice-button" type="button" data-voice-target="talent-experience" aria-label="使用语音描述项目经历"><span aria-hidden="true">◉</span> 语音讲经历</button>
                       </div>
                       <p class="form-hint" id="talent-experience-hint">AI 会区分项目背景、你的具体行动、结果和证据，再生成针对性追问。</p>
@@ -253,9 +253,9 @@
                     </div>
                     <div class="example-prompt-row" aria-label="经历描述示例">
                       <span>一键带入示例</span>
-                      <button type="button" data-talent-example="content">账号增长诊断</button>
-                      <button type="button" data-talent-example="research">海外用户研究</button>
-                      <button type="button" data-talent-example="delivery">跨市场项目交付</button>
+                      <button type="button" data-talent-example="productization">产品落地</button>
+                      <button type="button" data-talent-example="cost">成本优化</button>
+                      <button type="button" data-talent-example="roi">试点转化</button>
                     </div>
                   </div>
                   <input type="hidden" id="talent-market">

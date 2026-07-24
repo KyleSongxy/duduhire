@@ -103,7 +103,7 @@ function renderDemandCard(item) {
           <div><dt>不包含</dt><dd>${escapeHTML(item.boundary)}</dd></div>
         </dl>
       </details>
-      <a class="text-link" href="./skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例描述我的痛点 <span aria-hidden="true">→</span></a>
+      <a class="text-link" href="./skill-builder.html?role=enterprise&demand=${encodeURIComponent(item.id)}">用这个样例描述当前卡点 <span aria-hidden="true">→</span></a>
     </article>`;
 }
 
@@ -163,8 +163,8 @@ function updateViewCopy() {
   }
 
   assetGuide.textContent = currentView === 'demand'
-    ? '痛点描述样例帮助你把一句“做得不好”写成可以判断范围、交付和验收方式的问题。'
-    : '这里展示平台已经沉淀的能力原子样例。展开即可查看任务、方法、产出和证据要求。';
+    ? '先看 AI 产品在上线、成本、数据、交付和商业化中可能怎样卡住，再用与你最接近的样例开始描述。'
+    : '这里展示平台已经沉淀的实战能力原子。展开即可查看任务、方法、产出、证据要求和能力边界。';
   resultNote.textContent = currentView === 'demand'
     ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'
     : '这些是已有能力原子样例，不是个人能力挖掘入口；“当前重点”只表示首发服务范围。';
@@ -210,8 +210,8 @@ function setView(view, requestedCategory = '全部', requestedMarket = '全部',
   grid.setAttribute('aria-labelledby', view === 'demand' ? 'demand-tab' : 'capability-tab');
   updateViewCopy();
   searchInput.placeholder = view === 'demand'
-    ? '搜索业务现象，例如：流量下滑、复购、渠道'
-    : '搜索任务或能力，例如：本地化、用户研究、数据';
+    ? '搜索业务现象，例如：试点、成本、ROI、上线'
+    : '搜索任务或能力，例如：工作流、评测、数据治理';
   populateFilters(requestedCategory, requestedMarket);
   render();
 }

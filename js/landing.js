@@ -7,7 +7,8 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function getDemoPair(demandId) {
   const demand = enterpriseDemandCatalog.find((item) => item.id === demandId) || enterpriseDemandCatalog[0];
-  const capability = capabilityCatalog.find((item) => demand.capabilityIds.includes(item.id)) || capabilityCatalog[0];
+  const primaryCapabilityId = demand.capabilityIds[0];
+  const capability = capabilityCatalog.find((item) => item.id === primaryCapabilityId) || capabilityCatalog[0];
   return { demand, capability };
 }
 
@@ -43,7 +44,10 @@ function renderMatchDemo(demandId, scrollIntoView = false) {
   }
 }
 
-renderMatchDemo('tiktok-organic-traffic-drop');
+document.getElementById('home-demand-total').textContent = `${enterpriseDemandCatalog.length} 个样例`;
+document.getElementById('home-capability-total').textContent = `${capabilityCatalog.length} 项能力`;
+
+renderMatchDemo('ai-pilot-to-production');
 
 function closeNav() {
   nav?.classList.remove('open');

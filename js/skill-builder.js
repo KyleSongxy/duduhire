@@ -26,9 +26,9 @@ let talentContentKey = '';
 let toastTimer;
 
 const talentExamples = {
-  content: '我负责印尼市场的 TikTok 内容运营。账号自然流量连续下降后，我按内容类型审计近 30 天数据，对照竞品和发布时间，调整内容结构并设计两周测试。最终自然播放量提升 62%，过程和结果可由周报及后台数据证明。',
-  research: '我曾为一款面向东南亚的 SaaS 产品设计用户研究，在两周内完成 12 位目标用户访谈。我负责研究问题、招募标准、访谈和洞察整理，最终推动团队调整了试用引导与定价表达，相关结论可由研究报告和版本记录证明。',
-  delivery: '我负责协调总部、印尼团队和外部供应商完成三个市场的新品发布。我重新梳理依赖、负责人和里程碑，建立风险升级与验收机制，最终按期上线并减少了重复返工，相关过程可由项目计划和复盘记录证明。',
+  productization: '我负责把一个 AI 客服 Demo 接入客户工单流程。我重新梳理数据来源、权限、自动回复和人工升级规则，补充异常回退与测试集，最终通过试点验收并正式上线。过程可由流程图、版本记录和验收材料证明。',
+  cost: '我负责一款 AI SaaS 的推理成本优化。先按任务类型审计调用日志和 Token 账单，再建立代表性评测集，设计多模型路由、缓存和降级方案。上线后在关键任务质量稳定的前提下降低了单次调用成本，过程可由账单、代码和评测报告证明。',
+  roi: '我负责一个企业 AI 项目的试点转化。先记录现有人工流程的耗时和错误基线，再定义试点指标、数据采集和继续条件，最终把试点结果整理成采购决策材料并推动正式上线。过程可由试点方案、业务指标和客户验收记录证明。',
 };
 
 const draftConfig = {
@@ -174,11 +174,11 @@ function setRole(role, updateUrl = true) {
   switchTalent.classList.toggle('active', !enterpriseActive);
   switchEnterprise.setAttribute('aria-pressed', String(enterpriseActive));
   switchTalent.setAttribute('aria-pressed', String(!enterpriseActive));
-  appEyebrow.textContent = enterpriseActive ? 'AI PAIN PARSING' : 'AI CAPABILITY PARSING';
+  appEyebrow.textContent = enterpriseActive ? 'AI 创业卡点解析' : 'AI 实战能力解析';
   appTitle.innerHTML = enterpriseActive
-    ? '<span class="app-title-line">说一段真实情况，</span><span class="app-title-line">让 AI 自动整理痛点</span>'
-    : '<span class="app-title-line">提供一段真实经历，</span><span class="app-title-line">让 AI 自动解析能力</span>';
-  document.title = enterpriseActive ? '描述我的痛点｜嘟嘟嗨 Duduhire' : '挖掘我的能力｜嘟嘟嗨 Duduhire';
+    ? '<span class="app-title-line">说清 AI 产品卡在哪里，</span><span class="app-title-line">先找到可验证的下一步</span>'
+    : '<span class="app-title-line">提交做过的 AI 项目，</span><span class="app-title-line">让真实能力被看见</span>';
+  document.title = enterpriseActive ? '描述当前卡点｜嘟嘟嗨 Duduhire' : '提交实战能力｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);
     next.searchParams.set('role', role);
@@ -309,12 +309,17 @@ function runLoading(type, steps) {
   });
 }
 
-function scoreCapabilities(text) {
+const lowSignalKeywords = new Set(['ai', '人工智能', '企业', '企业客户', '客户', '产品', '项目', '试点', '上线']);
+
+function scoreCapabilities(text, preferredIds = []) {
   const normalized = text.toLowerCase();
   const scored = capabilityCatalog.map((capability, index) => ({
     capability,
     index,
-    score: capability.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
+    score: capability.keywords.reduce((sum, keyword) => {
+      if (!normalized.includes(keyword.toLowerCase())) return sum;
+      return sum + (lowSignalKeywords.has(keyword.toLowerCase()) ? 0.2 : 1);
+    }, preferredIds.includes(capability.id) ? 2 : 0),
   }));
   scored.sort((a, b) => b.score - a.score || a.index - b.index);
   const selected = scored.filter((item) => item.score > 0).slice(0, 3).map((item) => item.capability);
@@ -377,10 +382,19 @@ enterpriseForm.addEventListener('submit', async (event) => {
     fallbackDeadline: document.getElementById('enterprise-deadline').value,
     sensitive: document.getElementById('enterprise-sensitive').checked,
   });
+  const sourceDemand = enterpriseDemandCatalog.find((item) => item.id === prefillDemandId && item.example === problem);
+  if (sourceDemand) {
+    values.market = sourceDemand.markets.slice(0, 2).join(' / ');
+    values.stage = sourceDemand.stage;
+    values.impact = sourceDemand.impact;
+    values.result = sourceDemand.goal;
+    values.deadline = sourceDemand.duration;
+    values.preferredCapabilityIds = sourceDemand.capabilityIds;
+  }
   values.submitterRole = document.getElementById('enterprise-submitter-role').value;
   values.owner = document.getElementById('enterprise-owner-name').value.trim();
-  values.acceptance = '';
-  values.access = '';
+  values.acceptance = sourceDemand?.acceptance || '';
+  values.access = sourceDemand?.inputs || '';
   syncParsedDemandFields(values);
 
   const submit = document.getElementById('analyze-btn');
@@ -545,7 +559,7 @@ document.addEventListener('submit', (event) => {
 
 function renderEnterpriseResult(values) {
   const service = getService(values.deadline);
-  const capabilities = scoreCapabilities(`${values.problem} ${values.result} ${values.market}`);
+  const capabilities = scoreCapabilities(`${values.problem} ${values.result} ${values.market}`, values.preferredCapabilityIds);
   const leadCapability = capabilities[0];
   const contentKey = enterpriseContentKey || createContentKey('demand', values.problem);
   recordUsage({
@@ -706,11 +720,19 @@ function getTalentSkills(text) {
   const scored = talentSkillTemplates.map((skill, index) => ({
     skill,
     index,
-    score: skill.keywords.reduce((sum, keyword) => sum + (normalized.includes(keyword.toLowerCase()) ? 1 : 0), 0),
+    score: skill.keywords.reduce((sum, keyword) => {
+      if (!normalized.includes(keyword.toLowerCase())) return sum;
+      return sum + (lowSignalKeywords.has(keyword.toLowerCase()) ? 0.2 : 1);
+    }, 0),
   }));
   scored.sort((a, b) => b.score - a.score || a.index - b.index);
-  const matches = scored.filter((item) => item.score > 0).slice(0, 5).map((item) => item.skill);
+  const matches = scored.filter((item) => item.score >= 1.5).slice(0, 5).map((item) => item.skill);
   const selected = [...matches];
+  for (const item of scored) {
+    if (selected.length >= 3) break;
+    if (item.score < 0.8) continue;
+    if (!selected.some((skill) => skill.id === item.skill.id)) selected.push(item.skill);
+  }
   for (const item of scored) {
     if (selected.length >= 3) break;
     if (!selected.some((skill) => skill.id === item.skill.id)) selected.push(item.skill);

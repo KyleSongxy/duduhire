@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="嘟嘟嗨是面向出海与 AI 科技场景的任务级匹配平台。把痛点整理成结构化痛点描述，把经历拆成可验证的能力原子，再连接合适的人与任务。">
+  <meta name="description" content="嘟嘟嗨首期聚焦 AI 创业团队从 Demo 走向真实业务的关键卡点。把问题整理成可验证任务，再匹配真正处理过同类问题的人。">
   <meta name="theme-color" content="#edf5f1" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#141f1c" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="嘟嘟嗨 Duduhire｜让真实痛点与真实能力更好的相遇">
-  <meta property="og:description" content="把真实痛点解析成结构化痛点描述，把真实经历拆成能力原子，让供需双方基于场景与证据相遇。">
+  <meta property="og:description" content="面向正在从 Demo 走向真实业务的 AI 创业团队。说清当前卡点，匹配真正处理过同类问题的人。">
   <meta property="og:type" content="website">
-  <title>嘟嘟嗨 Duduhire｜任务与能力原子匹配平台</title>
+  <meta property="og:image" content="https://kylesongxy.github.io/duduhire/assets/og-ai-startup.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>嘟嘟嗨 Duduhire｜AI 创业实战能力匹配平台</title>
   <link rel="icon" type="image/svg+xml" href="./assets/duduhire-mark.svg">
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -29,7 +33,7 @@
         <a href="#match-demo">匹配演示</a>
         <a href="#demand">需求通道</a>
         <a href="#capability">能力通道</a>
-        <a href="#assets">任务与能力库</a>
+        <a href="#assets">痛点与能力库</a>
       </nav>
       <button class="btn btn-secondary header-cta" type="button" data-action="open-login">登录</button>
     </div>
@@ -42,25 +46,31 @@
           <img src="./assets/cross-border-collaboration-hero.webp" width="1536" height="1024" alt="两位专业人士围绕项目资料共同梳理问题" fetchpriority="high">
         </figure>
         <div class="hero-copy reveal">
-          <p class="eyebrow">出海与 AI 科技任务匹配平台</p>
+          <p class="eyebrow">AI 创业实战能力匹配平台</p>
           <h1 id="hero-title"><span>让真实痛点与</span><span>真实能力更好的相遇</span></h1>
-          <p class="hero-lead">先把痛点解析成结构化痛点描述，再把经历拆成能力原子。平台基于场景、证据与约束，连接合适的供需双方。</p>
+          <p class="hero-lead">产品做出来以后，先说清当前卡点，再匹配真正处理过同类问题的人。</p>
           <div class="hero-actions">
-            <a class="btn btn-large btn-primary" href="./skill-builder.html?role=enterprise">描述我的痛点 <span aria-hidden="true">→</span></a>
-            <a class="btn btn-large btn-secondary" href="./skill-builder.html?role=talent">挖掘我的能力 <span aria-hidden="true">→</span></a>
-          </div>
-          <div class="hero-example-links" aria-label="查看示例匹配">
-            <span>不知道从哪里开始？</span>
-            <button type="button" data-demo-scenario="tiktok-organic-traffic-drop">TikTok 流量下降</button>
-            <button type="button" data-demo-scenario="localized-content-system">内容本地化</button>
-            <button type="button" data-demo-scenario="user-research-sprint">用户验证</button>
+            <a class="btn btn-large btn-primary" href="./skill-builder.html?role=enterprise">描述当前卡点 <span aria-hidden="true">→</span></a>
+            <a class="btn btn-large btn-secondary" href="./skill-builder.html?role=talent">提交实战能力 <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <dl class="hero-ledger reveal" aria-label="平台三方关系">
-          <div><dt>需求方</dt><dd>从痛点生成结构化痛点描述</dd></div>
-          <div><dt>能力方</dt><dd>从经历提炼可验证能力原子</dd></div>
-          <div><dt>平台</dt><dd>对齐场景、证据与合作约束</dd></div>
+          <div><dt>AI 团队</dt><dd>把当前卡点变成可验证任务</dd></div>
+          <div><dt>实战者</dt><dd>用项目证据说明做过什么</dd></div>
+          <div><dt>平台</dt><dd>先撮合微任务，再决定后续合作</dd></div>
         </dl>
+      </div>
+    </section>
+
+    <section class="focus-strip" aria-label="AI 创业常见业务卡点">
+      <div class="container focus-strip-inner">
+        <strong>你可能正卡在这里</strong>
+        <div>
+          <button type="button" data-demo-scenario="ai-pilot-to-production">试点难转上线</button>
+          <button type="button" data-demo-scenario="ai-inference-cost-stability">Token 成本过高</button>
+          <button type="button" data-demo-scenario="ai-roi-pilot-conversion">ROI 说不清</button>
+        </div>
+        <span>选择一个场景，查看平台如何匹配</span>
       </div>
     </section>
 
@@ -69,28 +79,28 @@
         <div class="match-demo-heading reveal">
           <div>
             <span class="section-index">一次匹配如何发生</span>
-            <h2 id="match-demo-title">从一句真实困扰，<br>到一项可验证的合作。</h2>
+            <h2 id="match-demo-title">从一个业务卡点，<br>到一项可验证的合作。</h2>
           </div>
-          <p>选择一个常见场景，直接查看平台如何整理问题、解释匹配依据，并设计低风险的验证任务。</p>
+          <p>选择一个 AI 创业常见场景，查看平台怎样整理问题、核验能力，并设计低风险的验证任务。</p>
         </div>
 
         <div class="demo-scenario-tabs reveal" role="tablist" aria-label="选择匹配示例">
-          <button type="button" role="tab" aria-selected="true" data-demo-scenario="tiktok-organic-traffic-drop">TikTok 流量下降</button>
-          <button type="button" role="tab" aria-selected="false" data-demo-scenario="localized-content-system">东南亚内容本地化</button>
-          <button type="button" role="tab" aria-selected="false" data-demo-scenario="user-research-sprint">海外用户验证</button>
+          <button type="button" role="tab" aria-selected="true" data-demo-scenario="ai-pilot-to-production">Demo 能演示，试点难上线</button>
+          <button type="button" role="tab" aria-selected="false" data-demo-scenario="ai-inference-cost-stability">成本与稳定性难控制</button>
+          <button type="button" role="tab" aria-selected="false" data-demo-scenario="ai-roi-pilot-conversion">价值说不清，试点难转正</button>
         </div>
 
         <div class="match-demo-board reveal" id="match-demo-board" aria-live="polite">
           <article class="demo-demand-sheet">
             <div class="demo-sheet-topline">
               <span>真实痛点</span>
-              <small id="demo-demand-meta">印尼 · 增长期</small>
+              <small id="demo-demand-meta">AI 应用团队 / 企业客户 · 试点期</small>
             </div>
             <p class="demo-original-label">用户原话</p>
-            <blockquote id="demo-demand-example">我们的印尼 TikTok 官方账号连续三周自然流量下降，已经影响新品发布。团队做过申诉和内容调整，但还不清楚主要原因。</blockquote>
+            <blockquote id="demo-demand-example">产品 Demo 已经能演示，但进入客户真实流程后，权限、数据接入和人工复核都没有跑通，试点两个月仍无法正式上线。</blockquote>
             <dl class="demo-demand-structure">
-              <div><dt>业务影响</dt><dd id="demo-demand-impact">新品发布节奏、自然获客占比和团队判断效率受到影响。</dd></div>
-              <div><dt>期望结果</dt><dd id="demo-demand-goal">区分主要问题，明确先验证什么、暂时不做什么。</dd></div>
+              <div><dt>业务影响</dt><dd id="demo-demand-impact">试点周期被拉长，团队持续投入交付资源，却无法形成可复制的上线方法。</dd></div>
+              <div><dt>期望结果</dt><dd id="demo-demand-goal">识别从 Demo 到正式上线的关键阻塞点，并跑通一个真实工作流。</dd></div>
             </dl>
           </article>
 
@@ -108,28 +118,28 @@
               <span>优先核验方向</span>
               <small>不是黑箱分数</small>
             </div>
-            <span class="demo-capability-category" id="demo-capability-category">内容增长</span>
-            <h3 id="demo-capability-name">TikTok 账号增长诊断</h3>
-            <p id="demo-capability-description">定位自然流量、账号健康、内容结构或投放协同中的具体问题。</p>
+            <span class="demo-capability-category" id="demo-capability-category">AI 产品落地</span>
+            <h3 id="demo-capability-name">AI 工作流产品化</h3>
+            <p id="demo-capability-description">把模型能力嵌入一个可运行、可复核、可交付的真实业务流程。</p>
             <ul class="demo-match-reasons" id="demo-match-reasons">
-              <li><span>场景</span><strong>覆盖印尼与东南亚账号增长</strong></li>
-              <li><span>任务</span><strong>可完成账号审计与根因排序</strong></li>
-              <li><span>证据</span><strong>需核验后台数据与诊断记录</strong></li>
+              <li><span>场景</span><strong>处理过 AI 应用试点与企业交付</strong></li>
+              <li><span>任务</span><strong>可完成工作流拆解与上线阻塞诊断</strong></li>
+              <li><span>证据</span><strong>需核验上线方案、评测记录和客户验收材料</strong></li>
             </ul>
           </article>
         </div>
 
         <div class="demo-verification-strip reveal">
           <div>
-            <span class="mini-label">先做微任务，不急着招人</span>
-            <h3 id="demo-microtask-title">3 天问题快诊</h3>
-            <p id="demo-microtask-copy">先用一份账号审计、根因假设与行动优先级，验证判断是否建立在真实数据上。</p>
+            <span class="mini-label">先验证判断，再扩大合作</span>
+            <h3 id="demo-microtask-title">5 天上线阻塞诊断</h3>
+            <p id="demo-microtask-copy">先交付工作流现状图、阻塞清单和最小上线方案，验证判断是否基于真实系统与业务约束。</p>
           </div>
           <dl>
-            <div><dt>需要确认</dt><dd id="demo-risk-copy">人员真实案例、可用档期和数据访问边界</dd></div>
-            <div><dt>验收方式</dt><dd id="demo-acceptance-copy">关键判断能对应后台数据或内容样本</dd></div>
+            <div><dt>需要确认</dt><dd id="demo-risk-copy">真实上线案例、客户配合方式和数据访问边界</dd></div>
+            <div><dt>验收方式</dt><dd id="demo-acceptance-copy">每个阻塞点能对应系统事实，并明确负责人和验证动作</dd></div>
           </dl>
-          <a class="btn btn-large btn-primary" id="demo-try-link" href="./skill-builder.html?role=enterprise&demand=tiktok-organic-traffic-drop">用这个示例体验 <span aria-hidden="true">→</span></a>
+          <a class="btn btn-large btn-primary" id="demo-try-link" href="./skill-builder.html?role=enterprise&demand=ai-pilot-to-production">用这个示例体验 <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -137,16 +147,15 @@
     <section class="section audience-section" aria-labelledby="choose-title">
       <div class="container">
         <div class="section-heading reveal">
-          <span class="section-index">01 / 双边入口</span>
           <h2 id="choose-title">一端形成痛点描述，<br>一端形成能力名片。</h2>
-          <p>供需两端并行进入。平台基于任务场景、能力证据和合作约束完成匹配。</p>
+          <p>AI 团队和实战者并行进入。平台基于任务场景、项目证据和合作边界完成撮合。</p>
         </div>
         <div class="marketplace-board">
           <article class="audience-card reveal" id="demand">
-            <div class="role-label"><span>需求方</span><small>组织、团队或个人</small></div>
-            <h3>描述我的痛点</h3>
-            <p>不必先写岗位。描述正在发生的业务痛点，补充背景、关键阻碍、预期交付和验收边界。</p>
-            <div class="audience-outcome"><span>你会得到</span><strong>一份可继续追问、拆解和匹配的结构化痛点描述</strong></div>
+            <div class="role-label"><span>需求方</span><small>AI 创业团队或项目负责人</small></div>
+            <h3>描述当前卡点</h3>
+            <p>不用先写岗位。直接说明产品、工程、数据、交付或商业化中正在卡住的事情。</p>
+            <div class="audience-outcome"><span>你会得到</span><strong>一份包含影响、目标、约束和验证任务的结构化痛点描述</strong></div>
             <a class="text-link" href="./skill-builder.html?role=enterprise">开始描述 <span aria-hidden="true">→</span></a>
           </article>
 
@@ -160,11 +169,11 @@
           </div>
 
           <article class="audience-card talent-card reveal" id="capability">
-            <div class="role-label"><span>能力方</span><small>专业人才或实战团队</small></div>
-            <h3>挖掘我的能力</h3>
-            <p>不止上传简历。围绕项目经历追问本人动作和结果，把宽泛经验拆成可验证的能力原子。</p>
-            <div class="audience-outcome"><span>你会得到</span><strong>一张由能力原子、证据与待核验问题组成的个人能力名片</strong></div>
-            <a class="text-link" href="./skill-builder.html?role=talent">开始挖掘 <span aria-hidden="true">→</span></a>
+            <div class="role-label"><span>能力方</span><small>AI 产品、工程、行业与交付实战者</small></div>
+            <h3>提交实战能力</h3>
+            <p>不只看职位和简历。说明亲自做过的项目、关键动作、结果证据和能力边界。</p>
+            <div class="audience-outcome"><span>你会得到</span><strong>一张由能力原子、项目证据与待核验问题组成的能力名片</strong></div>
+            <a class="text-link" href="./skill-builder.html?role=talent">开始提交 <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -177,12 +186,11 @@
           <figcaption>不先看头衔，先看任务、行动、结果与证据。</figcaption>
         </figure>
         <div class="platform-copy reveal">
-          <span class="section-index">02 / 平台负责什么</span>
-          <h2 id="platform-title">不替双方做决定，<br>只把关键信息对齐。</h2>
+          <h2 id="platform-title">把模糊卡点变成<br>可以验证的下一步。</h2>
           <div class="platform-ledger">
-            <div><span>01</span><strong>梳理</strong><p>把模糊痛点整理成业务场景、关键阻碍、交付与验收边界。</p></div>
-            <div><span>02</span><strong>核验</strong><p>从个人经历中确认本人行动、结果、证据与能力边界。</p></div>
-            <div><span>03</span><strong>匹配</strong><p>以痛点描述和能力原子做语义对照，说明推荐理由与待核验问题。</p></div>
+            <div><span>问题</span><strong>梳理</strong><p>把业务现象整理成影响、目标、约束、交付与验收边界。</p></div>
+            <div><span>能力</span><strong>核验</strong><p>从项目经历中确认本人动作、方法、结果和可追溯证据。</p></div>
+            <div><span>合作</span><strong>验证</strong><p>先撮合一个范围明确的微任务，用真实交付验证是否适合继续合作。</p></div>
           </div>
         </div>
       </div>
@@ -191,18 +199,18 @@
     <section class="section resource-section" id="assets" aria-labelledby="resource-title">
       <div class="container resource-layout">
         <div class="section-heading reveal">
-          <span class="section-index">03 / 平台资产</span>
+          <span class="section-index">首期能力地图</span>
           <h2 id="resource-title">痛点描述与能力原子库</h2>
-          <p>查看平台沉淀的任务结构与能力样例。不是职位和简历的关键词匹配，而是任务场景与能力证据的对照。</p>
+          <p>首期聚焦 AI 产品落地、工程化、数据治理、企业交付和商业化。不是职位关键词匹配，而是任务场景与项目证据的对照。</p>
         </div>
         <div class="resource-list">
           <a class="resource-row reveal" href="./skill-leaderboard.html?view=demand">
-            <span class="resource-count">12 个样例</span>
+            <span class="resource-count" id="home-demand-total">15 个样例</span>
             <span><strong>结构化痛点描述</strong><small>业务场景、关键阻碍、预期交付与验收边界</small></span>
             <b aria-hidden="true">→</b>
           </a>
           <a class="resource-row reveal" href="./skill-leaderboard.html?view=capability">
-            <span class="resource-count">15 项能力</span>
+            <span class="resource-count" id="home-capability-total">21 项能力</span>
             <span><strong>能力原子样例</strong><small>本人行动、结果、证据与能力边界</small></span>
             <b aria-hidden="true">→</b>
           </a>
@@ -213,13 +221,12 @@
     <section class="final-cta">
       <div class="container final-cta-inner reveal">
         <div>
-          <span class="section-index">现在开始</span>
-          <h2>让真实痛点与<br>真实能力更好的相遇</h2>
-          <p>首期聚焦出海与 AI 科技场景。选择你所在的一端，先生成一份可继续确认的结构化草稿。</p>
+          <h2>产品已经做出来，<br>下一步别再靠猜。</h2>
+          <p>说清当前卡点，或者提交做过的 AI 项目。平台先帮双方找到一项值得验证的合作。</p>
         </div>
         <div class="final-actions">
-          <a class="btn btn-large btn-primary" href="./skill-builder.html?role=enterprise">描述我的痛点</a>
-          <a class="btn btn-large btn-inverse" href="./skill-builder.html?role=talent">挖掘我的能力</a>
+          <a class="btn btn-large btn-primary" href="./skill-builder.html?role=enterprise">描述当前卡点</a>
+          <a class="btn btn-large btn-inverse" href="./skill-builder.html?role=talent">提交实战能力</a>
         </div>
       </div>
     </section>
@@ -233,8 +240,8 @@
       <h2 id="login-title">登录功能正在接入</h2>
       <p>当前演示版不会创建线上账号，也不会上传你的草稿。你可以先直接体验两个核心流程。</p>
       <div class="dialog-actions">
-        <a class="btn btn-primary" href="./skill-builder.html?role=talent">挖掘我的能力</a>
-        <a class="btn btn-secondary" href="./skill-builder.html?role=enterprise">描述我的痛点</a>
+        <a class="btn btn-primary" href="./skill-builder.html?role=talent">提交实战能力</a>
+        <a class="btn btn-secondary" href="./skill-builder.html?role=enterprise">描述当前卡点</a>
       </div>
     </div>
   </dialog>
@@ -249,7 +256,7 @@
         <p>让真实痛点与真实能力更好的相遇。</p>
       </div>
       <div class="footer-links footer-links-simple">
-        <div><strong>开始</strong><a href="./skill-builder.html?role=talent">挖掘我的能力</a><a href="./skill-builder.html?role=enterprise">描述我的痛点</a></div>
+        <div><strong>开始</strong><a href="./skill-builder.html?role=talent">提交实战能力</a><a href="./skill-builder.html?role=enterprise">描述当前卡点</a></div>
         <div><strong>了解</strong><a href="./skill-leaderboard.html">痛点描述与能力原子库</a><a href="./service-notice.html">数据与服务说明</a></div>
       </div>
     </div>
@@ -260,8 +267,8 @@
   </footer>
 
   <div class="mobile-action-bar" aria-label="快速开始">
-    <a class="primary" href="./skill-builder.html?role=enterprise">描述我的痛点</a>
-    <a class="primary" href="./skill-builder.html?role=talent">挖掘我的能力</a>
+    <a class="primary" href="./skill-builder.html?role=enterprise">描述当前卡点</a>
+    <a class="primary" href="./skill-builder.html?role=talent">提交实战能力</a>
   </div>
 
   <script type="module" src="./js/landing.js"></script>
