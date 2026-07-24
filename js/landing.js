@@ -25,10 +25,13 @@ function renderMatchDemo(demandId, scrollIntoView = false) {
   document.getElementById('demo-capability-category').textContent = capability.category;
   document.getElementById('demo-capability-name').textContent = capability.name;
   document.getElementById('demo-capability-description').textContent = capability.description;
+  document.getElementById('demo-capability-meta').textContent = `${capability.duration} · ${capability.service.split(' / ').at(-1)}`;
   document.getElementById('demo-match-reasons').innerHTML = `
-    <li><span>场景</span><strong>覆盖 ${capability.markets.slice(0, 3).join('、')}</strong></li>
-    <li><span>任务</span><strong>${capability.tasks[0]}</strong></li>
-    <li><span>证据</span><strong>需核验${capability.evidence}</strong></li>
+    <li><span>负责什么</span><strong>${capability.tasks.join('；')}</strong></li>
+    <li><span>如何完成</span><strong>${capability.methods}</strong></li>
+    <li><span>交付什么</span><strong>${capability.deliverables.join('、')}</strong></li>
+    <li><span>如何核验</span><strong>${capability.evidence}。判断标准：${capability.acceptance}</strong></li>
+    <li><span>能力边界</span><strong>${capability.boundary}</strong></li>
   `;
   document.getElementById('demo-microtask-title').textContent = `${demand.duration} · ${demand.service.split(' / ')[0]}`;
   document.getElementById('demo-microtask-copy').textContent = `先交付${demand.deliverables.slice(0, 3).join('、')}，验证判断是否建立在真实材料与业务约束上。`;
