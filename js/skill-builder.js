@@ -174,10 +174,10 @@ function setRole(role, updateUrl = true) {
   switchTalent.classList.toggle('active', !enterpriseActive);
   switchEnterprise.setAttribute('aria-pressed', String(enterpriseActive));
   switchTalent.setAttribute('aria-pressed', String(!enterpriseActive));
-  appEyebrow.textContent = enterpriseActive ? 'AI 创业卡点解析' : 'AI 实战能力解析';
+  appEyebrow.textContent = enterpriseActive ? '痛点解析' : '能力解析';
   appTitle.innerHTML = enterpriseActive
-    ? '<span class="app-title-line">说清 AI 产品卡在哪里，</span><span class="app-title-line">先找到可验证的下一步</span>'
-    : '<span class="app-title-line">提交做过的 AI 项目，</span><span class="app-title-line">让真实能力被看见</span>';
+    ? '<span class="app-title-line">说清现在卡在哪里，</span><span class="app-title-line">先找到可验证的下一步</span>'
+    : '<span class="app-title-line">提交做过的真实项目，</span><span class="app-title-line">让真实能力被看见</span>';
   document.title = enterpriseActive ? '描述当前卡点｜嘟嘟嗨 Duduhire' : '提交实战能力｜嘟嘟嗨 Duduhire';
   if (updateUrl) {
     const next = new URL(window.location.href);

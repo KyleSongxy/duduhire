@@ -81,7 +81,7 @@ function renderDemandCard(item) {
   return `
     <article class="directory-card demand-card">
       <div class="directory-card-top">
-        <span class="priority-pill ${item.priority === '首发重点' ? '' : 'secondary'}">${escapeHTML(item.priority)}</span>
+        <span class="priority-pill ${['首发重点', 'AI 专题'].includes(item.priority) ? '' : 'secondary'}">${escapeHTML(item.priority)}</span>
         <span class="directory-category">${escapeHTML(item.category)}<small>${escapeHTML(item.markets.join(' / '))}</small></span>
       </div>
       <h3>${escapeHTML(item.title)}</h3>
@@ -115,7 +115,7 @@ function renderCapabilityCard(item) {
   return `
     <article class="directory-card capability-directory-card">
       <div class="directory-card-top">
-        <span class="priority-pill ${item.priority === '当前重点' ? '' : 'secondary'}">${escapeHTML(item.priority)}</span>
+        <span class="priority-pill ${['当前重点', 'AI 专题'].includes(item.priority) ? '' : 'secondary'}">${escapeHTML(item.priority)}</span>
         <span class="directory-category">${escapeHTML(item.category)}<small>${escapeHTML(item.markets.join(' / '))}</small></span>
       </div>
       <h3>${escapeHTML(item.name)}</h3>
@@ -163,11 +163,11 @@ function updateViewCopy() {
   }
 
   assetGuide.textContent = currentView === 'demand'
-    ? '先看 AI 产品在上线、成本、数据、交付和商业化中可能怎样卡住，再用与你最接近的样例开始描述。'
+    ? '从多个业务方向的样例中，找到与你最接近的情况，再开始描述自己的真实问题。'
     : '这里展示平台已经沉淀的实战能力原子。展开即可查看任务、方法、产出、证据要求和能力边界。';
   resultNote.textContent = currentView === 'demand'
     ? '所有内容都是问题模板，不代表真实客户案例或当前需求量。'
-    : '这些是已有能力原子样例，不是个人能力挖掘入口；“当前重点”只表示首发服务范围。';
+    : '这些是已有能力原子样例，不是个人能力挖掘入口；专题和重点标签只表示当前内容建设方向。';
   clearMatchContext.hidden = true;
 }
 
@@ -210,8 +210,8 @@ function setView(view, requestedCategory = '全部', requestedMarket = '全部',
   grid.setAttribute('aria-labelledby', view === 'demand' ? 'demand-tab' : 'capability-tab');
   updateViewCopy();
   searchInput.placeholder = view === 'demand'
-    ? '搜索业务现象，例如：试点、成本、ROI、上线'
-    : '搜索任务或能力，例如：工作流、评测、数据治理';
+    ? '搜索业务现象，例如：流量、试点、转化、交付'
+    : '搜索任务或能力，例如：研究、工作流、增长';
   populateFilters(requestedCategory, requestedMarket);
   render();
 }

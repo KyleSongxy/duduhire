@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="描述 AI 产品从 Demo 到真实业务时遇到的卡点，或提交亲自做过的 AI 项目，由 AI 整理痛点描述与能力名片。">
+  <meta name="description" content="描述当前真实痛点，或提交亲自做过的项目经历，由 AI 整理结构化痛点描述与能力名片。">
   <meta name="theme-color" content="#f7f7f3">
   <title>开始使用｜嘟嘟嗨 Duduhire</title>
   <link rel="icon" type="image/svg+xml" href="./assets/duduhire-mark.svg">
@@ -19,7 +19,7 @@
       </a>
       <nav class="main-nav" aria-label="辅助导航">
         <a href="./">首页</a>
-        <a href="./skill-leaderboard.html">AI 痛点与能力库</a>
+        <a href="./skill-leaderboard.html">痛点与能力库</a>
       </nav>
       <a class="back-link" href="./">← 返回首页</a>
     </div>
@@ -31,18 +31,18 @@
         <div class="role-intro">
           <p class="eyebrow">选择你的目标</p>
           <h1>从一件现在就想解决的事开始</h1>
-          <p>AI 产品遇到卡点，先把问题说清楚；做过相关项目，就把真正完成过的任务和证据整理出来。</p>
+          <p>有问题，先把痛点说清楚；有经验，就把真正完成过的任务、方法和证据整理出来。</p>
         </div>
         <div class="role-grid">
           <a class="role-card" href="?role=enterprise">
             <span class="role-icon" aria-hidden="true">需</span>
-            <h2>AI 产品遇到卡点</h2>
+            <h2>我有一件事卡住了</h2>
             <p>用文字或语音说明真实情况，由 AI 自动提取场景、影响、目标和任务边界。</p>
             <span class="text-link">描述当前卡点 <span aria-hidden="true">→</span></span>
           </a>
           <a class="role-card" href="?role=talent">
             <span class="role-icon" aria-hidden="true">能</span>
-            <h2>我做过 AI 项目</h2>
+            <h2>我做过相关项目</h2>
             <p>上传简历、粘贴经历或直接讲述，由 AI 自动提炼能力原子并生成针对性追问。</p>
             <span class="text-link">提交实战能力 <span aria-hidden="true">→</span></span>
           </a>
@@ -101,7 +101,7 @@
                     <div class="form-group ai-primary-input">
                       <label class="form-label" for="enterprise-problem"><span>描述当前业务卡点 *</span><span class="char-count" id="problem-count">0 / 1000</span></label>
                       <div class="textarea-with-action">
-                        <textarea class="form-textarea" id="enterprise-problem" maxlength="1000" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="直接讲发生了什么。例如：AI 产品 Demo 已经能演示，但客户试点两个月仍无法上线。数据接入、权限和人工复核都没有跑通，希望先找到最关键的阻塞点。"></textarea>
+                        <textarea class="form-textarea" id="enterprise-problem" maxlength="1000" required aria-describedby="enterprise-problem-hint enterprise-problem-error" placeholder="直接讲发生了什么。例如：用户试用后大量流失，团队已经调整引导和定价，但仍不清楚主要原因，希望两周内完成诊断并拿到验证方案。"></textarea>
                         <button class="voice-button" type="button" data-voice-target="enterprise-problem" aria-label="使用语音描述痛点"><span aria-hidden="true">◉</span> 语音描述</button>
                       </div>
                       <p class="form-hint" id="enterprise-problem-hint">像和顾问聊天一样讲即可。AI 会识别场景、阻碍、影响、已尝试动作、预期交付和时间约束。</p>
@@ -111,7 +111,7 @@
                       <span>发生了什么</span><span>影响了什么</span><span>试过什么</span><span>希望得到什么</span>
                     </div>
                     <div class="example-prompt-row" aria-label="痛点描述示例">
-                      <span>一键带入示例</span>
+                      <span>AI 创业专题示例</span>
                       <button type="button" data-demand-example="ai-pilot-to-production">试点难转上线</button>
                       <button type="button" data-demand-example="ai-inference-cost-stability">Token 成本过高</button>
                       <button type="button" data-demand-example="ai-roi-pilot-conversion">ROI 说不清</button>
@@ -242,7 +242,7 @@
                     <div class="form-group ai-primary-input">
                       <label class="form-label" for="talent-experience"><span>简历、项目或工作经历 *</span><span class="char-count" id="experience-count">0 / 1800</span></label>
                       <div class="textarea-with-action">
-                        <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历，或讲一段你亲自完成的项目。例如：我负责把一个 AI 客服 Demo 接入客户工单流程，补齐权限、人工复核和错误回退，最终通过试点验收并正式上线。"></textarea>
+                        <textarea class="form-textarea talent-experience-input" id="talent-experience" maxlength="1800" required aria-describedby="talent-experience-hint talent-experience-error" placeholder="粘贴简历，或讲一段你亲自完成的项目。例如：我负责一次用户流失诊断，梳理行为数据、访谈反馈和关键路径，推动两周实验并用留存数据验证结果。"></textarea>
                         <button class="voice-button" type="button" data-voice-target="talent-experience" aria-label="使用语音描述项目经历"><span aria-hidden="true">◉</span> 语音讲经历</button>
                       </div>
                       <p class="form-hint" id="talent-experience-hint">AI 会区分项目背景、你的具体行动、结果和证据，再生成针对性追问。</p>
@@ -252,7 +252,7 @@
                       <span>什么场景</span><span>你负责什么</span><span>怎么做的</span><span>结果如何证明</span>
                     </div>
                     <div class="example-prompt-row" aria-label="经历描述示例">
-                      <span>一键带入示例</span>
+                      <span>AI 创业专题示例</span>
                       <button type="button" data-talent-example="productization">产品落地</button>
                       <button type="button" data-talent-example="cost">成本优化</button>
                       <button type="button" data-talent-example="roi">试点转化</button>
