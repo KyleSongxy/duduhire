@@ -57,6 +57,37 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim().replace(/\r\n?/g, '\n') : '';
 }
 
+function normalizeApiKey(value) {
+  let key = typeof value === 'string' ? value.trim() : '';
+  key = key.replace(/^Bearer\s+/i, '').trim();
+  if (
+    key.length >= 2
+    && ((key.startsWith('"') && key.endsWith('"')) || (key.startsWith("'") && key.endsWith("'")))
+  ) {
+    key = key.slice(1, -1).trim();
+  }
+  return key;
+}
+
+function describeApiKey(value) {
+  const raw = typeof value === 'string' ? value : '';
+  const normalized = normalizeApiKey(raw);
+  const kind = normalized.startsWith('sk-ws')
+    ? 'model_studio_workspace'
+    : normalized.startsWith('sk-sp-')
+      ? 'subscription_plan'
+      : normalized.startsWith('sk-')
+        ? 'model_studio_legacy'
+        : normalized.includes('*')
+          ? 'masked_or_redacted'
+          : 'unknown';
+  return {
+    kind,
+    normalized_length: normalized.length,
+    removed_wrapper: normalized !== raw,
+  };
+}
+
 function checkSameOrigin(request, url) {
   const origin = request.headers.get('origin');
   return !origin || origin === url.origin;
@@ -97,13 +128,14 @@ export function getProviderChain(env, flow, text, context = {}) {
     : 'balanced';
   const stage = context.stage || 'initial';
   const options = {};
-  if (env.DEEPSEEK_API_KEY) {
+  const deepseekKey = normalizeApiKey(env.DEEPSEEK_API_KEY);
+  if (deepseekKey) {
     const usePro = flow === 'capability' || stage === 'refined' || text.length > 6000;
     options.deepseek = {
       name: 'deepseek',
       healthKey: usePro ? 'deepseek:pro' : 'deepseek:flash',
       endpoint: 'https://api.deepseek.com/chat/completions',
-      apiKey: env.DEEPSEEK_API_KEY,
+      apiKey: deepseekKey,
       model: usePro ? 'deepseek-v4-pro' : 'deepseek-v4-flash',
       routeReason: usePro ? 'complex_or_refined' : 'fast_fallback',
       requestExtras: {
@@ -111,12 +143,15 @@ export function getProviderChain(env, flow, text, context = {}) {
       },
     };
   }
-  if (env.DASHSCOPE_API_KEY) {
+  const qwenKey = normalizeApiKey(env.DASHSCOPE_API_KEY);
+  if (qwenKey) {
+    const keyFormat = describeApiKey(env.DASHSCOPE_API_KEY);
     options.qwenFlash = {
       name: 'qwen',
       healthKey: 'qwen:flash',
       endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-      apiKey: env.DASHSCOPE_API_KEY,
+      apiKey: qwenKey,
+      keyFormat,
       model: 'qwen3.7-flash',
       routeReason: 'short_initial_cost',
       requestExtras: {
@@ -127,7 +162,8 @@ export function getProviderChain(env, flow, text, context = {}) {
       name: 'qwen',
       healthKey: 'qwen:plus',
       endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-      apiKey: env.DASHSCOPE_API_KEY,
+      apiKey: qwenKey,
+      keyFormat,
       model: 'qwen3.7-plus',
       routeReason: 'complex_refined_quality',
       requestExtras: {
@@ -413,6 +449,7 @@ export async function runAnalysis(flow, source, env, context = {}) {
           route_reason: provider.routeReason,
           latency_ms: Date.now() - attemptStartedAt,
           reason,
+          ...(provider.keyFormat ? { api_key_format: provider.keyFormat } : {}),
         }));
         try {
           await Promise.all([

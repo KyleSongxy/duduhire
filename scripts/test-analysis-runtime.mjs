@@ -206,12 +206,15 @@ assert.deepEqual(
 
 const shortDemandChain = getProviderChain({
   DEEPSEEK_API_KEY: 'test',
-  DASHSCOPE_API_KEY: 'test',
+  DASHSCOPE_API_KEY: '  Bearer "sk-ws-test"  ',
 }, 'demand', '简短需求', { stage: 'initial' });
 assert.deepEqual(
   shortDemandChain.map((provider) => provider.model),
   ['qwen3.7-flash', 'deepseek-v4-flash', 'qwen3.7-plus'],
 );
+assert.equal(shortDemandChain[0].apiKey, 'sk-ws-test');
+assert.equal(shortDemandChain[0].keyFormat.kind, 'model_studio_workspace');
+assert.equal(shortDemandChain[0].keyFormat.removed_wrapper, true);
 
 const redactedOrganization = redactSensitiveText(
   '客户名：星河科技，项目由星河科技发起。',
