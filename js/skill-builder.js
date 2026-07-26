@@ -14,6 +14,7 @@ import {
   submitHumanReview,
 } from './analysis-api.js';
 import { createContentKey, getUsageReceipt, recordUsage } from './usage-meter.js';
+import { readResumeFile } from './resume-parser.js';
 
 const params = new URLSearchParams(window.location.search);
 const validRoles = new Set(['enterprise', 'talent']);
@@ -123,11 +124,65 @@ function feedbackPanel(flow, receiptId, target = 'match') {
     </section>`;
 }
 
-function showToast(message) {
+function showToast(message, tone = 'info') {
   toast.textContent = message;
+  toast.dataset.tone = tone;
   toast.classList.add('show');
   window.clearTimeout(toastTimer);
-  toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2200);
+  toastTimer = window.setTimeout(
+    () => toast.classList.remove('show'),
+    tone === 'error' ? 5000 : 2600,
+  );
+}
+
+function getUserFacingError(error, fallback = '操作未完成，请稍后重试。') {
+  return error?.userMessage || fallback;
+}
+
+function nextPaint() {
+  return new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+}
+
+function setButtonBusy(button, busy, label = '正在处理…') {
+  if (!button) return;
+  if (busy) {
+    if (!button.dataset.idleHtml) button.dataset.idleHtml = button.innerHTML;
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    button.classList.add('is-loading');
+    button.innerHTML = `<span class="button-spinner" aria-hidden="true"></span><span>${escapeHTML(label)}</span>`;
+    return;
+  }
+  button.disabled = false;
+  button.setAttribute('aria-busy', 'false');
+  button.classList.remove('is-loading');
+  if (button.dataset.idleHtml) {
+    button.innerHTML = button.dataset.idleHtml;
+    delete button.dataset.idleHtml;
+  }
+}
+
+function showOperationError(form, message) {
+  if (!form) {
+    showToast(message, 'error');
+    return;
+  }
+  let notice = form.querySelector('[data-operation-error]');
+  if (!notice) {
+    notice = document.createElement('p');
+    notice.className = 'operation-error';
+    notice.dataset.operationError = '';
+    notice.setAttribute('role', 'alert');
+    const actions = form.querySelector('.result-actions');
+    if (actions) actions.before(notice);
+    else form.appendChild(notice);
+  }
+  notice.textContent = message;
+  showToast(message, 'error');
+}
+
+function clearOperationError(form) {
+  form?.querySelector('[data-operation-error]')?.remove();
 }
 
 async function copyText(text, successMessage = '摘要已复制') {
@@ -230,8 +285,15 @@ function bindDraft(config) {
 }
 
 function removeDraft(config) {
-  try { window.sessionStorage.removeItem(config.key); } catch { /* no-op */ }
-  document.getElementById(config.status).textContent = '草稿已清除';
+  try {
+    window.sessionStorage.removeItem(config.key);
+    document.getElementById(config.status).textContent = '草稿已清除';
+    return true;
+  } catch {
+    document.getElementById(config.status).textContent = '浏览器未允许清除会话草稿';
+    showToast('草稿未能从浏览器会话中清除，请关闭当前页面后重试。', 'error');
+    return false;
+  }
 }
 
 function setRole(role, updateUrl = true) {
@@ -358,26 +420,97 @@ function updateSteps(prefix, activeNumber) {
   }
 }
 
-function runLoading(type, steps) {
+function startLoading(type, steps) {
   const loading = document.getElementById(`${type}-loading`);
   const title = document.getElementById(`${type}-loading-title`);
   const detail = document.getElementById(`${type}-loading-detail`);
+  const time = document.getElementById(`${type}-loading-time`);
   const progress = document.getElementById(`${type}-progress`);
-  loading.hidden = false;
+  const progressbar = document.getElementById(`${type}-progressbar`);
+  const output = document.getElementById(`${type}-output`);
+  const outputStatus = document.getElementById(`${type}-output-status`);
+  const isEnterprise = type === 'enterprise';
+  const startedAt = Date.now();
+  let index = 0;
 
-  return new Promise((resolve) => {
-    let index = 0;
-    const next = () => {
-      const step = steps[index];
-      title.textContent = step.title;
-      detail.textContent = step.detail;
-      progress.style.transform = `scaleX(${step.progress / 100})`;
-      index += 1;
-      if (index < steps.length) window.setTimeout(next, 430);
-      else window.setTimeout(resolve, 260);
-    };
-    next();
-  });
+  loading.hidden = false;
+  loading.setAttribute('aria-busy', 'true');
+  outputStatus.textContent = 'AI 处理中';
+  outputStatus.className = 'status-badge warning';
+  output.innerHTML = `
+    <div class="analysis-wait-card" role="status" aria-live="polite">
+      <span class="mini-label">AI 正在工作</span>
+      <h3>${isEnterprise ? '正在把描述整理成可确认的事实' : '正在把经历拆解成能力原子'}</h3>
+      <p>${isEnterprise ? '接下来会逐条确认场景、影响、目标与边界。' : '接下来会逐条确认任务、行动、结果与证据。'}</p>
+      <div class="analysis-skeleton" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+      </div>
+      <p class="analysis-elapsed" data-analysis-elapsed="${type}">通常需要 10–30 秒 · 已等待 0 秒</p>
+    </div>`;
+
+  const renderStep = () => {
+    const step = steps[Math.min(index, steps.length - 1)];
+    title.textContent = step.title;
+    detail.textContent = step.detail;
+    progress.style.transform = `scaleX(${step.progress / 100})`;
+    progressbar.setAttribute('aria-valuenow', String(step.progress));
+  };
+  const renderElapsed = () => {
+    const seconds = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+    const message = seconds < 30
+      ? `通常需要 10–30 秒 · 已等待 ${seconds} 秒`
+      : `仍在处理中 · 已等待 ${seconds} 秒，请保持页面打开`;
+    time.textContent = message;
+    output.querySelector(`[data-analysis-elapsed="${type}"]`)?.replaceChildren(message);
+  };
+
+  renderStep();
+  renderElapsed();
+  const stageTimer = window.setInterval(() => {
+    if (index < steps.length - 1) index += 1;
+    renderStep();
+  }, 4500);
+  const elapsedTimer = window.setInterval(renderElapsed, 1000);
+
+  return {
+    stop(completed = true) {
+      window.clearInterval(stageTimer);
+      window.clearInterval(elapsedTimer);
+      loading.setAttribute('aria-busy', 'false');
+      if (completed) {
+        progress.style.transform = 'scaleX(1)';
+        progressbar.setAttribute('aria-valuenow', '100');
+      }
+    },
+  };
+}
+
+function showAnalysisFailure(type, loadingController, error) {
+  const isEnterprise = type === 'enterprise';
+  const form = document.getElementById(`${type}-form`);
+  const submit = document.getElementById(isEnterprise ? 'analyze-btn' : 'decode-btn');
+  const loading = document.getElementById(`${type}-loading`);
+  const status = document.getElementById(`${type}-status`);
+  const outputStatus = document.getElementById(`${type}-output-status`);
+  const output = document.getElementById(`${type}-output`);
+  const message = getUserFacingError(error, 'AI 解析暂未完成，请检查网络后重试；你的输入已保留。');
+
+  loadingController?.stop(false);
+  loading.hidden = true;
+  form.hidden = false;
+  setButtonBusy(submit, false);
+  status.textContent = '可重试';
+  status.className = 'status-badge danger';
+  outputStatus.textContent = '未完成';
+  outputStatus.className = 'status-badge danger';
+  output.innerHTML = `
+    <div class="analysis-error-state" role="alert">
+      <span class="mini-label">本次解析未完成</span>
+      <h3>${escapeHTML(message)}</h3>
+      <p>你填写的内容仍然保留。检查网络或稍候片刻，再点击“${isEnterprise ? 'AI 解析我的痛点' : 'AI 解析我的能力'}”。</p>
+    </div>`;
+  showToast(message, 'error');
+  submit.focus({ preventScroll: true });
 }
 
 const lowSignalKeywords = new Set(['ai', '人工智能', '企业', '企业客户', '客户', '产品', '项目', '试点', '上线']);
@@ -643,21 +776,29 @@ enterpriseForm.addEventListener('submit', async (event) => {
   );
 
   const submit = document.getElementById('analyze-btn');
-  submit.disabled = true;
+  setButtonBusy(submit, true, 'AI 正在解析痛点…');
   enterpriseForm.hidden = true;
   document.getElementById('enterprise-status').textContent = 'AI 解析中';
   document.getElementById('enterprise-status').className = 'status-badge warning';
   updateSteps('e', 2);
-  const modelPromise = analyzeWithDomesticModel('demand', {
-    text: problem,
-    sensitive: values.sensitive,
-    redaction_terms: values.redactionTerms,
-  });
-  const [, modelResult] = await Promise.all([runLoading('enterprise', [
-    { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 28 },
-    { title: 'AI 正在拆解任务结构', detail: '提取影响、预期交付与时间约束', progress: 62 },
-    { title: 'AI 正在生成确认问题', detail: '标记缺失信息与待核验能力方向', progress: 100 },
-  ]), modelPromise]);
+  const loadingController = startLoading('enterprise', [
+    { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 18 },
+    { title: 'AI 正在拆解任务结构', detail: '提取影响、预期交付与时间约束', progress: 48 },
+    { title: 'AI 正在核对事实边界', detail: '区分原文事实、合理推断与仍待确认的信息', progress: 72 },
+    { title: 'AI 正在生成确认问题', detail: '标记缺失信息与待核验能力方向', progress: 90 },
+  ]);
+  await nextPaint();
+  let modelResult;
+  try {
+    modelResult = await analyzeWithDomesticModel('demand', {
+      text: problem,
+      sensitive: values.sensitive,
+      redaction_terms: values.redactionTerms,
+    });
+  } catch (analysisError) {
+    showAnalysisFailure('enterprise', loadingController, analysisError);
+    return;
+  }
   values = mapDemandAnalysis(modelResult, values);
   enterpriseContentKey = createContentKey('demand', values.problem);
   recordUsage({
@@ -670,8 +811,9 @@ enterpriseForm.addEventListener('submit', async (event) => {
     costCny: values.analysisMeta?.estimated_cost_cny || 0,
   });
   syncParsedDemandFields(values);
+  loadingController.stop();
   document.getElementById('enterprise-loading').hidden = true;
-  submit.disabled = false;
+  setButtonBusy(submit, false);
   if (values.modelAnalysis?.status === 'requires_human_review') {
     renderModelReviewState('enterprise', values.modelAnalysis, problem);
     return;
@@ -841,14 +983,27 @@ document.addEventListener('submit', async (event) => {
   }
   let values = mergeDemandAnswers(pendingEnterpriseValues, answers);
   if (values.modelAnalysis) {
-    event.target.querySelector('button[type="submit"]').disabled = true;
-    const refined = await refineWithDomesticModel('demand', {
-      text: values.problem,
-      sensitive: values.sensitive,
-      previousAnalysis: values.modelAnalysis,
-      answers: values.modelFollowups || [],
-      redactionTerms: values.redactionTerms || [],
-    });
+    const submit = event.target.querySelector('button[type="submit"]');
+    clearOperationError(event.target);
+    setButtonBusy(submit, true, 'AI 正在整合回答…');
+    let refined;
+    try {
+      refined = await refineWithDomesticModel('demand', {
+        text: values.problem,
+        sensitive: values.sensitive,
+        previousAnalysis: values.modelAnalysis,
+        answers: values.modelFollowups || [],
+        redactionTerms: values.redactionTerms || [],
+      });
+    } catch (analysisError) {
+      setButtonBusy(submit, false);
+      showOperationError(event.target, getUserFacingError(
+        analysisError,
+        '追问答案暂时无法重新解析，请稍后重试。',
+      ));
+      return;
+    }
+    setButtonBusy(submit, false);
     values = mapDemandAnalysis(refined, values);
     recordUsage({
       flow: 'demand',
@@ -867,7 +1022,7 @@ document.addEventListener('submit', async (event) => {
   renderDemandConfirmation(values);
 });
 
-document.addEventListener('submit', (event) => {
+document.addEventListener('submit', async (event) => {
   if (event.target.id !== 'demand-confirmation-form') return;
   event.preventDefault();
   const confirmedFactIds = [...event.target.querySelectorAll('[name="confirmed-fact"]:checked')]
@@ -877,7 +1032,18 @@ document.addEventListener('submit', (event) => {
     return;
   }
   enterpriseConfirmation = { confirmedFactIds };
-  renderEnterpriseResult(pendingEnterpriseValues);
+  const submit = event.target.querySelector('button[type="submit"]');
+  clearOperationError(event.target);
+  setButtonBusy(submit, true, '正在生成匹配结果…');
+  try {
+    await renderEnterpriseResult(pendingEnterpriseValues);
+  } catch (matchingError) {
+    setButtonBusy(submit, false);
+    showOperationError(event.target, getUserFacingError(
+      matchingError,
+      '匹配结果暂时无法生成，请稍后重试。',
+    ));
+  }
 });
 
 async function renderEnterpriseResult(values) {
@@ -891,6 +1057,9 @@ async function renderEnterpriseResult(values) {
   const structured = values.modelAnalysis
     ? await requestStructuredMatch('demand', values.modelAnalysis, enterpriseConfirmation || {})
     : null;
+  if (values.modelAnalysis && !structured) {
+    showToast('智能匹配暂时不可用，已根据已确认内容展示基础匹配结果。', 'error');
+  }
   const capabilities = structured?.status === 'ready'
     ? structured.matches.map((match) => ({
         ...capabilityCatalog.find((item) => item.id === match.id),
@@ -1160,23 +1329,32 @@ talentForm.addEventListener('submit', async (event) => {
   talentContentKey = createContentKey('talent', values.experience);
 
   const submit = document.getElementById('decode-btn');
-  submit.disabled = true;
+  setButtonBusy(submit, true, 'AI 正在解析能力…');
   talentForm.hidden = true;
   document.getElementById('talent-status').textContent = 'AI 解析中';
   document.getElementById('talent-status').className = 'status-badge warning';
-  updateSteps('t', 1);
-  const modelPromise = analyzeWithDomesticModel('capability', {
-    text: values.experience,
-    sensitive: false,
-    redaction_terms: values.redactionTerms,
-  });
-  const [, modelResult] = await Promise.all([runLoading('talent', [
-    { title: 'AI 正在阅读你的经历', detail: '区分岗位描述与本人实际行动', progress: 30 },
-    { title: 'AI 正在提炼能力原子', detail: '连接任务、方法、结果与证据', progress: 66 },
-    { title: 'AI 正在生成针对性追问', detail: '继续确认贡献边界与熟练程度', progress: 100 },
-  ]), modelPromise]);
+  updateSteps('t', 2);
+  const loadingController = startLoading('talent', [
+    { title: 'AI 正在阅读你的经历', detail: '区分岗位描述与本人实际行动', progress: 18 },
+    { title: 'AI 正在提炼能力原子', detail: '连接任务、方法、结果与证据', progress: 48 },
+    { title: 'AI 正在检查证据边界', detail: '识别可核验结果、贡献范围与仍待确认的信息', progress: 72 },
+    { title: 'AI 正在生成针对性追问', detail: '继续确认贡献边界与熟练程度', progress: 90 },
+  ]);
+  await nextPaint();
+  let modelResult;
+  try {
+    modelResult = await analyzeWithDomesticModel('capability', {
+      text: values.experience,
+      sensitive: false,
+      redaction_terms: values.redactionTerms,
+    });
+  } catch (analysisError) {
+    showAnalysisFailure('talent', loadingController, analysisError);
+    return;
+  }
+  loadingController.stop();
   document.getElementById('talent-loading').hidden = true;
-  submit.disabled = false;
+  setButtonBusy(submit, false);
   recordUsage({
     flow: 'talent',
     stage: 'capability-structure',
@@ -1239,18 +1417,31 @@ document.addEventListener('submit', async (event) => {
   let values = pendingTalentValues;
   let skills = activeTalentSkills;
   if (values.modelAnalysis) {
-    event.target.querySelector('button[type="submit"]').disabled = true;
+    const submit = event.target.querySelector('button[type="submit"]');
+    clearOperationError(event.target);
+    setButtonBusy(submit, true, 'AI 正在整合回答…');
     const followups = skills.map((skill) => ({
       question: getSkillQuestion(skill),
       targets: skill.modelAtom?.id ? [skill.modelAtom.id] : [skill.id],
       answer: answers[skill.id],
     }));
-    const refined = await refineWithDomesticModel('capability', {
-      text: values.experience,
-      previousAnalysis: values.modelAnalysis,
-      answers: followups,
-      redactionTerms: values.redactionTerms || [],
-    });
+    let refined;
+    try {
+      refined = await refineWithDomesticModel('capability', {
+        text: values.experience,
+        previousAnalysis: values.modelAnalysis,
+        answers: followups,
+        redactionTerms: values.redactionTerms || [],
+      });
+    } catch (analysisError) {
+      setButtonBusy(submit, false);
+      showOperationError(event.target, getUserFacingError(
+        analysisError,
+        '追问答案暂时无法重新解析，请稍后重试。',
+      ));
+      return;
+    }
+    setButtonBusy(submit, false);
     if (refined?.analysis?.status === 'requires_human_review') {
       renderModelReviewState('talent', refined.analysis, values.experience);
       return;
@@ -1283,7 +1474,7 @@ document.addEventListener('submit', async (event) => {
   renderTalentConfirmation(values, skills);
 });
 
-document.addEventListener('submit', (event) => {
+document.addEventListener('submit', async (event) => {
   if (event.target.id !== 'talent-confirmation-form') return;
   event.preventDefault();
   const confirmedAtomIds = [...event.target.querySelectorAll('[name="confirmed-atom"]:checked')]
@@ -1296,7 +1487,22 @@ document.addEventListener('submit', (event) => {
   const confirmedSkills = activeTalentSkills.filter((skill) => (
     !skill.modelAtom?.id || confirmedAtomIds.includes(skill.modelAtom.id)
   ));
-  renderTalentResult(pendingTalentValues, confirmedSkills, pendingTalentValues.skillAnswers || {});
+  const submit = event.target.querySelector('button[type="submit"]');
+  clearOperationError(event.target);
+  setButtonBusy(submit, true, '正在生成能力名片…');
+  try {
+    await renderTalentResult(
+      pendingTalentValues,
+      confirmedSkills,
+      pendingTalentValues.skillAnswers || {},
+    );
+  } catch (matchingError) {
+    setButtonBusy(submit, false);
+    showOperationError(event.target, getUserFacingError(
+      matchingError,
+      '能力名片暂时无法生成，请稍后重试。',
+    ));
+  }
 });
 
 function evidenceCertificationPanel(skills, redactionTerms = []) {
@@ -1401,6 +1607,9 @@ async function renderTalentResult(values, skills, answers) {
   const structured = values.modelAnalysis
     ? await requestStructuredMatch('capability', values.modelAnalysis, talentConfirmation || {})
     : null;
+  if (values.modelAnalysis && !structured) {
+    showToast('智能需求对照暂时不可用，已根据已确认内容展示基础结果。', 'error');
+  }
   const matchingDemands = structured?.status === 'ready'
     ? structured.matches.map((match) => ({
         ...enterpriseDemandCatalog.find((item) => item.id === match.id),
@@ -1530,13 +1739,22 @@ document.addEventListener('submit', async (event) => {
         FILE_TOO_LARGE: '文件超过 5MB，请压缩或改为提交链接。',
         UNSUPPORTED_FILE_TYPE: '仅支持 PDF、PNG、JPG、TXT 和 Markdown。',
         CONSENT_REQUIRED: '请先确认材料授权与隐私声明。',
+        NETWORK_ERROR: '网络连接失败，材料没有提交。请检查网络后重试。',
       };
       status.textContent = messages[result.body?.error] || '提交失败，请检查内容后重试。';
       return;
     }
     const key = `duduhire-evidence-${result.body.id}`;
-    try { window.sessionStorage.setItem(key, result.body.owner_token); } catch { /* no-op */ }
-    status.textContent = '材料已进入人工核验队列。';
+    let tokenSaved = true;
+    try {
+      window.sessionStorage.setItem(key, result.body.owner_token);
+    } catch {
+      tokenSaved = false;
+    }
+    status.textContent = tokenSaved
+      ? '材料已进入人工核验队列。'
+      : `材料已提交（编号 ${result.body.id}），但浏览器未允许保存进度凭证；关闭页面后将无法继续追踪。`;
+    if (!tokenSaved) showToast('材料已提交，但进度凭证未能保存在当前浏览器。', 'error');
     renderEvidenceProgress({
       id: result.body.id,
       capabilityName: select.value,
@@ -1557,17 +1775,31 @@ document.addEventListener('submit', async (event) => {
       status.textContent = '当前会话没有追踪凭证，请使用保存的凭证重新打开进度。';
       return;
     }
+    const answer = event.target.elements.answer.value.trim();
+    if (answer.length < 12) {
+      status.textContent = '请至少用 12 个字说明你的判断过程与交付内容。';
+      event.target.elements.answer.focus();
+      return;
+    }
     status.textContent = '正在提交微任务…';
+    const submit = event.target.querySelector('button[type="submit"]');
+    setButtonBusy(submit, true, '正在提交微任务…');
     const result = await submitEvidenceMicrotask(
       id,
       token,
-      event.target.elements.answer.value.trim(),
+      answer,
       pendingTalentValues?.redactionTerms || [],
     );
     status.textContent = result.ok
       ? '微任务已提交，等待人工评分。'
       : '提交失败；请先确认材料已通过 L1 核验。';
-    if (result.ok) event.target.querySelector('button[type="submit"]').disabled = true;
+    if (result.ok) {
+      setButtonBusy(submit, false);
+      submit.disabled = true;
+      submit.textContent = '微任务已提交';
+    } else {
+      setButtonBusy(submit, false);
+    }
   }
 });
 
@@ -1593,29 +1825,60 @@ function resetTalent() {
 
 const resumeUpload = document.getElementById('resume-upload');
 const resumeUploadStatus = document.getElementById('resume-upload-status');
+const resumeUploadLabel = document.querySelector('label[for="resume-upload"]');
+
+function setResumeUploadState(state, message) {
+  resumeUploadStatus.dataset.state = state;
+  resumeUploadStatus.textContent = message;
+  resumeUpload.setAttribute('aria-invalid', state === 'error' ? 'true' : 'false');
+  resumeUpload.closest('.resume-import')?.setAttribute('aria-busy', String(state === 'loading'));
+}
+
 resumeUpload.addEventListener('change', async () => {
   const [file] = resumeUpload.files;
   if (!file) return;
-  if (file.size > 5 * 1024 * 1024) {
-    resumeUploadStatus.textContent = '文件超过 5MB，请选择更小的文件或直接粘贴经历。';
-    resumeUpload.value = '';
-    return;
-  }
-  const extension = file.name.split('.').pop()?.toLowerCase();
-  if (extension === 'txt' || extension === 'md') {
-    const text = (await file.text()).trim();
-    if (!text) {
-      resumeUploadStatus.textContent = `${file.name} 没有可读取的文字，请选择其他文件或直接填写经历。`;
-      return;
-    }
+  resumeUpload.disabled = true;
+  resumeUploadLabel.classList.add('is-loading');
+  resumeUploadLabel.textContent = '正在读取…';
+  setResumeUploadState('loading', `正在读取 ${file.name}，请稍候…`);
+  await nextPaint();
+
+  try {
+    const { text, format } = await readResumeFile(file, ({ message }) => {
+      if (message) setResumeUploadState('loading', message);
+    });
     const experience = document.getElementById('talent-experience');
     experience.value = text.slice(0, experience.maxLength);
     experience.dispatchEvent(new Event('input', { bubbles: true }));
-    resumeUploadStatus.textContent = `已读取 ${file.name}${text.length > experience.maxLength ? '，内容已截取至 1800 字' : ''}`;
-    showToast('简历文本已导入');
-    return;
+    setError('talent-experience', '');
+    setErrorSummary('talent-error-summary', false);
+    const truncated = text.length > experience.maxLength;
+    const formatLabel = {
+      pdf: 'PDF',
+      docx: 'Word',
+      rtf: 'RTF',
+      txt: 'TXT',
+      md: 'Markdown',
+    }[format];
+    setResumeUploadState(
+      'success',
+      `已从 ${formatLabel} 读取 ${file.name}，导入 ${experience.value.length} 字${truncated ? '；原文较长，已保留前 1800 字' : ''}。`,
+    );
+    showToast(truncated ? '简历已导入，超出部分已截取' : '简历文字已导入');
+    experience.focus({ preventScroll: true });
+  } catch (fileError) {
+    const message = getUserFacingError(
+      fileError,
+      '文件读取失败。请重新选择文件，或直接粘贴关键经历。',
+    );
+    setResumeUploadState('error', message);
+    showToast(message, 'error');
+    resumeUpload.value = '';
+  } finally {
+    resumeUpload.disabled = false;
+    resumeUploadLabel.classList.remove('is-loading');
+    resumeUploadLabel.textContent = '重新选择';
   }
-  resumeUploadStatus.textContent = `已选择 ${file.name}。演示版不会上传此文件，暂时无法读取该格式；请粘贴关键经历继续。`;
 });
 
 let activeRecognition = null;
@@ -1658,12 +1921,28 @@ function startVoiceInput(button) {
     target.dispatchEvent(new Event('input', { bubbles: true }));
     showToast('语音已转成文字，请检查后开始 AI 解析');
   });
-  recognition.addEventListener('error', () => showToast('没有识别到有效语音，请重试或改用键盘'));
+  recognition.addEventListener('error', (event) => {
+    const messages = {
+      'not-allowed': '未获得麦克风权限，请在浏览器设置中允许后重试。',
+      'service-not-allowed': '当前浏览器未允许语音识别服务，请改用键盘输入。',
+      'audio-capture': '没有检测到可用麦克风，请检查设备连接。',
+      network: '语音识别网络连接失败，请检查网络后重试。',
+      'no-speech': '没有识别到有效语音，请靠近麦克风重试或改用键盘。',
+      aborted: '语音输入已取消。',
+    };
+    showToast(messages[event.error] || '语音识别失败，请重试或改用键盘。', 'error');
+  });
   recognition.addEventListener('end', () => {
     activeRecognition = null;
     resetVoiceButton();
   });
-  recognition.start();
+  try {
+    recognition.start();
+  } catch {
+    activeRecognition = null;
+    resetVoiceButton();
+    showToast('语音输入启动失败，请检查麦克风权限或改用键盘。', 'error');
+  }
 }
 
 function clearEnterpriseDraft() {
@@ -1703,7 +1982,9 @@ function clearTalentDraft() {
   setError('talent-experience', '');
   setErrorSummary('talent-error-summary', false);
   document.getElementById('experience-count').textContent = '0 / 1800';
-  document.getElementById('resume-upload-status').textContent = '尚未选择文件';
+  resumeUpload.value = '';
+  resumeUploadLabel.textContent = '选择简历';
+  setResumeUploadState('idle', '尚未选择文件 · 最多 10MB');
   document.getElementById('talent-output').innerHTML = '<div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>草稿已清除</h3><p>重新提供一段你亲自完成、结果明确的经历。</p></div></div>';
   document.getElementById('talent-status').textContent = '未开始';
   document.getElementById('talent-output-status').textContent = '待生成';
@@ -1713,20 +1994,36 @@ function clearTalentDraft() {
 
 async function refineDemandFromConfirmation() {
   const corrections = document.getElementById('demand-corrections')?.value.trim() || '';
+  const form = document.getElementById('demand-confirmation-form');
+  const submit = form?.querySelector('[data-action="refine-demand"]');
   if (!corrections) {
     showToast('请先写明需要修改或补充的内容');
+    document.getElementById('demand-corrections')?.focus();
     return;
   }
-  const result = await refineWithDomesticModel('demand', {
-    text: pendingEnterpriseValues.problem,
-    sensitive: pendingEnterpriseValues.sensitive,
-    previousAnalysis: pendingEnterpriseValues.modelAnalysis,
-    answers: pendingEnterpriseValues.modelFollowups || [],
-    corrections,
-    redactionTerms: pendingEnterpriseValues.redactionTerms || [],
-  });
+  clearOperationError(form);
+  setButtonBusy(submit, true, 'AI 正在重新解析…');
+  let result;
+  try {
+    result = await refineWithDomesticModel('demand', {
+      text: pendingEnterpriseValues.problem,
+      sensitive: pendingEnterpriseValues.sensitive,
+      previousAnalysis: pendingEnterpriseValues.modelAnalysis,
+      answers: pendingEnterpriseValues.modelFollowups || [],
+      corrections,
+      redactionTerms: pendingEnterpriseValues.redactionTerms || [],
+    });
+  } catch (analysisError) {
+    setButtonBusy(submit, false);
+    showOperationError(form, getUserFacingError(
+      analysisError,
+      '重新解析失败，请稍后再试；修正内容仍然保留。',
+    ));
+    return;
+  }
+  setButtonBusy(submit, false);
   if (!result?.analysis) {
-    showToast('重新解析失败，请稍后再试');
+    showOperationError(form, '重新解析失败，请稍后再试；修正内容仍然保留。');
     return;
   }
   pendingEnterpriseValues = mapDemandAnalysis(result, pendingEnterpriseValues);
@@ -1749,19 +2046,35 @@ async function refineDemandFromConfirmation() {
 
 async function refineTalentFromConfirmation() {
   const corrections = document.getElementById('talent-corrections')?.value.trim() || '';
+  const form = document.getElementById('talent-confirmation-form');
+  const submit = form?.querySelector('[data-action="refine-talent"]');
   if (!corrections) {
     showToast('请先写明需要修改或补充的内容');
+    document.getElementById('talent-corrections')?.focus();
     return;
   }
-  const result = await refineWithDomesticModel('capability', {
-    text: pendingTalentValues.experience,
-    previousAnalysis: pendingTalentValues.modelAnalysis,
-    answers: pendingTalentValues.modelFollowups || [],
-    corrections,
-    redactionTerms: pendingTalentValues.redactionTerms || [],
-  });
+  clearOperationError(form);
+  setButtonBusy(submit, true, 'AI 正在重新解析…');
+  let result;
+  try {
+    result = await refineWithDomesticModel('capability', {
+      text: pendingTalentValues.experience,
+      previousAnalysis: pendingTalentValues.modelAnalysis,
+      answers: pendingTalentValues.modelFollowups || [],
+      corrections,
+      redactionTerms: pendingTalentValues.redactionTerms || [],
+    });
+  } catch (analysisError) {
+    setButtonBusy(submit, false);
+    showOperationError(form, getUserFacingError(
+      analysisError,
+      '重新解析失败，请稍后再试；修正内容仍然保留。',
+    ));
+    return;
+  }
+  setButtonBusy(submit, false);
   if (!result?.analysis) {
-    showToast('重新解析失败，请稍后再试');
+    showOperationError(form, '重新解析失败，请稍后再试；修正内容仍然保留。');
     return;
   }
   pendingTalentValues = {
@@ -1824,6 +2137,8 @@ async function queuePendingReview(type) {
     return;
   }
   status.textContent = '正在提交…';
+  const button = document.querySelector(`[data-action="submit-review-${type}"]`);
+  setButtonBusy(button, true, '正在提交审核…');
   const result = await submitHumanReview({
     ...pending,
     note: document.getElementById(`${type}-review-note`)?.value.trim() || '',
@@ -1832,6 +2147,8 @@ async function queuePendingReview(type) {
   status.textContent = result?.queued
     ? `已进入人工审核队列，编号 ${result.id}。`
     : '暂时无法提交，请稍后再试。';
+  setButtonBusy(button, false);
+  if (result?.queued && button) button.disabled = true;
 }
 
 document.addEventListener('click', async (event) => {

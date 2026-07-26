@@ -174,11 +174,13 @@
                   <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>未启用模型时只在浏览器内解析；启用后仅在你点击解析时经后端调用国内模型，不自动入库。</strong>正式匹配仍需人工确认。<a href="./service-notice.html">查看数据与服务说明</a></p></div>
                 </form>
 
-                <div class="loading-state" id="enterprise-loading" hidden aria-live="polite">
+                <div class="loading-state" id="enterprise-loading" hidden aria-live="polite" aria-atomic="true">
                   <div class="loader-ring" aria-hidden="true"></div>
                   <h3 id="enterprise-loading-title">正在整理问题事实</h3>
                   <p id="enterprise-loading-detail">区分现象、影响与期望结果</p>
-                  <div class="progress-bar"><div class="progress-fill" id="enterprise-progress"></div></div>
+                  <p class="loading-time" id="enterprise-loading-time">通常需要 10–30 秒 · 已等待 0 秒</p>
+                  <div class="progress-bar" id="enterprise-progressbar" role="progressbar" aria-label="痛点解析进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="enterprise-progress"></div></div>
+                  <p class="loading-guidance">请保持页面打开；完成后会自动进入事实确认。</p>
                 </div>
               </div>
             </article>
@@ -233,11 +235,11 @@
                     <div class="resume-import-copy">
                       <span class="mini-label">方式 01</span>
                       <strong>导入简历文字</strong>
-                      <p>当前体验可直接读取 TXT、MD；其他格式可改为粘贴关键经历。</p>
+                      <p>支持 PDF、Word（DOCX）、RTF、TXT、MD，最多 10MB；文件只在当前浏览器读取。旧版 DOC 请先另存为 DOCX。</p>
                     </div>
                     <label class="btn btn-secondary resume-upload-label" for="resume-upload">选择简历</label>
-                    <input class="sr-only" id="resume-upload" type="file" accept=".txt,.md,.pdf,.doc,.docx,text/plain,text/markdown,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-                    <p class="resume-upload-status" id="resume-upload-status" role="status">尚未选择文件</p>
+                    <input class="sr-only" id="resume-upload" type="file" accept=".pdf,.docx,.doc,.rtf,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,application/rtf,text/rtf,text/plain,text/markdown" aria-describedby="resume-upload-status">
+                    <p class="resume-upload-status" id="resume-upload-status" role="status" aria-live="polite">尚未选择文件 · 最多 10MB</p>
                   </div>
                   <div class="ai-composer" data-composer="talent">
                     <div class="ai-composer-topline">
@@ -279,11 +281,13 @@
                   <div class="privacy-note"><span aria-hidden="true">◇</span><p><strong>未启用模型时只在浏览器内解析；启用后仅在你点击解析时经后端调用国内模型，不自动加入能力库。</strong>解析结果需要你继续确认。<a href="./service-notice.html">查看数据与服务说明</a></p></div>
                 </form>
 
-                <div class="loading-state" id="talent-loading" hidden aria-live="polite">
+                <div class="loading-state" id="talent-loading" hidden aria-live="polite" aria-atomic="true">
                   <div class="loader-ring" aria-hidden="true"></div>
                   <h3 id="talent-loading-title">正在识别你完成过的任务</h3>
                   <p id="talent-loading-detail">区分你的角色、方法与结果</p>
-                  <div class="progress-bar"><div class="progress-fill" id="talent-progress"></div></div>
+                  <p class="loading-time" id="talent-loading-time">通常需要 10–30 秒 · 已等待 0 秒</p>
+                  <div class="progress-bar" id="talent-progressbar" role="progressbar" aria-label="能力解析进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="talent-progress"></div></div>
+                  <p class="loading-guidance">请保持页面打开；完成后会自动进入能力确认。</p>
                 </div>
               </div>
             </article>

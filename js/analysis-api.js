@@ -1,13 +1,40 @@
 let statusPromise;
 const inflightRequests = new Map();
 
+function createAnalysisError(code, status = 0, detail = '') {
+  const messages = {
+    ANALYSIS_STATUS_UNAVAILABLE: '暂时无法连接 AI 服务，请检查网络后重试；你的输入已保留。',
+    RATE_LIMITED: '提交过于频繁，请稍候一分钟再试；你的输入已保留。',
+    REQUEST_TOO_LARGE: '提交内容过长，请精简后重试。',
+    REQUEST_INVALID: '提交内容未通过检查，请修改标红内容后重试。',
+    SERVICE_UNAVAILABLE: 'AI 服务暂时繁忙，请稍后重试；你的输入已保留。',
+    REQUEST_FAILED: 'AI 解析暂未完成，请检查网络后重试；你的输入已保留。',
+  };
+  const error = new Error(detail || messages[code] || messages.REQUEST_FAILED);
+  error.name = 'AnalysisRequestError';
+  error.code = code;
+  error.status = status;
+  error.userMessage = messages[code] || messages.REQUEST_FAILED;
+  return error;
+}
+
 async function getAnalysisStatus() {
   if (!statusPromise) {
     statusPromise = fetch('/api/analysis/status', {
       headers: { accept: 'application/json' },
     })
-      .then((response) => (response.ok ? response.json() : { enabled: false }))
-      .catch(() => ({ enabled: false }));
+      .then((response) => {
+        if (!response.ok) {
+          throw createAnalysisError('ANALYSIS_STATUS_UNAVAILABLE', response.status);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        statusPromise = null;
+        throw error?.userMessage
+          ? error
+          : createAnalysisError('ANALYSIS_STATUS_UNAVAILABLE', 0, error?.message);
+      });
   }
   return statusPromise;
 }
@@ -32,10 +59,28 @@ export async function analyzeWithDomesticModel(flow, payload) {
         },
         body: JSON.stringify(requestPayload),
       });
-      if (!response.ok) return null;
+      if (!response.ok) {
+        let body = null;
+        try {
+          body = await response.json();
+        } catch {
+          body = null;
+        }
+        const code = response.status === 429
+          ? 'RATE_LIMITED'
+          : response.status === 413
+            ? 'REQUEST_TOO_LARGE'
+            : response.status === 400 || response.status === 422
+              ? 'REQUEST_INVALID'
+              : response.status >= 500
+                ? 'SERVICE_UNAVAILABLE'
+                : 'REQUEST_FAILED';
+        throw createAnalysisError(code, response.status, body?.message || body?.error || '');
+      }
       return response.json();
-    } catch {
-      return null;
+    } catch (error) {
+      if (error?.userMessage) throw error;
+      throw createAnalysisError('REQUEST_FAILED', 0, error?.message);
     } finally {
       inflightRequests.delete(idempotencyKey);
     }

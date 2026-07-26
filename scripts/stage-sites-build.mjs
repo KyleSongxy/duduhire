@@ -19,6 +19,16 @@ for (const directory of ['assets', 'css', 'js', 'data']) {
   });
 }
 
+const browserVendorDirectory = resolve(client, 'js', 'vendor');
+await mkdir(browserVendorDirectory, { recursive: true });
+for (const [source, destination] of [
+  ['node_modules/pdfjs-dist/build/pdf.min.mjs', 'pdf.min.mjs'],
+  ['node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'pdf.worker.min.mjs'],
+  ['node_modules/mammoth/mammoth.browser.min.js', 'mammoth.browser.min.js'],
+]) {
+  await copyFile(resolve(projectRoot, source), resolve(browserVendorDirectory, destination));
+}
+
 for (const page of [
   'skill-builder.html',
   'skill-leaderboard.html',
