@@ -283,7 +283,21 @@ async function callProvider(provider, flow, source, context = {}) {
       }),
     });
     if (!response.ok) {
-      throw new Error(`${provider.name} returned ${response.status}`);
+      let serviceReason = '';
+      try {
+        const errorPayload = await response.json();
+        const errorCode = String(errorPayload?.error?.code || errorPayload?.code || '').trim();
+        const errorMessage = String(errorPayload?.error?.message || errorPayload?.message || '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 160);
+        serviceReason = [errorCode, errorMessage].filter(Boolean).join(': ');
+      } catch {
+        // HTTP status remains sufficient when the provider does not return JSON.
+      }
+      throw new Error(
+        `${provider.name} returned ${response.status}${serviceReason ? ` (${serviceReason})` : ''}`,
+      );
     }
     const payload = await response.json();
     const content = payload.choices?.[0]?.message?.content;
@@ -388,8 +402,19 @@ export async function runAnalysis(flow, source, env, context = {}) {
         result.meta.route_reason = provider.routeReason;
         return result;
       } catch (error) {
+        const reason = error.name === 'AbortError' ? 'timeout' : error.message;
+        console.warn(JSON.stringify({
+          event: 'model_provider.failed',
+          flow,
+          stage: context.stage || 'initial',
+          provider: provider.name,
+          model: provider.model,
+          attempt,
+          route_reason: provider.routeReason,
+          latency_ms: Date.now() - attemptStartedAt,
+          reason,
+        }));
         try {
-          const reason = error.name === 'AbortError' ? 'timeout' : error.message;
           await Promise.all([
             recordProviderFailure(env, provider.healthKey, reason),
             saveProviderAttempt(env, {
@@ -410,7 +435,7 @@ export async function runAnalysis(flow, source, env, context = {}) {
           provider: provider.name,
           model: provider.model,
           attempt,
-          reason: error.name === 'AbortError' ? 'timeout' : error.message,
+          reason,
         });
       }
     }
