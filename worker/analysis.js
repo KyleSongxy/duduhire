@@ -6,6 +6,19 @@ import {
   demandSystemPrompt,
 } from './analysis-prompts.js';
 import { validateJsonSchema } from './json-schema-validator.js';
+import {
+  buildAnalysisSource,
+  redactSensitiveText,
+  sha256,
+} from './privacy.js';
+import {
+  consumeDurableRateLimit,
+  hasDatabase,
+  isCircuitOpen,
+  recordProviderFailure,
+  recordProviderSuccess,
+  saveAnalysisReceipt,
+} from './storage.js';
 
 const schemas = {
   demand: demandSchema,
@@ -26,6 +39,7 @@ const humanReviewCapabilityRisks = new Set([
   'high_impact_employment_decision',
 ]);
 const requestBuckets = new Map();
+const responseCache = new Map();
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -47,7 +61,7 @@ function checkSameOrigin(request, url) {
   return !origin || origin === url.origin;
 }
 
-function consumeRateLimit(request, env) {
+function consumeMemoryRateLimit(request, env) {
   const now = Date.now();
   const windowMs = 10 * 60 * 1000;
   const configuredLimit = Number.parseInt(env.AI_REQUESTS_PER_10_MINUTES || '10', 10);
@@ -58,15 +72,25 @@ function consumeRateLimit(request, env) {
   const recent = (requestBuckets.get(clientId) || []).filter((timestamp) => now - timestamp < windowMs);
   if (recent.length >= limit) {
     requestBuckets.set(clientId, recent);
-    return false;
+    return {
+      allowed: false,
+      limit,
+      remaining: 0,
+      resetAt: recent[0] + windowMs,
+    };
   }
   recent.push(now);
   requestBuckets.set(clientId, recent);
   if (requestBuckets.size > 5000) requestBuckets.clear();
-  return true;
+  return {
+    allowed: true,
+    limit,
+    remaining: Math.max(0, limit - recent.length),
+    resetAt: now + windowMs,
+  };
 }
 
-function getProviderChain(env, flow, text) {
+export function getProviderChain(env, flow, text) {
   const providers = [];
   if (env.DEEPSEEK_API_KEY) {
     const usePro = flow === 'capability' && text.length > 6000;
@@ -195,7 +219,7 @@ function estimateCostCny(model, usage = {}) {
   return Number(((inputTokens * rate.input + outputTokens * rate.output) / 1_000_000).toFixed(6));
 }
 
-async function callProvider(provider, flow, source) {
+async function callProvider(provider, flow, source, context = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 45000);
   try {
@@ -215,7 +239,10 @@ async function callProvider(provider, flow, source) {
           },
           {
             role: 'user',
-            content: buildUserPrompt(source),
+            content: buildUserPrompt({
+              ...source,
+              ...context,
+            }),
           },
         ],
         response_format: { type: 'json_object' },
@@ -261,7 +288,7 @@ async function callProvider(provider, flow, source) {
   }
 }
 
-async function runAnalysis(flow, source, env) {
+export async function runAnalysis(flow, source, env, context = {}) {
   const providers = getProviderChain(env, flow, source.text);
   if (!providers.length) {
     return {
@@ -272,10 +299,44 @@ async function runAnalysis(flow, source, env) {
   }
   const failures = [];
   for (const provider of providers) {
+    let circuitOpen = false;
+    try {
+      circuitOpen = await isCircuitOpen(env, provider.name);
+    } catch (error) {
+      console.warn(JSON.stringify({
+        event: 'model_health.read_failed',
+        provider: provider.name,
+        reason: error.message,
+      }));
+    }
+    if (circuitOpen) {
+      failures.push({
+        provider: provider.name,
+        model: provider.model,
+        attempt: 0,
+        reason: 'circuit_open',
+      });
+      continue;
+    }
     for (let attempt = 1; attempt <= 2; attempt += 1) {
       try {
-        return await callProvider(provider, flow, source);
+        const result = await callProvider(provider, flow, source, context);
+        try {
+          await recordProviderSuccess(env, provider.name);
+        } catch {
+          // Model success must not be converted into a user-visible failure by telemetry storage.
+        }
+        return result;
       } catch (error) {
+        try {
+          await recordProviderFailure(
+            env,
+            provider.name,
+            error.name === 'AbortError' ? 'timeout' : error.message,
+          );
+        } catch {
+          // Provider failover remains available when health storage is temporarily unavailable.
+        }
         failures.push({
           provider: provider.name,
           model: provider.model,
@@ -300,8 +361,15 @@ export async function handleAnalysisRequest(request, env) {
     return jsonResponse({
       enabled: providers.length > 0,
       providers: providers.map((provider) => provider.name),
-      storage: 'none',
+      database: hasDatabase(env),
+      storage: hasDatabase(env) ? 'metadata-only' : 'none',
       fallback: 'local-demo',
+      features: {
+        refinement: true,
+        redaction: true,
+        structured_matching: true,
+        durable_feedback: hasDatabase(env),
+      },
     });
   }
 
@@ -313,14 +381,33 @@ export async function handleAnalysisRequest(request, env) {
   if (!checkSameOrigin(request, url)) {
     return jsonResponse({ error: 'ORIGIN_NOT_ALLOWED' }, 403);
   }
-  if (!consumeRateLimit(request, env)) {
+  const configuredLimit = Number.parseInt(env.AI_REQUESTS_PER_10_MINUTES || '10', 10);
+  const limit = Number.isFinite(configuredLimit)
+    ? Math.min(Math.max(configuredLimit, 1), 100)
+    : 10;
+  let rateLimit = null;
+  try {
+    rateLimit = await consumeDurableRateLimit(request, env, { limit });
+  } catch (error) {
+    console.warn(JSON.stringify({
+      event: 'rate_limit.durable_failed',
+      reason: error.message,
+    }));
+  }
+  rateLimit ||= consumeMemoryRateLimit(request, env);
+  if (!rateLimit.allowed) {
     return jsonResponse({
       error: 'RATE_LIMITED',
       message: '解析请求过于频繁，请稍后再试。',
+      retry_after_seconds: Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
     }, 429);
   }
 
   let body;
+  const contentLength = Number.parseInt(request.headers.get('content-length') || '0', 10);
+  if (Number.isFinite(contentLength) && contentLength > 250000) {
+    return jsonResponse({ error: 'PAYLOAD_TOO_LARGE' }, 413);
+  }
   try {
     body = await request.json();
   } catch {
@@ -337,11 +424,118 @@ export async function handleAnalysisRequest(request, env) {
       message: `请输入 1-${maxLength} 个字符。`,
     }, 400);
   }
+  const answers = Array.isArray(body?.answers)
+    ? body.answers
+      .filter((item) => item && typeof item.question === 'string' && typeof item.answer === 'string')
+      .slice(0, 5)
+      .map((item) => ({
+        question: normalizeText(item.question).slice(0, 500),
+        answer: normalizeText(item.answer).slice(0, 1200),
+        targets: Array.isArray(item.targets)
+          ? item.targets.filter((target) => typeof target === 'string').slice(0, 8)
+          : [],
+      }))
+    : [];
+  const corrections = normalizeText(body?.corrections).slice(0, 2000);
+  let previousAnalysis = null;
+  if (body?.previous_analysis && typeof body.previous_analysis === 'object') {
+    const serializedPrevious = JSON.stringify(body.previous_analysis);
+    if (serializedPrevious.length <= 120000) previousAnalysis = body.previous_analysis;
+  }
+  const stage = answers.length || corrections ? 'refined' : 'initial';
+  const combinedSource = buildAnalysisSource({ text, answers, corrections });
+  const redacted = redactSensitiveText(combinedSource);
   const source = {
-    text,
-    sensitive: Boolean(body?.sensitive),
+    text: redacted.text,
+    sensitive: Boolean(body?.sensitive) || redacted.count > 0,
   };
-  const result = await runAnalysis(flow, source, env);
+  const idempotencyKey = typeof body?.idempotency_key === 'string'
+    && /^[a-zA-Z0-9_-]{12,100}$/.test(body.idempotency_key)
+    ? body.idempotency_key
+    : '';
+  const cacheKey = idempotencyKey ? `${flow}:${idempotencyKey}` : '';
+  const cached = cacheKey ? responseCache.get(cacheKey) : null;
+  if (cached && cached.expiresAt > Date.now()) {
+    return jsonResponse({
+      ...cached.result,
+      meta: {
+        ...cached.result.meta,
+        reused: true,
+      },
+    });
+  }
+  const startedAt = Date.now();
+  const result = await runAnalysis(flow, source, env, {
+    stage,
+    previousAnalysis,
+    answers,
+    corrections,
+  });
   if (result.error) return jsonResponse(result, result.status);
+  const latencyMs = Date.now() - startedAt;
+  const sourceHash = await sha256(`${env.RATE_LIMIT_SALT || 'duduhire-local'}:${source.text}`);
+  let receiptId = null;
+  try {
+    receiptId = await saveAnalysisReceipt(env, {
+      flow,
+      stage,
+      status: result.analysis.status,
+      sourceHash,
+      provider: result.meta.provider,
+      model: result.meta.model,
+      promptTokens: result.meta.prompt_tokens,
+      completionTokens: result.meta.completion_tokens,
+      estimatedCostCny: result.meta.estimated_cost_cny,
+      latencyMs,
+      redactionCount: redacted.count,
+    });
+  } catch (error) {
+    console.warn(JSON.stringify({
+      event: 'analysis.receipt_failed',
+      flow,
+      reason: error.message,
+    }));
+  }
+  result.meta = {
+    ...result.meta,
+    receipt_id: receiptId,
+    stage,
+    latency_ms: latencyMs,
+    reused: false,
+    privacy: {
+      redacted: redacted.count > 0,
+      redaction_count: redacted.count,
+      redaction_types: redacted.redactions.map((item) => item.type),
+      stored_source: false,
+    },
+    rate_limit: {
+      limit: rateLimit.limit,
+      remaining: rateLimit.remaining,
+    },
+  };
+  console.info(JSON.stringify({
+    event: 'analysis.completed',
+    flow,
+    stage,
+    status: result.analysis.status,
+    provider: result.meta.provider,
+    model: result.meta.model,
+    latency_ms: latencyMs,
+    cost_cny: result.meta.estimated_cost_cny,
+    redactions: redacted.count,
+  }));
+  if (cacheKey) {
+    responseCache.set(cacheKey, {
+      result,
+      expiresAt: Date.now() + (10 * 60 * 1000),
+    });
+    if (responseCache.size > 500) {
+      const now = Date.now();
+      for (const [key, entry] of responseCache) {
+        if (entry.expiresAt <= now) responseCache.delete(key);
+      }
+      if (responseCache.size > 500) responseCache.clear();
+    }
+  }
   return jsonResponse(result);
 }

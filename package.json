@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "ai:seed": "node scripts/build-ai-eval-seed.mjs",
     "ai:validate": "node scripts/validate-ai-contracts.mjs",
-    "ai:test": "node scripts/test-analysis-runtime.mjs"
+    "ai:test": "node scripts/test-analysis-runtime.mjs",
+    "ai:evaluate": "node scripts/evaluate-ai-results.mjs",
+    "ai:review-export": "node scripts/export-ai-review-batch.mjs",
+    "ai:review-apply": "node scripts/apply-ai-reviews.mjs"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.37.1",

@@ -32,6 +32,7 @@ const seedCases = seedText.trim().split('\n').map((line, index) => {
 
 const ids = new Set();
 const allowedFlows = new Set(['demand', 'capability']);
+const allowedReviewStatuses = new Set(['pending', 'reviewed', 'adjudicated']);
 const errors = [];
 
 for (const [index, item] of seedCases.entries()) {
@@ -41,7 +42,17 @@ for (const [index, item] of seedCases.entries()) {
   ids.add(item.case_id);
   if (!allowedFlows.has(item.flow)) errors.push(`${location}: invalid flow ${item.flow}`);
   if (typeof item.input !== 'string' || !item.input.trim()) errors.push(`${location}: empty input`);
-  if (item.review_status !== 'pending') errors.push(`${location}: seed cases must remain pending before human review`);
+  if (!allowedReviewStatuses.has(item.review_status)) {
+    errors.push(`${location}: invalid review_status ${item.review_status}`);
+  }
+  if (item.review_status !== 'pending') {
+    if (!item.review?.reviewer || typeof item.review.reviewer !== 'string') {
+      errors.push(`${location}: reviewed cases require review.reviewer`);
+    }
+    if (!item.review?.reviewed_at || Number.isNaN(Date.parse(item.review.reviewed_at))) {
+      errors.push(`${location}: reviewed cases require a valid review.reviewed_at`);
+    }
+  }
   if (!Array.isArray(item.expected?.status_any_of) || item.expected.status_any_of.length === 0) {
     errors.push(`${location}: expected.status_any_of is required`);
   }
@@ -63,5 +74,11 @@ if (errors.length) {
 } else {
   console.log('AI contracts are valid.');
   console.log(`Seed set: ${seedCases.length} cases (${demandCount} demand, ${capabilityCount} capability).`);
-  console.log('Review status: 100 pending, 0 reviewed, 0 adjudicated.');
+  const reviewCounts = Object.fromEntries(
+    [...allowedReviewStatuses].map((status) => [
+      status,
+      seedCases.filter((item) => item.review_status === status).length,
+    ]),
+  );
+  console.log(`Review status: ${reviewCounts.pending} pending, ${reviewCounts.reviewed} reviewed, ${reviewCounts.adjudicated} adjudicated.`);
 }

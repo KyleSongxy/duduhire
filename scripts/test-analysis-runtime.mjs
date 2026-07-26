@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { validateAnalysis } from '../worker/analysis.js';
+import { getProviderChain, validateAnalysis } from '../worker/analysis.js';
+import { matchAnalysis } from '../worker/matching.js';
+import { buildAnalysisSource, redactSensitiveText } from '../worker/privacy.js';
 
 const demandText = '产品调用量增加后成本上升，希望两周内找到主要成本来源。';
 const demand = {
@@ -153,5 +155,52 @@ assert.equal(validateAnalysis('capability', capability, capability.source).valid
 const promotedCapability = structuredClone(capability);
 promotedCapability.capability_atoms[0].level = 'L3';
 assert.equal(validateAnalysis('capability', promotedCapability, promotedCapability.source).valid, false);
+
+const redacted = redactSensitiveText('联系邮箱 demo@example.com，手机号 13800138000，密码：secret123');
+assert.equal(redacted.count, 3);
+assert.equal(redacted.text.includes('demo@example.com'), false);
+assert.equal(redacted.text.includes('13800138000'), false);
+assert.equal(redacted.text.includes('secret123'), false);
+
+const refinedSource = buildAnalysisSource({
+  text: demandText,
+  answers: [{
+    question: '可以提供哪些数据？',
+    answer: '可以提供调用日志和账单。',
+  }],
+  corrections: '验收标准需要包含回滚方案。',
+});
+assert.equal(refinedSource.includes('补充问答'), true);
+assert.equal(refinedSource.includes('用户修正'), true);
+
+const demandMatches = matchAnalysis('demand', demand, {
+  confirmedFactIds: ['f_1', 'f_2'],
+});
+assert.equal(demandMatches.status, 'ready');
+assert.equal(demandMatches.matches.length, 3);
+assert.equal(demandMatches.matches[0].score >= demandMatches.matches[1].score, true);
+
+const capabilityMatches = matchAnalysis('capability', capability, {
+  confirmedAtomIds: ['c_1'],
+});
+assert.equal(capabilityMatches.status, 'ready');
+assert.equal(capabilityMatches.matches.length, 3);
+
+const highRiskCapability = structuredClone(capability);
+highRiskCapability.status = 'requires_human_review';
+highRiskCapability.risk_flags = ['prompt_injection'];
+assert.equal(matchAnalysis('capability', highRiskCapability).status, 'withheld');
+
+const providerChain = getProviderChain({
+  DEEPSEEK_API_KEY: 'test',
+  DASHSCOPE_API_KEY: 'test',
+}, 'capability', 'x'.repeat(7000));
+assert.deepEqual(
+  providerChain.map((provider) => [provider.name, provider.model]),
+  [
+    ['deepseek', 'deepseek-v4-pro'],
+    ['qwen', 'qwen3.7-plus'],
+  ],
+);
 
 console.log('Analysis runtime validation tests passed.');

@@ -1,4 +1,5 @@
 let statusPromise;
+const inflightRequests = new Map();
 
 async function getAnalysisStatus() {
   if (!statusPromise) {
@@ -14,8 +15,71 @@ async function getAnalysisStatus() {
 export async function analyzeWithDomesticModel(flow, payload) {
   const status = await getAnalysisStatus();
   if (!status.enabled) return null;
+  const idempotencyKey = payload.idempotency_key
+    || `${flow}_${crypto.randomUUID().replaceAll('-', '')}`;
+  const requestPayload = {
+    ...payload,
+    idempotency_key: idempotencyKey,
+  };
+  if (inflightRequests.has(idempotencyKey)) return inflightRequests.get(idempotencyKey);
+  const request = (async () => {
+    try {
+      const response = await fetch(`/api/analysis/${flow}`, {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(requestPayload),
+      });
+      if (!response.ok) return null;
+      return response.json();
+    } catch {
+      return null;
+    } finally {
+      inflightRequests.delete(idempotencyKey);
+    }
+  })();
+  inflightRequests.set(idempotencyKey, request);
+  return request;
+}
+
+export async function refineWithDomesticModel(flow, {
+  text,
+  sensitive = false,
+  previousAnalysis,
+  answers = [],
+  corrections = '',
+}) {
+  return analyzeWithDomesticModel(flow, {
+    text,
+    sensitive,
+    previous_analysis: previousAnalysis,
+    answers,
+    corrections,
+  });
+}
+
+export async function requestStructuredMatch(flow, analysis, confirmation = {}) {
   try {
-    const response = await fetch(`/api/analysis/${flow}`, {
+    const response = await fetch('/api/match', {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ flow, analysis, confirmation }),
+    });
+    if (!response.ok) return null;
+    return response.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function submitAnalysisFeedback(payload) {
+  try {
+    const response = await fetch('/api/feedback', {
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -23,8 +87,23 @@ export async function analyzeWithDomesticModel(flow, payload) {
       },
       body: JSON.stringify(payload),
     });
-    if (!response.ok) return null;
-    return response.json();
+    return response.ok ? response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function submitHumanReview(payload) {
+  try {
+    const response = await fetch('/api/review', {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    return response.ok ? response.json() : null;
   } catch {
     return null;
   }
@@ -66,14 +145,26 @@ export function getCapabilityModelSkills(result, templates, catalog) {
     const canonical = catalog.find((item) => item.id === atom.canonical_capability_id);
     const template = templates.find((item) => item.name === canonical?.name)
       || templates.find((item) => item.name === atom.name);
-    if (!template) return [];
+    const skill = template || {
+      id: atom.id,
+      name: atom.name,
+      category: atom.category,
+      task: atom.task,
+      method: atom.methods.join('、') || '方法待进一步确认',
+      deliverables: atom.deliverables.length ? atom.deliverables : ['交付物待进一步确认'],
+      evidenceExamples: atom.evidence_claim_ids.length
+        ? `关联 ${atom.evidence_claim_ids.length} 条原文证据`
+        : '需要补充可核验证据',
+      boundary: atom.boundaries.join('；') || '能力边界待进一步确认',
+      keywords: [atom.name, atom.task, ...atom.methods],
+    };
     const question = questions.find((item) => (
       item.targets.includes(atom.id)
       || item.targets.includes(atom.canonical_capability_id)
       || item.targets.includes(atom.name)
     )) || questions[index];
     return [{
-      ...template,
+      ...skill,
       modelQuestion: question?.question || '',
       modelAtom: atom,
     }];

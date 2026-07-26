@@ -926,6 +926,344 @@ p, li, dd, figcaption, blockquote, summary {
   .notice-callout .btn { width: 100%; }
 }
 
+/* Analysis confirmation, feedback, and human review */
+.privacy-result-note {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--paper));
+}
+
+.privacy-result-note strong,
+.privacy-result-note span {
+  display: block;
+}
+
+.privacy-result-note span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.confirmation-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.confirmation-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.confirmation-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.confirmation-item:has(input:checked) {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  background: color-mix(in srgb, var(--accent) 5%, var(--paper));
+}
+
+.confirmation-item input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+}
+
+.confirmation-item > span {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.confirmation-item small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.confirmation-item strong {
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.confirmation-item p,
+.confirmation-item q {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.confirmation-item q {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--line);
+}
+
+.confirmation-correction,
+.review-submit-panel > label,
+.feedback-panel > label,
+.review-card form > label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.confirmation-correction textarea,
+.review-submit-panel textarea,
+.feedback-panel textarea {
+  min-height: 92px;
+  width: 100%;
+  padding: 0.85rem;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.feedback-panel,
+.review-submit-panel {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--canvas-cool);
+}
+
+.feedback-panel h3 {
+  margin: 0.25rem 0 0;
+}
+
+.feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.feedback-actions button {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.feedback-actions button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.feedback-panel [role="status"],
+.review-submit-panel [role="status"],
+.review-card [role="status"] {
+  min-height: 1.25rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.checkbox-row.compact {
+  padding: 0;
+}
+
+.review-console-main {
+  min-height: 100vh;
+  padding: 8.5rem 0 5rem;
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 32rem),
+    var(--canvas);
+}
+
+.review-console-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+
+.review-console-head h1 {
+  max-width: 720px;
+  margin: 0.45rem 0 0.8rem;
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  line-height: 0.98;
+}
+
+.review-console-head p {
+  max-width: 680px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.review-auth-form {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper);
+}
+
+.review-auth-form > label {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.review-auth-form > div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.review-auth-form input {
+  min-width: 0;
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.review-auth-form p {
+  min-height: 1.25rem;
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.review-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.review-metrics article {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.review-metrics span,
+.review-metrics small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.review-metrics strong {
+  font-size: 1.55rem;
+}
+
+.review-queue-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper);
+}
+
+.review-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.review-card header span,
+.review-card time {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.review-card h3 {
+  margin: 0.25rem 0;
+}
+
+.review-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.review-card details ul {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.25rem;
+  color: var(--muted);
+}
+
+.review-card form {
+  display: grid;
+  gap: 0.85rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.review-update-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.review-update-grid label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+  .review-console-head {
+    grid-template-columns: 1fr;
+  }
+
+  .review-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .review-console-main {
+    padding-top: 7rem;
+  }
+
+  .review-metrics,
+  .review-update-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-auth-form > div,
+  .review-card header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

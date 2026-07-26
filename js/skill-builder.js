@@ -5,6 +5,10 @@ import {
   getCapabilityModelSkills,
   getDemandModelQuestions,
   mapDemandAnalysis,
+  refineWithDomesticModel,
+  requestStructuredMatch,
+  submitAnalysisFeedback,
+  submitHumanReview,
 } from './analysis-api.js';
 import { createContentKey, getUsageReceipt, recordUsage } from './usage-meter.js';
 
@@ -29,6 +33,12 @@ let enterpriseContentKey = '';
 let pendingTalentValues = null;
 let activeTalentSkills = [];
 let talentContentKey = '';
+let enterpriseConfirmation = null;
+let talentConfirmation = null;
+const pendingReviews = {
+  enterprise: null,
+  talent: null,
+};
 let toastTimer;
 
 const talentExamples = {
@@ -56,6 +66,49 @@ function escapeHTML(value = '') {
   return String(value).replace(/[&<>'"]/g, (character) => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
   })[character]);
+}
+
+function privacySummary(meta) {
+  const privacy = meta?.privacy;
+  if (!privacy?.redacted) return '';
+  const labels = {
+    email: '邮箱',
+    cn_phone: '手机号',
+    cn_id: '身份证号',
+    bank_card: '银行卡号',
+    credential: '账号凭据',
+  };
+  const types = privacy.redaction_types.map((type) => labels[type] || type);
+  return `
+    <div class="privacy-result-note">
+      <strong>发送前已自动脱敏 ${privacy.redaction_count} 处</strong>
+      <span>${escapeHTML(types.join('、'))}不会发送给模型；建议仍然检查材料中是否包含客户名等业务敏感信息。</span>
+    </div>`;
+}
+
+function feedbackPanel(flow, receiptId, target = 'match') {
+  if (!receiptId) return '';
+  return `
+    <section class="feedback-panel" data-feedback-panel data-flow="${flow}" data-target="${target}" data-receipt-id="${escapeHTML(receiptId)}">
+      <div>
+        <span class="mini-label">帮助我们校准结果</span>
+        <h3>这次${target === 'match' ? '匹配' : '解析'}是否有帮助？</h3>
+      </div>
+      <div class="feedback-actions">
+        <button type="button" data-feedback-verdict="helpful">有帮助</button>
+        <button type="button" data-feedback-verdict="partly_helpful">部分有帮助</button>
+        <button type="button" data-feedback-verdict="not_helpful">没有帮助</button>
+      </div>
+      <label>
+        <span>补充原因（可选）</span>
+        <textarea data-feedback-comment maxlength="800" placeholder="例如：场景判断正确，但交付物方向不符合实际。"></textarea>
+      </label>
+      <label class="checkbox-row compact">
+        <input type="checkbox" data-feedback-consent>
+        <span>同意保存上面的反馈文字；不勾选时只保存评价按钮。</span>
+      </label>
+      <p data-feedback-status role="status"></p>
+    </section>`;
 }
 
 function showToast(message) {
@@ -374,7 +427,109 @@ function syncParsedDemandFields(values) {
   });
 }
 
-function renderModelReviewState(type, analysis) {
+function renderDemandConfirmation(values) {
+  pendingEnterpriseValues = values;
+  const analysis = values.modelAnalysis;
+  if (!analysis) {
+    renderEnterpriseResult(values);
+    return;
+  }
+  const selected = enterpriseConfirmation?.confirmedFactIds
+    || analysis.facts.map((fact) => fact.id);
+  enterpriseConfirmation = { confirmedFactIds: selected };
+  document.getElementById('enterprise-output').innerHTML = `
+    <div class="result-wrap confirmation-stage">
+      <section class="result-summary">
+        <span class="mini-label">匹配前确认</span>
+        <h3>逐条确认 AI 提取的事实</h3>
+        <p>只把你确认过的事实带入匹配。取消勾选等于删除；需要修改时，在下方写明修正并让 AI 重新解析。</p>
+        ${privacySummary(values.analysisMeta)}
+      </section>
+      <form id="demand-confirmation-form" class="confirmation-form">
+        <section class="confirmation-list" aria-label="待确认事实">
+          ${analysis.facts.map((fact) => `
+            <label class="confirmation-item">
+              <input type="checkbox" name="confirmed-fact" value="${escapeHTML(fact.id)}" ${selected.includes(fact.id) ? 'checked' : ''}>
+              <span>
+                <small>${escapeHTML(fact.kind)} · 可信度 ${Math.round(fact.confidence * 100)}%</small>
+                <strong>${escapeHTML(fact.claim)}</strong>
+                <q>${escapeHTML(fact.source_quote)}</q>
+              </span>
+            </label>
+          `).join('')}
+        </section>
+        <label class="confirmation-correction">
+          <span>需要修改或补充的地方</span>
+          <textarea id="demand-corrections" maxlength="2000" placeholder="例如：时间不是两周，而是月底前；验收标准还应包括可回滚。"></textarea>
+        </label>
+        <div class="result-actions">
+          <button class="btn btn-primary" type="submit">确认事实并查看匹配</button>
+          <button class="btn btn-secondary" type="button" data-action="refine-demand">应用修正并重新解析</button>
+          <button class="btn btn-ghost" type="button" data-action="reset-enterprise">返回原文</button>
+        </div>
+      </form>
+    </div>`;
+  document.getElementById('enterprise-status').textContent = '待确认';
+  document.getElementById('enterprise-status').className = 'status-badge warning';
+  document.getElementById('enterprise-output-status').textContent = `${analysis.facts.length} 条事实`;
+  document.getElementById('enterprise-output-status').className = 'status-badge warning';
+  updateSteps('e', 3);
+  scrollToElement(document.getElementById('enterprise-output').closest('.builder-panel'));
+}
+
+function renderTalentConfirmation(values, skills) {
+  pendingTalentValues = values;
+  activeTalentSkills = skills;
+  const analysis = values.modelAnalysis;
+  if (!analysis?.capability_atoms?.length) {
+    renderTalentResult(values, skills, {});
+    return;
+  }
+  const selected = talentConfirmation?.confirmedAtomIds
+    || analysis.capability_atoms.map((atom) => atom.id);
+  talentConfirmation = { confirmedAtomIds: selected };
+  document.getElementById('talent-output').innerHTML = `
+    <div class="result-wrap confirmation-stage">
+      <section class="result-summary">
+        <span class="mini-label">生成名片前确认</span>
+        <h3>确认哪些能力原子真正属于你</h3>
+        <p>取消勾选会删除对应能力；所有条目仍是 L0 自述草稿，不会因为确认自动升级为认证能力。</p>
+        ${privacySummary(values.analysisMeta)}
+      </section>
+      <form id="talent-confirmation-form" class="confirmation-form">
+        <section class="confirmation-list" aria-label="待确认能力原子">
+          ${analysis.capability_atoms.map((atom) => `
+            <label class="confirmation-item">
+              <input type="checkbox" name="confirmed-atom" value="${escapeHTML(atom.id)}" ${selected.includes(atom.id) ? 'checked' : ''}>
+              <span>
+                <small>${escapeHTML(atom.category)} · L0 · 可信度 ${Math.round(atom.confidence * 100)}%</small>
+                <strong>${escapeHTML(atom.name)}</strong>
+                <p>${escapeHTML(atom.task)}</p>
+                <q>${escapeHTML(atom.deliverables.join('、') || '交付物待补充')}</q>
+              </span>
+            </label>
+          `).join('')}
+        </section>
+        <label class="confirmation-correction">
+          <span>需要修改或补充的地方</span>
+          <textarea id="talent-corrections" maxlength="2000" placeholder="例如：我只参与了数据审计，没有负责模型路由；交付物是成本基线。"></textarea>
+        </label>
+        <div class="result-actions">
+          <button class="btn btn-primary" type="submit">确认能力并生成名片</button>
+          <button class="btn btn-secondary" type="button" data-action="refine-talent">应用修正并重新解析</button>
+          <button class="btn btn-ghost" type="button" data-action="reset-talent">返回原文</button>
+        </div>
+      </form>
+    </div>`;
+  document.getElementById('talent-status').textContent = '待确认';
+  document.getElementById('talent-status').className = 'status-badge warning';
+  document.getElementById('talent-output-status').textContent = `${analysis.capability_atoms.length} 项能力`;
+  document.getElementById('talent-output-status').className = 'status-badge warning';
+  updateSteps('t', 3);
+  scrollToElement(document.getElementById('talent-output').closest('.builder-panel'));
+}
+
+function renderModelReviewState(type, analysis, sourceText = '') {
   const isEnterprise = type === 'enterprise';
   const flow = isEnterprise ? enterpriseFlow : talentFlow;
   const output = document.getElementById(`${type}-output`);
@@ -392,6 +547,11 @@ function renderModelReviewState(type, analysis) {
     other: '需要人工判断',
   };
   const risks = analysis.risk_flags.map((flag) => labels[flag] || labels.other);
+  pendingReviews[type] = {
+    flow: isEnterprise ? 'demand' : 'capability',
+    text: sourceText || analysis.source?.text || '',
+    analysis,
+  };
   output.innerHTML = `
     <div class="result-wrap">
       <section class="result-summary">
@@ -409,6 +569,18 @@ function renderModelReviewState(type, analysis) {
           <div class="brief-result-row"><span>保留事实</span><p>只描述业务场景、本人行动、交付物和可公开的结果范围。</p></div>
           <div class="brief-result-row"><span>人工确认</span><p>涉及招聘决定、能力认证、违法危险内容或材料真实性时，不由模型自动判断。</p></div>
         </div>
+      </section>
+      <section class="review-submit-panel">
+        <label class="checkbox-row">
+          <input type="checkbox" id="${type}-review-consent">
+          <span>我同意将系统已脱敏的结构化材料保存到人工审核队列。</span>
+        </label>
+        <label>
+          <span>给审核人员的补充说明（可选）</span>
+          <textarea id="${type}-review-note" maxlength="1000" placeholder="说明哪些内容可以查看，以及希望人工判断什么。"></textarea>
+        </label>
+        <button class="btn btn-secondary" type="button" data-action="submit-review-${type}">提交人工审核</button>
+        <p id="${type}-review-status" role="status"></p>
       </section>
       <div class="result-actions">
         <button class="btn btn-primary" type="button" data-action="reset-${isEnterprise ? 'enterprise' : 'talent'}">返回修改原文</button>
@@ -485,11 +657,11 @@ enterpriseForm.addEventListener('submit', async (event) => {
   document.getElementById('enterprise-loading').hidden = true;
   submit.disabled = false;
   if (values.modelAnalysis?.status === 'requires_human_review') {
-    renderModelReviewState('enterprise', values.modelAnalysis);
+    renderModelReviewState('enterprise', values.modelAnalysis, problem);
     return;
   }
   if (values.modelAnalysis?.status === 'ready_for_matching' && !values.modelAnalysis.questions.length) {
-    renderEnterpriseResult(values);
+    renderDemandConfirmation(values);
     return;
   }
   renderEnterpriseQuestions(values);
@@ -633,7 +805,7 @@ function mergeDemandAnswers(values, answers) {
   return next;
 }
 
-document.addEventListener('submit', (event) => {
+document.addEventListener('submit', async (event) => {
   if (event.target.id !== 'enterprise-followup-form') return;
   event.preventDefault();
   const answers = {};
@@ -651,17 +823,63 @@ document.addEventListener('submit', (event) => {
     firstInvalid.focus();
     return;
   }
-  renderEnterpriseResult(mergeDemandAnswers(pendingEnterpriseValues, answers));
+  let values = mergeDemandAnswers(pendingEnterpriseValues, answers);
+  if (values.modelAnalysis) {
+    event.target.querySelector('button[type="submit"]').disabled = true;
+    const refined = await refineWithDomesticModel('demand', {
+      text: values.problem,
+      sensitive: values.sensitive,
+      previousAnalysis: values.modelAnalysis,
+      answers: values.modelFollowups || [],
+    });
+    values = mapDemandAnalysis(refined, values);
+    recordUsage({
+      flow: 'demand',
+      stage: 'refine',
+      contentKey: enterpriseContentKey,
+      inputCharacters: values.problem.length,
+      mode: refined?.meta ? 'model' : 'local-demo',
+      tokens: refined?.meta?.total_tokens || 0,
+      costCny: refined?.meta?.estimated_cost_cny || 0,
+    });
+    if (values.modelAnalysis?.status === 'requires_human_review') {
+      renderModelReviewState('enterprise', values.modelAnalysis, values.problem);
+      return;
+    }
+  }
+  renderDemandConfirmation(values);
 });
 
-function renderEnterpriseResult(values) {
+document.addEventListener('submit', (event) => {
+  if (event.target.id !== 'demand-confirmation-form') return;
+  event.preventDefault();
+  const confirmedFactIds = [...event.target.querySelectorAll('[name="confirmed-fact"]:checked')]
+    .map((field) => field.value);
+  if (!confirmedFactIds.length) {
+    showToast('请至少确认一条事实，或返回修改原文');
+    return;
+  }
+  enterpriseConfirmation = { confirmedFactIds };
+  renderEnterpriseResult(pendingEnterpriseValues);
+});
+
+async function renderEnterpriseResult(values) {
   const service = getService(values.deadline);
   const matchingTask = values.modelAnalysis?.matching_input?.task_summary || '';
   const confirmedDetails = (values.modelFollowups || []).map((item) => item.answer).join(' ');
-  const capabilities = scoreCapabilities(
+  const legacyCapabilities = scoreCapabilities(
     `${values.problem} ${values.result} ${values.market} ${matchingTask} ${confirmedDetails}`,
     values.preferredCapabilityIds,
   );
+  const structured = values.modelAnalysis
+    ? await requestStructuredMatch('demand', values.modelAnalysis, enterpriseConfirmation || {})
+    : null;
+  const capabilities = structured?.status === 'ready'
+    ? structured.matches.map((match) => ({
+        ...capabilityCatalog.find((item) => item.id === match.id),
+        match,
+      })).filter((item) => item.id)
+    : legacyCapabilities.map((item) => ({ ...item, match: null }));
   const leadCapability = capabilities[0];
   const contentKey = enterpriseContentKey || createContentKey('demand', values.problem);
   recordUsage({
@@ -689,7 +907,7 @@ function renderEnterpriseResult(values) {
     `优先核验能力：${capabilities.map((item) => item.name).join('、')}`,
     `敏感材料：${values.sensitive ? '涉及，需先确认保密与权限' : '暂未标记'}`,
     `建议微任务：由“${leadCapability.name}”方向先完成${leadCapability.deliverables.slice(0, 3).join('、')}。`,
-    '说明：这是本地匹配演示，能力方向、真实人员、证据和档期仍需人工核验。',
+    '说明：这是结构化匹配草稿，能力方向、真实人员、证据和档期仍需人工核验。',
   ].join('\n');
 
   document.getElementById('enterprise-output').innerHTML = `
@@ -697,9 +915,9 @@ function renderEnterpriseResult(values) {
       <section class="result-summary match-result-summary">
         <div class="result-summary-top">
           <div>
-            <span class="mini-label">平台匹配演示</span>
+            <span class="mini-label">${structured?.status === 'ready' ? '结构化匹配 V1' : '本地匹配预览'}</span>
             <h3>已找到 ${capabilities.length} 个优先核验方向</h3>
-            <p>结果来自场景、任务、证据要求与合作边界的对照，不是简历关键词排序。</p>
+            <p>结果分别比较任务、交付、场景、证据和合作边界，并保留每项得分依据。</p>
           </div>
           <strong class="result-price">待核验</strong>
         </div>
@@ -740,7 +958,7 @@ function renderEnterpriseResult(values) {
             <article class="match-direction-card${index === 0 ? ' featured' : ''}">
               <div class="match-direction-top">
                 <span>${index === 0 ? '优先核验' : '补充方向'}</span>
-                <small>${escapeHTML(capability.category)}</small>
+                <small>${capability.match ? `${capability.match.score} 分 · ${capability.match.confidence}` : escapeHTML(capability.category)}</small>
               </div>
               <h3>${escapeHTML(capability.name)}</h3>
               <p>${escapeHTML(capability.description)}</p>
@@ -750,8 +968,11 @@ function renderEnterpriseResult(values) {
                 <li><span>证据</span><strong>${escapeHTML(capability.evidence)}</strong></li>
               </ul>
               <details>
-                <summary>查看能力边界与交付</summary>
+                <summary>查看匹配依据、边界与交付</summary>
                 <dl>
+                  ${capability.match?.reasons?.map((reason) => `
+                    <div><dt>${escapeHTML(reason.dimension)} +${reason.score}</dt><dd>${escapeHTML(reason.reason)}</dd></div>
+                  `).join('') || ''}
                   <div><dt>典型交付</dt><dd>${escapeHTML(capability.deliverables.join('、'))}</dd></div>
                   <div><dt>能力边界</dt><dd>${escapeHTML(capability.boundary)}</dd></div>
                 </dl>
@@ -785,6 +1006,7 @@ function renderEnterpriseResult(values) {
       : '本次使用浏览器内规则生成演示结果，不产生 Token 成本。'}</p>
         </div>
       </details>
+      ${feedbackPanel('demand', values.analysisMeta?.receipt_id, 'match')}
       <div class="result-actions">
         <button class="btn btn-primary" type="button" data-action="copy-enterprise">复制痛点与匹配摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-enterprise">下载 TXT</button>
@@ -812,6 +1034,8 @@ function resetEnterprise() {
   enterpriseForm.hidden = false;
   pendingEnterpriseValues = null;
   enterpriseContentKey = '';
+  enterpriseConfirmation = null;
+  pendingReviews.enterprise = null;
   document.getElementById('enterprise-output').innerHTML = `
     <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>原文仍保留在左侧。补充背景、影响或目标后，再让 AI 重新整理。</p></div></div>`;
   document.getElementById('enterprise-status').textContent = '可修改';
@@ -942,7 +1166,7 @@ talentForm.addEventListener('submit', async (event) => {
     costCny: modelResult?.meta?.estimated_cost_cny || 0,
   });
   if (modelResult?.analysis?.status === 'requires_human_review') {
-    renderModelReviewState('talent', modelResult.analysis);
+    renderModelReviewState('talent', modelResult.analysis, values.experience);
     return;
   }
   const modelSkills = getCapabilityModelSkills(
@@ -966,10 +1190,14 @@ talentForm.addEventListener('submit', async (event) => {
   document.getElementById('talent-field').value = values.field;
   document.getElementById('talent-market').dispatchEvent(new Event('input', { bubbles: true }));
   document.getElementById('talent-field').dispatchEvent(new Event('input', { bubbles: true }));
-  renderSkillQuestions(values, skills);
+  if (values.modelAnalysis?.status === 'ready_for_l0_card' && !values.modelAnalysis.questions.length) {
+    renderTalentConfirmation(values, skills);
+  } else {
+    renderSkillQuestions(values, skills);
+  }
 });
 
-document.addEventListener('submit', (event) => {
+document.addEventListener('submit', async (event) => {
   if (event.target.id !== 'skill-questions-form') return;
   event.preventDefault();
   const answers = {};
@@ -987,12 +1215,80 @@ document.addEventListener('submit', (event) => {
     firstInvalid.focus();
     return;
   }
-  renderTalentResult(pendingTalentValues, activeTalentSkills, answers);
+  let values = pendingTalentValues;
+  let skills = activeTalentSkills;
+  if (values.modelAnalysis) {
+    event.target.querySelector('button[type="submit"]').disabled = true;
+    const followups = skills.map((skill) => ({
+      question: getSkillQuestion(skill),
+      targets: skill.modelAtom?.id ? [skill.modelAtom.id] : [skill.id],
+      answer: answers[skill.id],
+    }));
+    const refined = await refineWithDomesticModel('capability', {
+      text: values.experience,
+      previousAnalysis: values.modelAnalysis,
+      answers: followups,
+    });
+    if (refined?.analysis?.status === 'requires_human_review') {
+      renderModelReviewState('talent', refined.analysis, values.experience);
+      return;
+    }
+    if (refined?.analysis) {
+      values = {
+        ...values,
+        modelAnalysis: refined.analysis,
+        analysisMeta: refined.meta,
+        modelFollowups: followups,
+      };
+      const refinedSkills = getCapabilityModelSkills(
+        refined,
+        talentSkillTemplates,
+        capabilityCatalog,
+      );
+      if (refinedSkills.length) skills = refinedSkills;
+      recordUsage({
+        flow: 'talent',
+        stage: 'capability-refine',
+        contentKey: talentContentKey,
+        inputCharacters: values.experience.length,
+        mode: 'model',
+        tokens: refined.meta?.total_tokens || 0,
+        costCny: refined.meta?.estimated_cost_cny || 0,
+      });
+    }
+  }
+  values.skillAnswers = answers;
+  renderTalentConfirmation(values, skills);
 });
 
-function renderTalentResult(values, skills, answers) {
+document.addEventListener('submit', (event) => {
+  if (event.target.id !== 'talent-confirmation-form') return;
+  event.preventDefault();
+  const confirmedAtomIds = [...event.target.querySelectorAll('[name="confirmed-atom"]:checked')]
+    .map((field) => field.value);
+  if (!confirmedAtomIds.length) {
+    showToast('请至少确认一项能力，或返回修改经历');
+    return;
+  }
+  talentConfirmation = { confirmedAtomIds };
+  const confirmedSkills = activeTalentSkills.filter((skill) => (
+    !skill.modelAtom?.id || confirmedAtomIds.includes(skill.modelAtom.id)
+  ));
+  renderTalentResult(pendingTalentValues, confirmedSkills, pendingTalentValues.skillAnswers || {});
+});
+
+async function renderTalentResult(values, skills, answers) {
   const scene = [values.market || '场景待补充', values.field || '方向由能力提炼'].join(' · ');
-  const matchingDemands = scoreDemands(`${values.experience} ${skills.map((skill) => `${skill.name} ${skill.task}`).join(' ')}`);
+  const legacyDemands = scoreDemands(`${values.experience} ${skills.map((skill) => `${skill.name} ${skill.task}`).join(' ')}`);
+  const structured = values.modelAnalysis
+    ? await requestStructuredMatch('capability', values.modelAnalysis, talentConfirmation || {})
+    : null;
+  const matchingDemands = structured?.status === 'ready'
+    ? structured.matches.map((match) => ({
+        ...enterpriseDemandCatalog.find((item) => item.id === match.id),
+        match,
+      })).filter((item) => item.id)
+    : legacyDemands.map((item) => ({ ...item, match: null }));
   const contentKey = talentContentKey || createContentKey('talent', values.experience);
   recordUsage({
     flow: 'talent',
@@ -1009,7 +1305,7 @@ function renderTalentResult(values, skills, answers) {
     ...skills.map((skill, index) => [
       `${index + 1}. ${skill.name}｜${skill.category}｜L0 初步推测`,
       `一句话：${skill.task}`,
-      `本人补充：${answers[skill.id]}`,
+      `本人补充：${answers[skill.id] || '已从原文确认'}`,
       `典型产出：${skill.deliverables.join('、')}`,
       `可核验证据：${skill.evidenceExamples}`,
       `能力边界：${skill.boundary}`,
@@ -1035,7 +1331,7 @@ function renderTalentResult(values, skills, answers) {
             <details>
               <summary>查看任务与证据</summary>
               <dl>
-                <div><dt>本人补充</dt><dd>${escapeHTML(answers[skill.id])}</dd></div>
+                <div><dt>本人补充</dt><dd>${escapeHTML(answers[skill.id] || '已从原文确认')}</dd></div>
                 <div><dt>常用方法</dt><dd>${escapeHTML(skill.method)}</dd></div>
                 <div><dt>典型产出</dt><dd>${escapeHTML(skill.deliverables.join('、'))}</dd></div>
                 <div><dt>可核验证据</dt><dd>${escapeHTML(skill.evidenceExamples)}</dd></div>
@@ -1053,12 +1349,14 @@ function renderTalentResult(values, skills, answers) {
         <div class="matched-demand-list">
           ${matchingDemands.map((demand) => `
             <article>
-              <div><span>${escapeHTML(demand.category)}</span><small>${escapeHTML(demand.markets.slice(0, 2).join(' / '))}</small></div>
+              <div><span>${escapeHTML(demand.category)}</span><small>${demand.match ? `${demand.match.score} 分 · ${demand.match.confidence}` : escapeHTML(demand.markets.slice(0, 2).join(' / '))}</small></div>
               <h3>${escapeHTML(demand.title)}</h3>
               <p>${escapeHTML(demand.summary)}</p>
               <dl>
                 <div><dt>期望交付</dt><dd>${escapeHTML(demand.deliverables.slice(0, 2).join('、'))}</dd></div>
-                <div><dt>匹配依据</dt><dd>能力任务与场景关键词相似，仍需核验真实案例与合作边界</dd></div>
+                ${demand.match?.reasons?.map((reason) => `
+                  <div><dt>${escapeHTML(reason.dimension)} +${reason.score}</dt><dd>${escapeHTML(reason.reason)}</dd></div>
+                `).join('') || '<div><dt>匹配依据</dt><dd>能力任务与场景相似，仍需核验真实案例与合作边界</dd></div>'}
               </dl>
             </article>
           `).join('')}
@@ -1077,6 +1375,7 @@ function renderTalentResult(values, skills, answers) {
       : '本次使用浏览器内规则生成演示结果，不产生 Token 成本。'}</p>
         </div>
       </details>
+      ${feedbackPanel('capability', values.analysisMeta?.receipt_id, 'match')}
       <div class="result-actions">
         <button class="btn btn-primary" type="button" data-action="copy-talent">复制名片摘要</button>
         <button class="btn btn-secondary" type="button" data-action="download-talent">下载 TXT</button>
@@ -1099,6 +1398,8 @@ function resetTalent() {
   pendingTalentValues = null;
   activeTalentSkills = [];
   talentContentKey = '';
+  talentConfirmation = null;
+  pendingReviews.talent = null;
   document.getElementById('talent-output').innerHTML = `
     <div class="empty-state"><div class="empty-state-inner"><div class="empty-visual ai-empty-visual" aria-hidden="true">AI</div><h3>修改后重新解析</h3><p>你的经历仍保留在左侧。补充本人行动、可量化结果与证明方式后再试一次。</p></div></div>`;
   document.getElementById('talent-status').textContent = '可修改';
@@ -1190,6 +1491,8 @@ function clearEnterpriseDraft() {
   enterpriseForm.reset();
   pendingEnterpriseValues = null;
   enterpriseContentKey = '';
+  enterpriseConfirmation = null;
+  pendingReviews.enterprise = null;
   syncCollaborationFields();
   enterpriseForm.closest('.builder-panel').hidden = false;
   enterpriseFlow.querySelector('.builder-layout').classList.remove('result-mode');
@@ -1215,6 +1518,8 @@ function clearTalentDraft() {
   pendingTalentValues = null;
   activeTalentSkills = [];
   talentContentKey = '';
+  talentConfirmation = null;
+  pendingReviews.talent = null;
   setError('talent-experience', '');
   setErrorSummary('talent-error-summary', false);
   document.getElementById('experience-count').textContent = '0 / 1800';
@@ -1226,7 +1531,128 @@ function clearTalentDraft() {
   document.getElementById('talent-experience').focus();
 }
 
-document.addEventListener('click', (event) => {
+async function refineDemandFromConfirmation() {
+  const corrections = document.getElementById('demand-corrections')?.value.trim() || '';
+  if (!corrections) {
+    showToast('请先写明需要修改或补充的内容');
+    return;
+  }
+  const result = await refineWithDomesticModel('demand', {
+    text: pendingEnterpriseValues.problem,
+    sensitive: pendingEnterpriseValues.sensitive,
+    previousAnalysis: pendingEnterpriseValues.modelAnalysis,
+    answers: pendingEnterpriseValues.modelFollowups || [],
+    corrections,
+  });
+  if (!result?.analysis) {
+    showToast('重新解析失败，请稍后再试');
+    return;
+  }
+  pendingEnterpriseValues = mapDemandAnalysis(result, pendingEnterpriseValues);
+  enterpriseConfirmation = null;
+  recordUsage({
+    flow: 'demand',
+    stage: 'correction',
+    contentKey: enterpriseContentKey,
+    inputCharacters: pendingEnterpriseValues.problem.length,
+    mode: 'model',
+    tokens: result.meta?.total_tokens || 0,
+    costCny: result.meta?.estimated_cost_cny || 0,
+  });
+  if (result.analysis.status === 'requires_human_review') {
+    renderModelReviewState('enterprise', result.analysis, pendingEnterpriseValues.problem);
+    return;
+  }
+  renderDemandConfirmation(pendingEnterpriseValues);
+}
+
+async function refineTalentFromConfirmation() {
+  const corrections = document.getElementById('talent-corrections')?.value.trim() || '';
+  if (!corrections) {
+    showToast('请先写明需要修改或补充的内容');
+    return;
+  }
+  const result = await refineWithDomesticModel('capability', {
+    text: pendingTalentValues.experience,
+    previousAnalysis: pendingTalentValues.modelAnalysis,
+    answers: pendingTalentValues.modelFollowups || [],
+    corrections,
+  });
+  if (!result?.analysis) {
+    showToast('重新解析失败，请稍后再试');
+    return;
+  }
+  pendingTalentValues = {
+    ...pendingTalentValues,
+    modelAnalysis: result.analysis,
+    analysisMeta: result.meta,
+  };
+  talentConfirmation = null;
+  recordUsage({
+    flow: 'talent',
+    stage: 'correction',
+    contentKey: talentContentKey,
+    inputCharacters: pendingTalentValues.experience.length,
+    mode: 'model',
+    tokens: result.meta?.total_tokens || 0,
+    costCny: result.meta?.estimated_cost_cny || 0,
+  });
+  if (result.analysis.status === 'requires_human_review') {
+    renderModelReviewState('talent', result.analysis, pendingTalentValues.experience);
+    return;
+  }
+  const refinedSkills = getCapabilityModelSkills(result, talentSkillTemplates, capabilityCatalog);
+  if (refinedSkills.length) activeTalentSkills = refinedSkills;
+  renderTalentConfirmation(pendingTalentValues, activeTalentSkills);
+}
+
+async function saveFeedbackFromPanel(button) {
+  const panel = button.closest('[data-feedback-panel]');
+  if (!panel) return;
+  const status = panel.querySelector('[data-feedback-status]');
+  const comment = panel.querySelector('[data-feedback-comment]').value.trim();
+  const consent = panel.querySelector('[data-feedback-consent]').checked;
+  button.disabled = true;
+  const saved = await submitAnalysisFeedback({
+    receiptId: panel.dataset.receiptId,
+    flow: panel.dataset.flow,
+    target: panel.dataset.target,
+    verdict: button.dataset.feedbackVerdict,
+    comment,
+    consent,
+  });
+  if (saved?.saved) {
+    status.textContent = '反馈已保存，谢谢。';
+    panel.querySelectorAll('[data-feedback-verdict]').forEach((item) => {
+      item.disabled = true;
+    });
+  } else {
+    button.disabled = false;
+    status.textContent = '暂时无法保存，请稍后再试。';
+  }
+}
+
+async function queuePendingReview(type) {
+  const pending = pendingReviews[type];
+  if (!pending) return;
+  const consent = document.getElementById(`${type}-review-consent`)?.checked;
+  const status = document.getElementById(`${type}-review-status`);
+  if (!consent) {
+    status.textContent = '请先确认同意保存已脱敏材料。';
+    return;
+  }
+  status.textContent = '正在提交…';
+  const result = await submitHumanReview({
+    ...pending,
+    note: document.getElementById(`${type}-review-note`)?.value.trim() || '',
+    consent: true,
+  });
+  status.textContent = result?.queued
+    ? `已进入人工审核队列，编号 ${result.id}。`
+    : '暂时无法提交，请稍后再试。';
+}
+
+document.addEventListener('click', async (event) => {
   const demandExample = event.target.closest('[data-demand-example]');
   if (demandExample) {
     applyDemandExample(demandExample.dataset.demandExample);
@@ -1242,11 +1668,20 @@ document.addEventListener('click', (event) => {
     startVoiceInput(voiceButton);
     return;
   }
+  const feedbackButton = event.target.closest('[data-feedback-verdict]');
+  if (feedbackButton) {
+    await saveFeedbackFromPanel(feedbackButton);
+    return;
+  }
   const button = event.target.closest('[data-action]');
   if (!button) return;
   const action = button.dataset.action;
   if (action === 'copy-collaboration-invite') copyCollaborationInvite();
-  if (action === 'skip-enterprise-followup' && pendingEnterpriseValues) renderEnterpriseResult(pendingEnterpriseValues);
+  if (action === 'skip-enterprise-followup' && pendingEnterpriseValues) renderDemandConfirmation(pendingEnterpriseValues);
+  if (action === 'refine-demand') await refineDemandFromConfirmation();
+  if (action === 'refine-talent') await refineTalentFromConfirmation();
+  if (action === 'submit-review-enterprise') await queuePendingReview('enterprise');
+  if (action === 'submit-review-talent') await queuePendingReview('talent');
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
   if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化痛点描述草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();

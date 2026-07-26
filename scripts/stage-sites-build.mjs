@@ -19,6 +19,11 @@ for (const directory of ['assets', 'css', 'js']) {
   });
 }
 
-for (const page of ['skill-builder.html', 'skill-leaderboard.html', 'service-notice.html']) {
+for (const page of [
+  'skill-builder.html',
+  'skill-leaderboard.html',
+  'service-notice.html',
+  'review-console.html',
+]) {
   await copyFile(resolve(projectRoot, page), resolve(client, page));
 }
