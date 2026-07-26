@@ -45,6 +45,22 @@
       <section class="review-queue-section">
         <div class="result-section-heading">
           <div>
+            <span class="mini-label">模型路由与容灾</span>
+            <h2>国内模型健康、成功率和成本</h2>
+          </div>
+          <div class="feedback-actions">
+            <button type="button" data-provider-probe="qwen:flash">检查 Qwen Flash</button>
+            <button type="button" data-provider-probe="qwen:plus">检查 Qwen Plus</button>
+            <button type="button" data-provider-probe="deepseek">检查 DeepSeek</button>
+          </div>
+        </div>
+        <p id="provider-probe-status" role="status"></p>
+        <div id="provider-metrics" class="review-metrics"></div>
+      </section>
+
+      <section class="review-queue-section">
+        <div class="result-section-heading">
+          <div>
             <span class="mini-label">人工审核队列</span>
             <h2>需要人工决定的材料</h2>
           </div>
@@ -62,6 +78,51 @@
         <div id="review-list" class="review-list" aria-live="polite">
           <div class="empty-state"><div class="empty-state-inner"><h3>等待权限确认</h3><p>审核队列不会向未授权访问者展示。</p></div></div>
         </div>
+      </section>
+
+      <section class="review-queue-section">
+        <div class="result-section-heading">
+          <div>
+            <span class="mini-label">L1–L3 证据核验</span>
+            <h2>材料、微任务与人工认证</h2>
+          </div>
+          <label>
+            <span class="sr-only">筛选证据状态</span>
+            <select id="evidence-status-filter" class="form-select">
+              <option value="all">全部</option>
+              <option value="material_pending">材料待核验</option>
+              <option value="material_verified">L1 已通过</option>
+              <option value="microtask_submitted">微任务待评分</option>
+              <option value="microtask_passed">L2 已通过</option>
+              <option value="certified">L3 已认证</option>
+              <option value="revision_required">待补充</option>
+              <option value="rejected">已驳回</option>
+            </select>
+          </label>
+        </div>
+        <div id="evidence-review-list" class="review-list" aria-live="polite"></div>
+      </section>
+
+      <section class="review-queue-section">
+        <div class="result-section-heading">
+          <div>
+            <span class="mini-label">100 条黄金评测集</span>
+            <h2>双人独立标注与第三人仲裁</h2>
+            <p>同一账号不能占用两个标注席位；两位标注者一致后自动确认，不一致时必须由第三位审核者仲裁。</p>
+          </div>
+          <label>
+            <span class="sr-only">筛选评测状态</span>
+            <select id="evaluation-status-filter" class="form-select">
+              <option value="all">全部</option>
+              <option value="pending">待标注</option>
+              <option value="reviewing">已完成一审</option>
+              <option value="agreed">双人一致</option>
+              <option value="disputed">待仲裁</option>
+              <option value="adjudicated">已仲裁</option>
+            </select>
+          </label>
+        </div>
+        <div id="evaluation-list" class="review-list" aria-live="polite"></div>
       </section>
     </div>
   </main>

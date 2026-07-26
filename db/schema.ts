@@ -40,3 +40,34 @@ export interface ReviewRecord {
   createdAt: number;
   updatedAt: number;
 }
+
+export interface ProviderAttempt {
+  id: string;
+  flow: 'demand' | 'capability';
+  stage: 'initial' | 'refined' | 'probe';
+  provider: 'deepseek' | 'qwen';
+  model: string;
+  status: 'success' | 'failure' | 'circuit_open';
+  latencyMs: number;
+  estimatedCostCny: number;
+  routeReason: string | null;
+  createdAt: number;
+}
+
+export interface EvidenceSubmission {
+  id: string;
+  capabilityName: string;
+  evidenceType: string;
+  level: 'L0' | 'L1' | 'L2' | 'L3';
+  status: 'material_pending' | 'material_verified' | 'microtask_submitted' | 'microtask_passed' | 'certified' | 'revision_required' | 'rejected';
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface EvaluationCase {
+  caseId: string;
+  flow: 'demand' | 'capability';
+  status: 'pending' | 'reviewing' | 'agreed' | 'disputed' | 'adjudicated';
+  createdAt: number;
+  updatedAt: number;
+}

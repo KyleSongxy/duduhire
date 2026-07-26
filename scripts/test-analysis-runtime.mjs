@@ -198,9 +198,26 @@ const providerChain = getProviderChain({
 assert.deepEqual(
   providerChain.map((provider) => [provider.name, provider.model]),
   [
-    ['deepseek', 'deepseek-v4-pro'],
     ['qwen', 'qwen3.7-plus'],
+    ['deepseek', 'deepseek-v4-pro'],
+    ['qwen', 'qwen3.7-flash'],
   ],
 );
+
+const shortDemandChain = getProviderChain({
+  DEEPSEEK_API_KEY: 'test',
+  DASHSCOPE_API_KEY: 'test',
+}, 'demand', '简短需求', { stage: 'initial' });
+assert.deepEqual(
+  shortDemandChain.map((provider) => provider.model),
+  ['qwen3.7-flash', 'deepseek-v4-flash', 'qwen3.7-plus'],
+);
+
+const redactedOrganization = redactSensitiveText(
+  '客户名：星河科技，项目由星河科技发起。',
+  ['星河科技'],
+);
+assert.equal(redactedOrganization.text.includes('星河科技'), false);
+assert.equal(redactedOrganization.redactions.some((item) => item.type === 'organization_name'), true);
 
 console.log('Analysis runtime validation tests passed.');

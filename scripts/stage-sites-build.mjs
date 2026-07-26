@@ -13,7 +13,7 @@ await access(resolve(client, 'index.html'));
 await mkdir(resolve(dist, 'server'), { recursive: true });
 await copyFile(generatedWorker, serverWorker);
 
-for (const directory of ['assets', 'css', 'js']) {
+for (const directory of ['assets', 'css', 'js', 'data']) {
   await cp(resolve(projectRoot, directory), resolve(client, directory), {
     recursive: true,
   });

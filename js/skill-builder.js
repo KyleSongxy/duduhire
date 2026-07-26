@@ -4,10 +4,13 @@ import {
   analyzeWithDomesticModel,
   getCapabilityModelSkills,
   getDemandModelQuestions,
+  getEvidenceStatus,
   mapDemandAnalysis,
   refineWithDomesticModel,
   requestStructuredMatch,
   submitAnalysisFeedback,
+  submitEvidence,
+  submitEvidenceMicrotask,
   submitHumanReview,
 } from './analysis-api.js';
 import { createContentKey, getUsageReceipt, recordUsage } from './usage-meter.js';
@@ -41,6 +44,14 @@ const pendingReviews = {
 };
 let toastTimer;
 
+function parseRedactionTerms(value) {
+  return [...new Set(String(value || '')
+    .split(/[,，;\n；]/)
+    .map((item) => item.trim())
+    .filter((item) => item.length >= 2))]
+    .slice(0, 20);
+}
+
 const talentExamples = {
   productization: '我负责把一个 AI 客服 Demo 接入客户工单流程。我重新梳理数据来源、权限、自动回复和人工升级规则，补充异常回退与测试集，最终通过试点验收并正式上线。过程可由流程图、版本记录和验收材料证明。',
   cost: '我负责一款 AI SaaS 的推理成本优化。先按任务类型审计调用日志和 Token 账单，再建立代表性评测集，设计多模型路由、缓存和降级方案。上线后在关键任务质量稳定的前提下降低了单次调用成本，过程可由账单、代码和评测报告证明。',
@@ -52,13 +63,13 @@ const draftConfig = {
     key: 'duduhire-enterprise-draft-v1',
     form: 'enterprise-form',
     status: 'enterprise-draft-status',
-    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-submitter-role', 'enterprise-owner-name', 'enterprise-deadline', 'enterprise-sensitive'],
+    fields: ['enterprise-problem', 'enterprise-market', 'enterprise-stage', 'enterprise-impact', 'enterprise-tried', 'enterprise-result', 'enterprise-submitter-role', 'enterprise-owner-name', 'enterprise-deadline', 'enterprise-sensitive', 'enterprise-redaction-terms'],
   },
   talent: {
     key: 'duduhire-talent-draft-v1',
     form: 'talent-form',
     status: 'talent-draft-status',
-    fields: ['talent-experience', 'talent-market', 'talent-field'],
+    fields: ['talent-experience', 'talent-market', 'talent-field', 'talent-redaction-terms'],
   },
 };
 
@@ -77,6 +88,7 @@ function privacySummary(meta) {
     cn_id: '身份证号',
     bank_card: '银行卡号',
     credential: '账号凭据',
+    organization_name: '客户 / 机构名',
   };
   const types = privacy.redaction_types.map((type) => labels[type] || type);
   return `
@@ -626,6 +638,9 @@ enterpriseForm.addEventListener('submit', async (event) => {
   values.owner = document.getElementById('enterprise-owner-name').value.trim();
   values.acceptance = sourceDemand?.acceptance || '';
   values.access = sourceDemand?.inputs || '';
+  values.redactionTerms = parseRedactionTerms(
+    document.getElementById('enterprise-redaction-terms').value,
+  );
 
   const submit = document.getElementById('analyze-btn');
   submit.disabled = true;
@@ -636,6 +651,7 @@ enterpriseForm.addEventListener('submit', async (event) => {
   const modelPromise = analyzeWithDomesticModel('demand', {
     text: problem,
     sensitive: values.sensitive,
+    redaction_terms: values.redactionTerms,
   });
   const [, modelResult] = await Promise.all([runLoading('enterprise', [
     { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 28 },
@@ -831,6 +847,7 @@ document.addEventListener('submit', async (event) => {
       sensitive: values.sensitive,
       previousAnalysis: values.modelAnalysis,
       answers: values.modelFollowups || [],
+      redactionTerms: values.redactionTerms || [],
     });
     values = mapDemandAnalysis(refined, values);
     recordUsage({
@@ -1128,6 +1145,9 @@ talentForm.addEventListener('submit', async (event) => {
     experience: document.getElementById('talent-experience').value.trim(),
     market: '',
     field: '',
+    redactionTerms: parseRedactionTerms(
+      document.getElementById('talent-redaction-terms').value,
+    ),
   };
   const experienceError = validateField('talent-experience');
   setError('talent-experience', experienceError);
@@ -1148,6 +1168,7 @@ talentForm.addEventListener('submit', async (event) => {
   const modelPromise = analyzeWithDomesticModel('capability', {
     text: values.experience,
     sensitive: false,
+    redaction_terms: values.redactionTerms,
   });
   const [, modelResult] = await Promise.all([runLoading('talent', [
     { title: 'AI 正在阅读你的经历', detail: '区分岗位描述与本人实际行动', progress: 30 },
@@ -1228,6 +1249,7 @@ document.addEventListener('submit', async (event) => {
       text: values.experience,
       previousAnalysis: values.modelAnalysis,
       answers: followups,
+      redactionTerms: values.redactionTerms || [],
     });
     if (refined?.analysis?.status === 'requires_human_review') {
       renderModelReviewState('talent', refined.analysis, values.experience);
@@ -1276,6 +1298,102 @@ document.addEventListener('submit', (event) => {
   ));
   renderTalentResult(pendingTalentValues, confirmedSkills, pendingTalentValues.skillAnswers || {});
 });
+
+function evidenceCertificationPanel(skills, redactionTerms = []) {
+  return `
+    <section class="evidence-certification" id="evidence-certification">
+      <div class="result-section-heading">
+        <div>
+          <span class="mini-label">L1–L3 能力核验</span>
+          <h3>用材料、微任务和人工审核升级可信等级</h3>
+        </div>
+        <small>模型不能授予认证等级</small>
+      </div>
+      <div class="certification-ladder" aria-label="认证等级路径">
+        <span class="active"><strong>L0</strong>已确认自述</span>
+        <span><strong>L1</strong>材料核验</span>
+        <span><strong>L2</strong>微任务通过</span>
+        <span><strong>L3</strong>人工认证</span>
+      </div>
+      <form id="evidence-certification-form" class="evidence-certification-form">
+        <div class="review-update-grid">
+          <label>选择能力
+            <select class="form-select" name="capability_name" required>
+              ${skills.map((skill) => (
+                `<option value="${escapeHTML(skill.name)}" data-atom-id="${escapeHTML(skill.modelAtom?.id || skill.id)}">${escapeHTML(skill.name)}</option>`
+              )).join('')}
+            </select>
+          </label>
+          <label>材料类型
+            <select class="form-select" name="evidence_type" required>
+              <option value="work_product">本人交付物</option>
+              <option value="acceptance_record">验收 / 通过记录</option>
+              <option value="metric_report">指标 / 结果报告</option>
+              <option value="process_record">过程 / 版本记录</option>
+              <option value="reference">可联系证明人或公开引用</option>
+            </select>
+          </label>
+        </div>
+        <label>材料说明
+          <textarea class="form-textarea compact" name="description" minlength="20" maxlength="1800" required placeholder="说明这份材料证明了什么、你本人完成了什么，以及它不能证明什么。"></textarea>
+        </label>
+        <label>HTTPS 公开或受控链接（与文件二选一）
+          <input class="form-input" type="url" name="source_reference" maxlength="500" placeholder="https://…">
+        </label>
+        <label>上传私有材料（最大 5MB）
+          <input class="form-input" type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.txt,.md,application/pdf,image/png,image/jpeg,text/plain,text/markdown">
+        </label>
+        <label>需要遮盖的客户 / 机构名
+          <input class="form-input" name="redaction_terms" maxlength="400" value="${escapeHTML(redactionTerms.join('，'))}" placeholder="用逗号分隔">
+        </label>
+        <label class="checkbox-row compact">
+          <input type="checkbox" name="consent" value="true" required>
+          <span>我有权提交该材料，并确认已移除不必要的个人敏感信息；材料仅供授权审核者核验。</span>
+        </label>
+        <button class="btn btn-secondary" type="submit">提交 L1 材料核验</button>
+        <p data-evidence-form-status role="status"></p>
+      </form>
+      <div id="evidence-progress" class="evidence-progress" hidden></div>
+    </section>`;
+}
+
+function renderEvidenceProgress(submission, ownerToken = '') {
+  const container = document.getElementById('evidence-progress');
+  if (!container || !submission) return;
+  container.hidden = false;
+  container.dataset.evidenceId = submission.id;
+  const labels = {
+    material_pending: '材料等待人工核验',
+    material_verified: 'L1 已通过，可完成微任务',
+    microtask_submitted: '微任务等待人工评分',
+    microtask_passed: 'L2 已通过，等待最终认证',
+    certified: 'L3 人工认证已完成',
+    revision_required: '需要补充或修正材料',
+    rejected: '材料未通过核验',
+  };
+  container.innerHTML = `
+    <div class="evidence-progress-head">
+      <div><span class="mini-label">核验进度</span><h3>${escapeHTML(submission.capabilityName)}</h3></div>
+      <span class="level-pill">${escapeHTML(submission.level)} · ${escapeHTML(labels[submission.status] || submission.status)}</span>
+    </div>
+    ${ownerToken ? `
+      <div class="credential-note">
+        <strong>请保存一次性追踪凭证</strong>
+        <code>${escapeHTML(ownerToken)}</code>
+        <small>凭证只在本次提交后展示；丢失后平台无法替你恢复。</small>
+      </div>` : ''}
+    ${submission.reviewerNote ? `<p class="reviewer-note"><strong>审核说明：</strong>${escapeHTML(submission.reviewerNote)}</p>` : ''}
+    ${submission.challenge?.available ? `
+      <form id="evidence-microtask-form">
+        <span class="mini-label">L2 微任务</span>
+        <h3>${escapeHTML(submission.challenge.prompt)}</h3>
+        <ul>${submission.challenge.rubric.map((item) => `<li>${escapeHTML(item)}</li>`).join('')}</ul>
+        <textarea class="form-textarea" name="answer" minlength="80" maxlength="4000" required placeholder="至少 80 字，按判断依据、操作步骤、交付物、验收和边界作答。"></textarea>
+        <button class="btn btn-secondary" type="submit" ${submission.microtask ? 'disabled' : ''}>${submission.microtask ? '微任务已提交' : '提交微任务'}</button>
+        <p data-microtask-status role="status"></p>
+      </form>` : '<p>材料通过 L1 人工核验后，系统会开放一项与该能力对应的微任务。</p>'}
+    <button class="text-button" type="button" data-action="refresh-evidence">刷新核验进度</button>`;
+}
 
 async function renderTalentResult(values, skills, answers) {
   const scene = [values.market || '场景待补充', values.field || '方向由能力提炼'].join(' · ');
@@ -1341,6 +1459,7 @@ async function renderTalentResult(values, skills, answers) {
           </article>
         `).join('')}
       </section>
+      ${evidenceCertificationPanel(skills, values.redactionTerms || [])}
       <section class="result-section">
         <div class="result-section-heading">
           <div><span class="mini-label">可匹配痛点方向</span><h3>这些真实问题值得进一步对照</h3></div>
@@ -1390,6 +1509,67 @@ async function renderTalentResult(values, skills, answers) {
   updateSteps('t', 3);
   scrollToElement(document.getElementById('talent-output').closest('.builder-panel'));
 }
+
+document.addEventListener('submit', async (event) => {
+  if (event.target.id === 'evidence-certification-form') {
+    event.preventDefault();
+    const form = event.target;
+    const status = form.querySelector('[data-evidence-form-status]');
+    const select = form.elements.capability_name;
+    const option = select.options[select.selectedIndex];
+    const payload = new FormData(form);
+    payload.set('atom_id', option.dataset.atomId || '');
+    payload.set('consent', form.elements.consent.checked ? 'true' : 'false');
+    status.textContent = '正在加密上传并建立核验记录…';
+    form.querySelector('button[type="submit"]').disabled = true;
+    const result = await submitEvidence(payload);
+    form.querySelector('button[type="submit"]').disabled = false;
+    if (!result.ok) {
+      const messages = {
+        FILE_OR_REFERENCE_REQUIRED: '请上传一份材料，或提供 HTTPS 引用链接。',
+        FILE_TOO_LARGE: '文件超过 5MB，请压缩或改为提交链接。',
+        UNSUPPORTED_FILE_TYPE: '仅支持 PDF、PNG、JPG、TXT 和 Markdown。',
+        CONSENT_REQUIRED: '请先确认材料授权与隐私声明。',
+      };
+      status.textContent = messages[result.body?.error] || '提交失败，请检查内容后重试。';
+      return;
+    }
+    const key = `duduhire-evidence-${result.body.id}`;
+    try { window.sessionStorage.setItem(key, result.body.owner_token); } catch { /* no-op */ }
+    status.textContent = '材料已进入人工核验队列。';
+    renderEvidenceProgress({
+      id: result.body.id,
+      capabilityName: select.value,
+      level: result.body.level,
+      status: result.body.status,
+      challenge: { available: false, rubric: [] },
+    }, result.body.owner_token);
+  }
+
+  if (event.target.id === 'evidence-microtask-form') {
+    event.preventDefault();
+    const container = event.target.closest('[data-evidence-id]');
+    const id = container?.dataset.evidenceId;
+    let token = '';
+    try { token = window.sessionStorage.getItem(`duduhire-evidence-${id}`) || ''; } catch { /* no-op */ }
+    const status = event.target.querySelector('[data-microtask-status]');
+    if (!token) {
+      status.textContent = '当前会话没有追踪凭证，请使用保存的凭证重新打开进度。';
+      return;
+    }
+    status.textContent = '正在提交微任务…';
+    const result = await submitEvidenceMicrotask(
+      id,
+      token,
+      event.target.elements.answer.value.trim(),
+      pendingTalentValues?.redactionTerms || [],
+    );
+    status.textContent = result.ok
+      ? '微任务已提交，等待人工评分。'
+      : '提交失败；请先确认材料已通过 L1 核验。';
+    if (result.ok) event.target.querySelector('button[type="submit"]').disabled = true;
+  }
+});
 
 function resetTalent() {
   talentForm.closest('.builder-panel').hidden = false;
@@ -1543,6 +1723,7 @@ async function refineDemandFromConfirmation() {
     previousAnalysis: pendingEnterpriseValues.modelAnalysis,
     answers: pendingEnterpriseValues.modelFollowups || [],
     corrections,
+    redactionTerms: pendingEnterpriseValues.redactionTerms || [],
   });
   if (!result?.analysis) {
     showToast('重新解析失败，请稍后再试');
@@ -1577,6 +1758,7 @@ async function refineTalentFromConfirmation() {
     previousAnalysis: pendingTalentValues.modelAnalysis,
     answers: pendingTalentValues.modelFollowups || [],
     corrections,
+    redactionTerms: pendingTalentValues.redactionTerms || [],
   });
   if (!result?.analysis) {
     showToast('重新解析失败，请稍后再试');
@@ -1682,6 +1864,24 @@ document.addEventListener('click', async (event) => {
   if (action === 'refine-talent') await refineTalentFromConfirmation();
   if (action === 'submit-review-enterprise') await queuePendingReview('enterprise');
   if (action === 'submit-review-talent') await queuePendingReview('talent');
+  if (action === 'refresh-evidence') {
+    const container = button.closest('[data-evidence-id]');
+    const id = container?.dataset.evidenceId;
+    let token = '';
+    try { token = window.sessionStorage.getItem(`duduhire-evidence-${id}`) || ''; } catch { /* no-op */ }
+    if (!id || !token) {
+      showToast('当前会话没有追踪凭证');
+      return;
+    }
+    button.disabled = true;
+    const result = await getEvidenceStatus(id, token);
+    button.disabled = false;
+    if (!result?.submission) {
+      showToast('暂时无法读取核验进度');
+      return;
+    }
+    renderEvidenceProgress(result.submission);
+  }
   if (action === 'copy-enterprise') copyText(enterpriseCopy);
   if (action === 'download-enterprise') downloadText(enterpriseCopy, '嘟嘟嗨-结构化痛点描述草稿.txt');
   if (action === 'reset-enterprise') resetEnterprise();

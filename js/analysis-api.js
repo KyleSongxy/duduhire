@@ -50,6 +50,7 @@ export async function refineWithDomesticModel(flow, {
   previousAnalysis,
   answers = [],
   corrections = '',
+  redactionTerms = [],
 }) {
   return analyzeWithDomesticModel(flow, {
     text,
@@ -57,6 +58,7 @@ export async function refineWithDomesticModel(flow, {
     previous_analysis: previousAnalysis,
     answers,
     corrections,
+    redaction_terms: redactionTerms,
   });
 }
 
@@ -106,6 +108,60 @@ export async function submitHumanReview(payload) {
     return response.ok ? response.json() : null;
   } catch {
     return null;
+  }
+}
+
+export async function submitEvidence(formData) {
+  try {
+    const response = await fetch('/api/evidence-submissions', {
+      method: 'POST',
+      body: formData,
+    });
+    return {
+      ok: response.ok,
+      status: response.status,
+      body: await response.json(),
+    };
+  } catch {
+    return { ok: false, status: 0, body: { error: 'NETWORK_ERROR' } };
+  }
+}
+
+export async function getEvidenceStatus(id, ownerToken) {
+  try {
+    const response = await fetch(`/api/evidence-submissions/${encodeURIComponent(id)}`, {
+      headers: {
+        accept: 'application/json',
+        'x-evidence-token': ownerToken,
+      },
+    });
+    return response.ok ? response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function submitEvidenceMicrotask(id, ownerToken, answer, redactionTerms = []) {
+  try {
+    const response = await fetch(
+      `/api/evidence-submissions/${encodeURIComponent(id)}/microtask`,
+      {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'x-evidence-token': ownerToken,
+        },
+        body: JSON.stringify({ answer, redaction_terms: redactionTerms }),
+      },
+    );
+    return {
+      ok: response.ok,
+      status: response.status,
+      body: await response.json(),
+    };
+  } catch {
+    return { ok: false, status: 0, body: { error: 'NETWORK_ERROR' } };
   }
 }
 

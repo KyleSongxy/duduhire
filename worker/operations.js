@@ -1,6 +1,13 @@
-import { validateAnalysis } from './analysis.js';
+import { probeProvider, validateAnalysis } from './analysis.js';
+import { handleCertificationRequest } from './certification.js';
+import { handleEvaluationRequest } from './evaluation.js';
 import { matchAnalysis } from './matching.js';
-import { getRedactionTypes, redactJsonValue, redactSensitiveText } from './privacy.js';
+import {
+  getRedactionTypes,
+  redactJsonValue,
+  redactSensitiveText,
+  sha256,
+} from './privacy.js';
 import {
   consumeDurableRateLimit,
   enqueueReview,
@@ -55,6 +62,18 @@ function isReviewer(request, env) {
   return Boolean(env.REVIEW_ADMIN_TOKEN && suppliedToken && suppliedToken === env.REVIEW_ADMIN_TOKEN);
 }
 
+async function reviewerAuth(request, env) {
+  const reviewer = isReviewer(request, env);
+  if (!reviewer) return { isReviewer: false, reviewerKey: '' };
+  const email = normalizeEmailHeader(request);
+  const suppliedToken = request.headers.get('x-review-admin-token') || '';
+  const identity = email ? `email:${email}` : `token:${suppliedToken}`;
+  return {
+    isReviewer: true,
+    reviewerKey: await sha256(`${env.RATE_LIMIT_SALT || 'duduhire-local'}:reviewer:${identity}`),
+  };
+}
+
 export async function handleOperationsRequest(request, env) {
   const url = new URL(request.url);
   if (!url.pathname.startsWith('/api/')) return null;
@@ -65,11 +84,20 @@ export async function handleOperationsRequest(request, env) {
       feedback: hasDatabase(env),
       review: hasDatabase(env),
       reviewer: isReviewer(request, env),
+      evidence_storage: Boolean(env?.EVIDENCE?.put),
+      evaluation: hasDatabase(env),
       redaction_types: getRedactionTypes(),
     });
   }
 
   if (!sameOrigin(request, url)) return jsonResponse({ error: 'ORIGIN_NOT_ALLOWED' }, 403);
+  const auth = await reviewerAuth(request, env);
+
+  const certificationResponse = await handleCertificationRequest(request, env, auth);
+  if (certificationResponse) return certificationResponse;
+  const evaluationResponse = await handleEvaluationRequest(request, env, auth);
+  if (evaluationResponse) return evaluationResponse;
+
   if (request.method !== 'GET') {
     const contentLength = Number.parseInt(request.headers.get('content-length') || '0', 10);
     if (Number.isFinite(contentLength) && contentLength > 250000) {
@@ -156,7 +184,7 @@ export async function handleOperationsRequest(request, env) {
   }
 
   if (url.pathname === '/api/reviews' && request.method === 'GET') {
-    if (!isReviewer(request, env)) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
+    if (!auth.isReviewer) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
     const status = url.searchParams.get('status') || 'pending';
     if (status !== 'all' && !allowedReviewStatuses.has(status)) {
       return jsonResponse({ error: 'INVALID_STATUS' }, 400);
@@ -167,7 +195,7 @@ export async function handleOperationsRequest(request, env) {
 
   const reviewMatch = url.pathname.match(/^\/api\/reviews\/([a-zA-Z0-9_]+)$/);
   if (reviewMatch && request.method === 'PATCH') {
-    if (!isReviewer(request, env)) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
+    if (!auth.isReviewer) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
     const body = await readJson(request);
     if (!body || !allowedReviewStatuses.has(body.status)) {
       return jsonResponse({ error: 'INVALID_REVIEW_UPDATE' }, 400);
@@ -181,9 +209,16 @@ export async function handleOperationsRequest(request, env) {
   }
 
   if (url.pathname === '/api/metrics' && request.method === 'GET') {
-    if (!isReviewer(request, env)) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
+    if (!auth.isReviewer) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
     const metrics = await getOperationsMetrics(env, url.searchParams.get('days'));
     return jsonResponse({ metrics });
+  }
+
+  const providerProbe = url.pathname.match(/^\/api\/providers\/([a-zA-Z0-9.:-]+)\/probe$/);
+  if (providerProbe && request.method === 'POST') {
+    if (!auth.isReviewer) return jsonResponse({ error: 'REVIEWER_REQUIRED' }, 401);
+    const result = await probeProvider(env, providerProbe[1]);
+    return jsonResponse(result, result.ok ? 200 : 502);
   }
 
   return null;

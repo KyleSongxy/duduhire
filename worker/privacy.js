@@ -30,9 +30,41 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim().replace(/\r\n?/g, '\n') : '';
 }
 
-export function redactSensitiveText(value) {
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function normalizeRedactionTerms(terms) {
+  if (!Array.isArray(terms)) return [];
+  return [...new Set(terms
+    .filter((item) => typeof item === 'string')
+    .map((item) => normalizeText(item).slice(0, 80))
+    .filter((item) => item.length >= 2))]
+    .slice(0, 20);
+}
+
+export function redactSensitiveText(value, terms = []) {
   let text = normalizeText(value);
   const redactions = [];
+  const confidentialTerms = normalizeRedactionTerms(terms);
+  let organizationCount = 0;
+  for (const term of confidentialTerms.sort((a, b) => b.length - a.length)) {
+    const pattern = new RegExp(escapeRegExp(term), 'gi');
+    text = text.replace(pattern, () => {
+      organizationCount += 1;
+      return '[已隐藏客户/机构名]';
+    });
+  }
+  text = text.replace(
+    /((?:客户|甲方|机构|公司|品牌)(?:名|名称)?\s*[:：]\s*)([^，。；;\n]{2,40})/g,
+    (_, prefix) => {
+      organizationCount += 1;
+      return `${prefix}[已隐藏客户/机构名]`;
+    },
+  );
+  if (organizationCount) {
+    redactions.push({ type: 'organization_name', count: organizationCount });
+  }
   for (const rule of redactionRules) {
     let count = 0;
     text = text.replace(rule.pattern, () => {
@@ -87,5 +119,5 @@ export function buildAnalysisSource({ text, answers = [], corrections = '' }) {
 }
 
 export function getRedactionTypes() {
-  return redactionRules.map((rule) => rule.type);
+  return ['organization_name', ...redactionRules.map((rule) => rule.type)];
 }

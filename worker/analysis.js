@@ -18,6 +18,7 @@ import {
   recordProviderFailure,
   recordProviderSuccess,
   saveAnalysisReceipt,
+  saveProviderAttempt,
 } from './storage.js';
 
 const schemas = {
@@ -90,32 +91,62 @@ function consumeMemoryRateLimit(request, env) {
   };
 }
 
-export function getProviderChain(env, flow, text) {
-  const providers = [];
+export function getProviderChain(env, flow, text, context = {}) {
+  const policy = ['balanced', 'cost', 'quality'].includes(env.MODEL_ROUTING_POLICY)
+    ? env.MODEL_ROUTING_POLICY
+    : 'balanced';
+  const stage = context.stage || 'initial';
+  const options = {};
   if (env.DEEPSEEK_API_KEY) {
-    const usePro = flow === 'capability' && text.length > 6000;
-    providers.push({
+    const usePro = flow === 'capability' || stage === 'refined' || text.length > 6000;
+    options.deepseek = {
       name: 'deepseek',
+      healthKey: usePro ? 'deepseek:pro' : 'deepseek:flash',
       endpoint: 'https://api.deepseek.com/chat/completions',
       apiKey: env.DEEPSEEK_API_KEY,
       model: usePro ? 'deepseek-v4-pro' : 'deepseek-v4-flash',
+      routeReason: usePro ? 'complex_or_refined' : 'fast_fallback',
       requestExtras: {
         thinking: { type: 'disabled' },
       },
-    });
+    };
   }
   if (env.DASHSCOPE_API_KEY) {
-    providers.push({
+    options.qwenFlash = {
       name: 'qwen',
+      healthKey: 'qwen:flash',
       endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
       apiKey: env.DASHSCOPE_API_KEY,
-      model: 'qwen3.7-plus',
+      model: 'qwen3.7-flash',
+      routeReason: 'short_initial_cost',
       requestExtras: {
         enable_thinking: false,
       },
-    });
+    };
+    options.qwenPlus = {
+      name: 'qwen',
+      healthKey: 'qwen:plus',
+      endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+      apiKey: env.DASHSCOPE_API_KEY,
+      model: 'qwen3.7-plus',
+      routeReason: 'complex_refined_quality',
+      requestExtras: {
+        enable_thinking: false,
+      },
+    };
   }
-  return providers;
+  const shortInitial = flow === 'demand' && stage === 'initial' && text.length <= 12000;
+  const order = policy === 'quality'
+    ? [options.qwenPlus, options.deepseek, options.qwenFlash]
+    : policy === 'cost'
+      ? [options.qwenFlash, options.deepseek, options.qwenPlus]
+      : shortInitial
+        ? [options.qwenFlash, options.deepseek, options.qwenPlus]
+        : [options.qwenPlus, options.deepseek, options.qwenFlash];
+  return order.filter(Boolean).map((provider, index) => ({
+    ...provider,
+    routeReason: `${policy}:${provider.routeReason}:${index + 1}`,
+  }));
 }
 
 function collectDemandFactReferences(analysis) {
@@ -210,6 +241,7 @@ function estimateCostCny(model, usage = {}) {
   const rates = {
     'deepseek-v4-flash': { input: 1, output: 2 },
     'deepseek-v4-pro': { input: 3, output: 6 },
+    'qwen3.7-flash': { input: 0.2, output: 0.8 },
     'qwen3.7-plus': { input: 2, output: 8 },
   };
   const rate = rates[model];
@@ -289,7 +321,7 @@ async function callProvider(provider, flow, source, context = {}) {
 }
 
 export async function runAnalysis(flow, source, env, context = {}) {
-  const providers = getProviderChain(env, flow, source.text);
+  const providers = getProviderChain(env, flow, source.text, context);
   if (!providers.length) {
     return {
       error: 'MODEL_NOT_CONFIGURED',
@@ -301,7 +333,7 @@ export async function runAnalysis(flow, source, env, context = {}) {
   for (const provider of providers) {
     let circuitOpen = false;
     try {
-      circuitOpen = await isCircuitOpen(env, provider.name);
+      circuitOpen = await isCircuitOpen(env, provider.healthKey);
     } catch (error) {
       console.warn(JSON.stringify({
         event: 'model_health.read_failed',
@@ -316,24 +348,61 @@ export async function runAnalysis(flow, source, env, context = {}) {
         attempt: 0,
         reason: 'circuit_open',
       });
+      try {
+        await saveProviderAttempt(env, {
+          flow,
+          stage: context.stage || 'initial',
+          provider: provider.name,
+          model: provider.model,
+          status: 'circuit_open',
+          routeReason: provider.routeReason,
+        });
+      } catch {
+        // Routing must remain available when telemetry storage is unavailable.
+      }
       continue;
     }
     for (let attempt = 1; attempt <= 2; attempt += 1) {
+      const attemptStartedAt = Date.now();
       try {
         const result = await callProvider(provider, flow, source, context);
         try {
-          await recordProviderSuccess(env, provider.name);
+          await Promise.all([
+            recordProviderSuccess(env, provider.healthKey),
+            saveProviderAttempt(env, {
+              flow,
+              stage: context.stage || 'initial',
+              provider: provider.name,
+              model: provider.model,
+              status: 'success',
+              latencyMs: Date.now() - attemptStartedAt,
+              promptTokens: result.meta.prompt_tokens,
+              completionTokens: result.meta.completion_tokens,
+              estimatedCostCny: result.meta.estimated_cost_cny,
+              routeReason: provider.routeReason,
+            }),
+          ]);
         } catch {
           // Model success must not be converted into a user-visible failure by telemetry storage.
         }
+        result.meta.route_reason = provider.routeReason;
         return result;
       } catch (error) {
         try {
-          await recordProviderFailure(
-            env,
-            provider.name,
-            error.name === 'AbortError' ? 'timeout' : error.message,
-          );
+          const reason = error.name === 'AbortError' ? 'timeout' : error.message;
+          await Promise.all([
+            recordProviderFailure(env, provider.healthKey, reason),
+            saveProviderAttempt(env, {
+              flow,
+              stage: context.stage || 'initial',
+              provider: provider.name,
+              model: provider.model,
+              status: 'failure',
+              latencyMs: Date.now() - attemptStartedAt,
+              routeReason: provider.routeReason,
+              failureReason: reason,
+            }),
+          ]);
         } catch {
           // Provider failover remains available when health storage is temporarily unavailable.
         }
@@ -354,13 +423,99 @@ export async function runAnalysis(flow, source, env, context = {}) {
   };
 }
 
+export async function probeProvider(env, providerName) {
+  const candidates = getProviderChain(env, 'demand', '健康检查', { stage: 'initial' });
+  const provider = candidates.find((item) => (
+    providerName === item.name
+    || providerName === item.healthKey
+    || providerName === item.model
+  ));
+  if (!provider) return { ok: false, error: 'PROVIDER_NOT_CONFIGURED' };
+  const startedAt = Date.now();
+  try {
+    const response = await fetch(provider.endpoint, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${provider.apiKey}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: provider.model,
+        messages: [{ role: 'user', content: '只输出 JSON：{"ok":true}' }],
+        response_format: { type: 'json_object' },
+        max_tokens: 32,
+        ...provider.requestExtras,
+      }),
+    });
+    if (!response.ok) throw new Error(`HTTP_${response.status}`);
+    const payload = await response.json();
+    const content = payload.choices?.[0]?.message?.content;
+    const parsed = JSON.parse(content || '{}');
+    if (parsed.ok !== true) throw new Error('INVALID_HEALTH_RESPONSE');
+    try {
+      await Promise.all([
+        recordProviderSuccess(env, provider.healthKey),
+        saveProviderAttempt(env, {
+          flow: 'demand',
+          stage: 'probe',
+          provider: provider.name,
+          model: provider.model,
+          status: 'success',
+          latencyMs: Date.now() - startedAt,
+          promptTokens: payload.usage?.prompt_tokens || 0,
+          completionTokens: payload.usage?.completion_tokens || 0,
+          estimatedCostCny: estimateCostCny(provider.model, payload.usage || {}),
+          routeReason: 'manual_health_probe',
+        }),
+      ]);
+    } catch {
+      // A successful provider probe remains successful when telemetry is unavailable.
+    }
+    return {
+      ok: true,
+      provider: provider.name,
+      model: provider.model,
+      latencyMs: Date.now() - startedAt,
+    };
+  } catch (error) {
+    try {
+      await Promise.all([
+        recordProviderFailure(env, provider.healthKey, error.message),
+        saveProviderAttempt(env, {
+          flow: 'demand',
+          stage: 'probe',
+          provider: provider.name,
+          model: provider.model,
+          status: 'failure',
+          latencyMs: Date.now() - startedAt,
+          routeReason: 'manual_health_probe',
+          failureReason: error.message,
+        }),
+      ]);
+    } catch {
+      // Probe errors are still returned when telemetry is unavailable.
+    }
+    return {
+      ok: false,
+      provider: provider.name,
+      model: provider.model,
+      latencyMs: Date.now() - startedAt,
+      error: String(error.message).slice(0, 80),
+    };
+  }
+}
+
 export async function handleAnalysisRequest(request, env) {
   const url = new URL(request.url);
   if (url.pathname === '/api/analysis/status' && request.method === 'GET') {
-    const providers = getProviderChain(env, 'demand', '');
+    const providers = getProviderChain(env, 'demand', '', { stage: 'initial' });
     return jsonResponse({
       enabled: providers.length > 0,
-      providers: providers.map((provider) => provider.name),
+      providers: [...new Set(providers.map((provider) => provider.name))],
+      models: providers.map((provider) => provider.model),
+      routing_policy: ['balanced', 'cost', 'quality'].includes(env.MODEL_ROUTING_POLICY)
+        ? env.MODEL_ROUTING_POLICY
+        : 'balanced',
       database: hasDatabase(env),
       storage: hasDatabase(env) ? 'metadata-only' : 'none',
       fallback: 'local-demo',
@@ -369,6 +524,7 @@ export async function handleAnalysisRequest(request, env) {
         redaction: true,
         structured_matching: true,
         durable_feedback: hasDatabase(env),
+        evidence_certification: Boolean(env?.EVIDENCE?.put) && hasDatabase(env),
       },
     });
   }
@@ -437,6 +593,13 @@ export async function handleAnalysisRequest(request, env) {
       }))
     : [];
   const corrections = normalizeText(body?.corrections).slice(0, 2000);
+  const redactionTerms = Array.isArray(body?.redaction_terms)
+    ? body.redaction_terms
+      .filter((item) => typeof item === 'string')
+      .map((item) => normalizeText(item).slice(0, 80))
+      .filter((item) => item.length >= 2)
+      .slice(0, 20)
+    : [];
   let previousAnalysis = null;
   if (body?.previous_analysis && typeof body.previous_analysis === 'object') {
     const serializedPrevious = JSON.stringify(body.previous_analysis);
@@ -444,7 +607,7 @@ export async function handleAnalysisRequest(request, env) {
   }
   const stage = answers.length || corrections ? 'refined' : 'initial';
   const combinedSource = buildAnalysisSource({ text, answers, corrections });
-  const redacted = redactSensitiveText(combinedSource);
+  const redacted = redactSensitiveText(combinedSource, redactionTerms);
   const source = {
     text: redacted.text,
     sensitive: Boolean(body?.sensitive) || redacted.count > 0,

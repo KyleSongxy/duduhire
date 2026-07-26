@@ -1078,6 +1078,121 @@ p, li, dd, figcaption, blockquote, summary {
   font-size: 0.82rem;
 }
 
+.evidence-certification {
+  display: grid;
+  gap: 1.15rem;
+  margin-top: 1.4rem;
+  padding: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--paper));
+}
+
+.certification-ladder {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.certification-ladder span {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.certification-ladder span.active {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.certification-ladder strong {
+  font-size: 1rem;
+}
+
+.evidence-certification-form,
+.evidence-progress,
+#evidence-microtask-form {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.evidence-certification-form > label,
+#evidence-microtask-form > label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.evidence-certification-form [role="status"],
+#evidence-microtask-form [role="status"] {
+  min-height: 1.2rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.evidence-progress {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.evidence-progress-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.evidence-progress-head h3 {
+  margin: 0.25rem 0 0;
+}
+
+.credential-note {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.8rem;
+  border-radius: 12px;
+  background: var(--canvas-cool);
+}
+
+.credential-note code {
+  overflow-wrap: anywhere;
+  color: var(--accent-deep);
+  font-size: 0.75rem;
+}
+
+.credential-note small,
+.reviewer-note {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+#evidence-microtask-form {
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+#evidence-microtask-form h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+#evidence-microtask-form ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .checkbox-row.compact {
   padding: 0;
 }
@@ -3977,5 +4092,14 @@ h3 {
   }
   .landing-page .demo-capability-sheet {
     background: #102a21;
+  }
+}
+@media (max-width: 640px) {
+  .certification-ladder {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .evidence-progress-head {
+    display: grid;
   }
 }
