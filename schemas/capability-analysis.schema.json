@@ -1,0 +1,420 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://duduhire.com/schemas/capability-analysis.schema.json",
+  "title": "Duduhire capability analysis",
+  "description": "Machine-readable contract for extracting evidence-grounded capability atoms without treating self-report as certification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "source",
+    "projects",
+    "capability_atoms",
+    "uncertainties",
+    "questions",
+    "matching_input",
+    "risk_flags"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "status": {
+      "enum": [
+        "needs_clarification",
+        "ready_for_l0_card",
+        "requires_human_review"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "language",
+        "sensitive"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50000
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 24
+        },
+        "sensitive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/$defs/project"
+      }
+    },
+    "capability_atoms": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "$ref": "#/$defs/capability_atom"
+      }
+    },
+    "uncertainties": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "$ref": "#/$defs/uncertainty"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/question"
+      }
+    },
+    "matching_input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_terms",
+        "markets",
+        "deliverable_terms",
+        "verified_evidence_only"
+      ],
+      "properties": {
+        "task_terms": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "markets": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "deliverable_terms": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "verified_evidence_only": {
+          "const": false
+        }
+      }
+    },
+    "risk_flags": {
+      "$ref": "#/$defs/risk_flags"
+    }
+  },
+  "$defs": {
+    "nullable_short_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 180
+    },
+    "short_text_list": {
+      "type": "array",
+      "maxItems": 15,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 180
+      }
+    },
+    "grounded_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "statement",
+        "source_quote",
+        "verification_status",
+        "confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^e_[a-zA-Z0-9_-]+$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "source_quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "verification_status": {
+          "enum": [
+            "self_reported",
+            "document_referenced",
+            "unverified"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "scene",
+        "role",
+        "contribution",
+        "goal",
+        "actions",
+        "methods",
+        "deliverables",
+        "outcomes",
+        "evidence",
+        "boundaries",
+        "source_quotes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^p_[a-zA-Z0-9_-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 180
+        },
+        "scene": {
+          "$ref": "#/$defs/nullable_short_text"
+        },
+        "role": {
+          "$ref": "#/$defs/nullable_short_text"
+        },
+        "contribution": {
+          "enum": [
+            "led",
+            "owned",
+            "contributed",
+            "team_only",
+            "unknown"
+          ]
+        },
+        "goal": {
+          "$ref": "#/$defs/nullable_short_text"
+        },
+        "actions": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "methods": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "deliverables": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "outcomes": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "evidence": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/grounded_claim"
+          }
+        },
+        "boundaries": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "source_quotes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "capability_atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "canonical_capability_id",
+        "name",
+        "category",
+        "scene",
+        "task",
+        "methods",
+        "deliverables",
+        "outcomes",
+        "evidence_claim_ids",
+        "project_ids",
+        "boundaries",
+        "level",
+        "confidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^c_[a-zA-Z0-9_-]+$"
+        },
+        "canonical_capability_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "scene": {
+          "$ref": "#/$defs/nullable_short_text"
+        },
+        "task": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "methods": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "deliverables": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "outcomes": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "evidence_claim_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 20,
+          "items": {
+            "type": "string",
+            "pattern": "^e_[a-zA-Z0-9_-]+$"
+          }
+        },
+        "project_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "maxItems": 10,
+          "items": {
+            "type": "string",
+            "pattern": "^p_[a-zA-Z0-9_-]+$"
+          }
+        },
+        "boundaries": {
+          "$ref": "#/$defs/short_text_list"
+        },
+        "level": {
+          "const": "L0"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "reason",
+        "blocking"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "blocking": {
+          "type": "boolean"
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "targets",
+        "question",
+        "reason",
+        "priority"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^q_[a-zA-Z0-9_-]+$"
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 8,
+      "items": {
+        "enum": [
+          "personal_sensitive_data",
+          "confidential_business_data",
+          "prompt_injection",
+          "unsupported_seniority_claim",
+          "unsupported_outcome_claim",
+          "high_impact_employment_decision",
+          "other"
+        ]
+      }
+    }
+  }
+}

@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/clean-dist.mjs && vite build && node scripts/stage-sites-build.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ai:seed": "node scripts/build-ai-eval-seed.mjs",
+    "ai:validate": "node scripts/validate-ai-contracts.mjs",
+    "ai:test": "node scripts/test-analysis-runtime.mjs"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.37.1",
+    "ajv": "^8.17.1",
     "vite": "^8.1.1",
     "wrangler": "^4.92.0"
   }

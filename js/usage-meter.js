@@ -27,7 +27,15 @@ export function createContentKey(flow, content = '') {
   return `${flow}-${(hash >>> 0).toString(16)}`;
 }
 
-export function recordUsage({ flow, stage, contentKey, inputCharacters = 0, mode = 'local-demo' }) {
+export function recordUsage({
+  flow,
+  stage,
+  contentKey,
+  inputCharacters = 0,
+  mode = 'local-demo',
+  tokens = 0,
+  costCny = 0,
+}) {
   const events = readLedger();
   const cached = events.some((event) => (
     event.flow === flow
@@ -44,7 +52,8 @@ export function recordUsage({ flow, stage, contentKey, inputCharacters = 0, mode
     mode,
     cached,
     modelCalls: mode === 'model' && !cached ? 1 : 0,
-    tokens: 0,
+    tokens: mode === 'model' && !cached ? Number(tokens) || 0 : 0,
+    costCny: mode === 'model' && !cached ? Number(costCny) || 0 : 0,
   };
   events.push(event);
   writeLedger(events);
@@ -58,6 +67,7 @@ export function getUsageReceipt(flow, contentKey) {
     localOperations: new Set(events.filter((event) => event.mode === 'local-demo').map((event) => event.stage)).size,
     modelCalls: events.reduce((total, event) => total + event.modelCalls, 0),
     tokens: events.reduce((total, event) => total + event.tokens, 0),
+    costCny: events.reduce((total, event) => total + (event.costCny || 0), 0),
     reused: events.some((event) => event.cached),
   };
 }

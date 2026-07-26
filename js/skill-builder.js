@@ -1,5 +1,11 @@
 import { capabilityCatalog, enterpriseDemandCatalog, serviceSkus, talentSkillTemplates } from './data.js';
 import { inferTalentContext, parseDemandText } from './ai-parser.js';
+import {
+  analyzeWithDomesticModel,
+  getCapabilityModelSkills,
+  getDemandModelQuestions,
+  mapDemandAnalysis,
+} from './analysis-api.js';
 import { createContentKey, getUsageReceipt, recordUsage } from './usage-meter.js';
 
 const params = new URLSearchParams(window.location.search);
@@ -368,6 +374,59 @@ function syncParsedDemandFields(values) {
   });
 }
 
+function renderModelReviewState(type, analysis) {
+  const isEnterprise = type === 'enterprise';
+  const flow = isEnterprise ? enterpriseFlow : talentFlow;
+  const output = document.getElementById(`${type}-output`);
+  const form = document.getElementById(`${type}-form`);
+  const labels = {
+    personal_sensitive_data: '包含个人敏感信息',
+    confidential_business_data: '可能包含未公开业务信息',
+    unsafe_or_illegal: '涉及高风险或不安全内容',
+    prompt_injection: '材料中包含试图改变解析规则的指令',
+    unsupported_financial_claim: '包含未经支持的金额或收益要求',
+    high_impact_decision: '涉及高影响决策',
+    unsupported_seniority_claim: '要求无依据提升能力等级',
+    unsupported_outcome_claim: '包含未经支持的成果声明',
+    high_impact_employment_decision: '涉及高影响就业判断',
+    other: '需要人工判断',
+  };
+  const risks = analysis.risk_flags.map((flag) => labels[flag] || labels.other);
+  output.innerHTML = `
+    <div class="result-wrap">
+      <section class="result-summary">
+        <span class="mini-label">暂停自动处理</span>
+        <h3>这份材料需要先由人工确认</h3>
+        <p>系统没有继续生成匹配或能力结论，避免把敏感信息、材料内指令或高影响判断当成普通内容处理。</p>
+        <div class="capability-tags">
+          ${(risks.length ? risks : ['需要人工判断']).map((risk) => `<span class="capability-tag">${escapeHTML(risk)}</span>`).join('')}
+        </div>
+      </section>
+      <section class="result-section">
+        <h3>你可以怎么继续</h3>
+        <div class="brief-result">
+          <div class="brief-result-row"><span>先脱敏</span><p>移除身份号码、联系方式、客户名单、账号密码和不必要的未公开数据。</p></div>
+          <div class="brief-result-row"><span>保留事实</span><p>只描述业务场景、本人行动、交付物和可公开的结果范围。</p></div>
+          <div class="brief-result-row"><span>人工确认</span><p>涉及招聘决定、能力认证、违法危险内容或材料真实性时，不由模型自动判断。</p></div>
+        </div>
+      </section>
+      <div class="result-actions">
+        <button class="btn btn-primary" type="button" data-action="reset-${isEnterprise ? 'enterprise' : 'talent'}">返回修改原文</button>
+      </div>
+    </div>`;
+  document.getElementById(`${type}-status`).textContent = '待人工确认';
+  document.getElementById(`${type}-status`).className = 'status-badge warning';
+  document.getElementById(`${type}-output-status`).textContent = '已暂停';
+  document.getElementById(`${type}-output-status`).className = 'status-badge warning';
+  const layout = flow.querySelector('.builder-layout');
+  const inputPanel = form.closest('.builder-panel');
+  const outputPanel = output.closest('.builder-panel');
+  inputPanel.hidden = true;
+  layout.classList.add('result-mode');
+  updateSteps(isEnterprise ? 'e' : 't', isEnterprise ? 3 : 3);
+  scrollToElement(outputPanel);
+}
+
 const enterpriseForm = document.getElementById('enterprise-form');
 enterpriseForm.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -378,7 +437,7 @@ enterpriseForm.addEventListener('submit', async (event) => {
     document.getElementById('enterprise-problem').focus();
     return;
   }
-  const values = parseDemandText(problem, {
+  let values = parseDemandText(problem, {
     fallbackDeadline: document.getElementById('enterprise-deadline').value,
     sensitive: document.getElementById('enterprise-sensitive').checked,
   });
@@ -395,7 +454,6 @@ enterpriseForm.addEventListener('submit', async (event) => {
   values.owner = document.getElementById('enterprise-owner-name').value.trim();
   values.acceptance = sourceDemand?.acceptance || '';
   values.access = sourceDemand?.inputs || '';
-  syncParsedDemandFields(values);
 
   const submit = document.getElementById('analyze-btn');
   submit.disabled = true;
@@ -403,17 +461,43 @@ enterpriseForm.addEventListener('submit', async (event) => {
   document.getElementById('enterprise-status').textContent = 'AI 解析中';
   document.getElementById('enterprise-status').className = 'status-badge warning';
   updateSteps('e', 2);
-  await runLoading('enterprise', [
+  const modelPromise = analyzeWithDomesticModel('demand', {
+    text: problem,
+    sensitive: values.sensitive,
+  });
+  const [, modelResult] = await Promise.all([runLoading('enterprise', [
     { title: 'AI 正在理解你的描述', detail: '识别业务场景、现象与关键阻碍', progress: 28 },
     { title: 'AI 正在拆解任务结构', detail: '提取影响、预期交付与时间约束', progress: 62 },
     { title: 'AI 正在生成确认问题', detail: '标记缺失信息与待核验能力方向', progress: 100 },
-  ]);
+  ]), modelPromise]);
+  values = mapDemandAnalysis(modelResult, values);
+  enterpriseContentKey = createContentKey('demand', values.problem);
+  recordUsage({
+    flow: 'demand',
+    stage: 'structure',
+    contentKey: enterpriseContentKey,
+    inputCharacters: values.problem.length,
+    mode: values.analysisMeta ? 'model' : 'local-demo',
+    tokens: values.analysisMeta?.total_tokens || 0,
+    costCny: values.analysisMeta?.estimated_cost_cny || 0,
+  });
+  syncParsedDemandFields(values);
   document.getElementById('enterprise-loading').hidden = true;
   submit.disabled = false;
+  if (values.modelAnalysis?.status === 'requires_human_review') {
+    renderModelReviewState('enterprise', values.modelAnalysis);
+    return;
+  }
+  if (values.modelAnalysis?.status === 'ready_for_matching' && !values.modelAnalysis.questions.length) {
+    renderEnterpriseResult(values);
+    return;
+  }
   renderEnterpriseQuestions(values);
 });
 
 function buildDemandQuestions(values) {
+  const modelQuestions = getDemandModelQuestions(values);
+  if (modelQuestions.length) return modelQuestions;
   const questions = [];
   if (values.impact === '具体业务影响待进一步确认') {
     questions.push({
@@ -469,20 +553,13 @@ function buildDemandQuestions(values) {
 
 function renderEnterpriseQuestions(values) {
   pendingEnterpriseValues = values;
-  enterpriseContentKey = createContentKey('demand', values.problem);
-  recordUsage({
-    flow: 'demand',
-    stage: 'structure',
-    contentKey: enterpriseContentKey,
-    inputCharacters: values.problem.length,
-  });
   const questions = buildDemandQuestions(values);
   document.getElementById('enterprise-output').innerHTML = `
     <div class="result-wrap demand-question-stage">
       <section class="result-summary">
         <div class="result-summary-top">
           <div>
-            <span class="mini-label">智能整理演示</span>
+            <span class="mini-label">${values.analysisMeta ? '国内模型智能整理' : '本地规则整理演示'}</span>
             <h3>问题结构已识别，还差 ${questions.length} 个关键答案</h3>
             <p>只追问会影响匹配和验收的信息，不重复填写传统需求表。</p>
           </div>
@@ -533,6 +610,26 @@ function mergeDemandAnswers(values, answers) {
   if (answers.access) next.access = answers.access;
   if (answers.owner) next.owner = answers.owner;
   if (answers['sensitive-boundary']) next.sensitiveBoundary = answers['sensitive-boundary'];
+  const modelQuestions = new Map(
+    (values.modelAnalysis?.questions || []).map((question) => [question.id, question]),
+  );
+  const modelFollowups = Object.entries(answers)
+    .filter(([id, answer]) => modelQuestions.has(id) && answer)
+    .map(([id, answer]) => ({
+      question: modelQuestions.get(id).question,
+      targets: modelQuestions.get(id).targets,
+      answer,
+    }));
+  for (const followup of modelFollowups) {
+    const targetText = followup.targets.join(' ').toLowerCase();
+    if (/impact|影响|指标/.test(targetText)) next.impact = followup.answer;
+    if (/attempt|尝试|动作/.test(targetText)) next.tried = followup.answer;
+    if (/outcome|result|目标|结果|交付/.test(targetText)) next.result = followup.answer;
+    if (/acceptance|验收/.test(targetText)) next.acceptance = followup.answer;
+    if (/access|data|权限|数据/.test(targetText)) next.access = followup.answer;
+    if (/owner|actor|stakeholder|负责人|确认人/.test(targetText)) next.owner = followup.answer;
+  }
+  next.modelFollowups = modelFollowups;
   return next;
 }
 
@@ -559,7 +656,12 @@ document.addEventListener('submit', (event) => {
 
 function renderEnterpriseResult(values) {
   const service = getService(values.deadline);
-  const capabilities = scoreCapabilities(`${values.problem} ${values.result} ${values.market}`, values.preferredCapabilityIds);
+  const matchingTask = values.modelAnalysis?.matching_input?.task_summary || '';
+  const confirmedDetails = (values.modelFollowups || []).map((item) => item.answer).join(' ');
+  const capabilities = scoreCapabilities(
+    `${values.problem} ${values.result} ${values.market} ${matchingTask} ${confirmedDetails}`,
+    values.preferredCapabilityIds,
+  );
   const leadCapability = capabilities[0];
   const contentKey = enterpriseContentKey || createContentKey('demand', values.problem);
   recordUsage({
@@ -580,6 +682,9 @@ function renderEnterpriseResult(values) {
     `验收方式：${values.acceptance || values.result}`,
     `业务确认人：${values.owner || '待确认'}`,
     `必要信息：${values.access || '待确认最小数据与权限范围'}`,
+    ...(values.modelFollowups?.length
+      ? [`补充确认：${values.modelFollowups.map((item) => `${item.question} ${item.answer}`).join('；')}`]
+      : []),
     `建议下一步：${service.name}（${service.duration}）`,
     `优先核验能力：${capabilities.map((item) => item.name).join('、')}`,
     `敏感材料：${values.sensitive ? '涉及，需先确认保密与权限' : '暂未标记'}`,
@@ -611,6 +716,7 @@ function renderEnterpriseResult(values) {
           <div class="brief-result-row"><span>业务确认人</span><p>${escapeHTML(values.owner || '待确认')}</p></div>
           <div class="brief-result-row"><span>验收方式</span><p>${escapeHTML(values.acceptance || values.result)}</p></div>
           <div class="brief-result-row"><span>必要信息</span><p>${escapeHTML(values.access || '待确认最小数据、权限与协作人员')}</p></div>
+          ${values.modelFollowups?.length ? `<div class="brief-result-row"><span>补充确认</span><p>${escapeHTML(values.modelFollowups.map((item) => item.answer).join('；'))}</p></div>` : ''}
           <div class="brief-result-row"><span>完成时间</span><p>${escapeHTML(values.deadline)}</p></div>
         </div>
       </section>
@@ -667,12 +773,16 @@ function renderEnterpriseResult(values) {
         </dl>
       </section>
       <details class="usage-receipt">
-        <summary><span>本次处理记录</span><small>输入过程中 0 次模型调用</small></summary>
+        <summary><span>本次处理记录</span><small>${usage.modelCalls} 次模型调用</small></summary>
         <div>
           <span><strong>${usage.localOperations}</strong><small>本地演示步骤</small></span>
           <span><strong>${usage.modelCalls}</strong><small>实际模型调用</small></span>
           <span><strong>${usage.tokens}</strong><small>实际 Token</small></span>
-          <p>${usage.reused ? '检测到相同内容；会话已标记为可复用，正式接入模型时可避免重复计费。' : '调用只发生在“确认解析”和“查看匹配”两个明确动作；演示版使用本地规则，不产生 Token 成本。'}</p>
+          <p>${usage.reused
+    ? '检测到相同内容；本次会话复用了已有结果，避免重复计费。'
+    : usage.modelCalls
+      ? `本次通过国内模型生成结构化草稿，估算模型费用约 ¥${usage.costCny.toFixed(4)}；结果仍需用户确认。`
+      : '本次使用浏览器内规则生成演示结果，不产生 Token 成本。'}</p>
         </div>
       </details>
       <div class="result-actions">
@@ -741,7 +851,8 @@ function getTalentSkills(text) {
 }
 
 function getSkillQuestion(skill) {
-  return `在“${skill.task}”这类事情中，你本人具体负责哪一步？用了什么方法，最终结果怎样被确认？`;
+  return skill.modelQuestion
+    || `在“${skill.task}”这类事情中，你本人具体负责哪一步？用了什么方法，最终结果怎样被确认？`;
 }
 
 function renderSkillQuestions(values, skills) {
@@ -803,12 +914,6 @@ talentForm.addEventListener('submit', async (event) => {
   }
 
   talentContentKey = createContentKey('talent', values.experience);
-  recordUsage({
-    flow: 'talent',
-    stage: 'capability-structure',
-    contentKey: talentContentKey,
-    inputCharacters: values.experience.length,
-  });
 
   const submit = document.getElementById('decode-btn');
   submit.disabled = true;
@@ -816,14 +921,44 @@ talentForm.addEventListener('submit', async (event) => {
   document.getElementById('talent-status').textContent = 'AI 解析中';
   document.getElementById('talent-status').className = 'status-badge warning';
   updateSteps('t', 1);
-  await runLoading('talent', [
+  const modelPromise = analyzeWithDomesticModel('capability', {
+    text: values.experience,
+    sensitive: false,
+  });
+  const [, modelResult] = await Promise.all([runLoading('talent', [
     { title: 'AI 正在阅读你的经历', detail: '区分岗位描述与本人实际行动', progress: 30 },
     { title: 'AI 正在提炼能力原子', detail: '连接任务、方法、结果与证据', progress: 66 },
     { title: 'AI 正在生成针对性追问', detail: '继续确认贡献边界与熟练程度', progress: 100 },
-  ]);
+  ]), modelPromise]);
   document.getElementById('talent-loading').hidden = true;
   submit.disabled = false;
-  const skills = getTalentSkills(values.experience);
+  recordUsage({
+    flow: 'talent',
+    stage: 'capability-structure',
+    contentKey: talentContentKey,
+    inputCharacters: values.experience.length,
+    mode: modelResult?.meta ? 'model' : 'local-demo',
+    tokens: modelResult?.meta?.total_tokens || 0,
+    costCny: modelResult?.meta?.estimated_cost_cny || 0,
+  });
+  if (modelResult?.analysis?.status === 'requires_human_review') {
+    renderModelReviewState('talent', modelResult.analysis);
+    return;
+  }
+  const modelSkills = getCapabilityModelSkills(
+    modelResult,
+    talentSkillTemplates,
+    capabilityCatalog,
+  );
+  const skills = modelSkills.length ? modelSkills : getTalentSkills(values.experience);
+  if (modelResult?.analysis && !modelSkills.length) {
+    const questions = modelResult.analysis.questions || [];
+    skills.forEach((skill, index) => {
+      skill.modelQuestion = questions[index]?.question || '';
+    });
+  }
+  values.modelAnalysis = modelResult?.analysis || null;
+  values.analysisMeta = modelResult?.meta || null;
   const inferredContext = inferTalentContext(values.experience, skills, document.getElementById('talent-market').value);
   values.market = inferredContext.market;
   values.field = inferredContext.field;
@@ -930,12 +1065,16 @@ function renderTalentResult(values, skills, answers) {
         </div>
       </section>
       <details class="usage-receipt">
-        <summary><span>本次处理记录</span><small>输入过程中 0 次模型调用</small></summary>
+        <summary><span>本次处理记录</span><small>${usage.modelCalls} 次模型调用</small></summary>
         <div>
           <span><strong>${usage.localOperations}</strong><small>本地演示步骤</small></span>
           <span><strong>${usage.modelCalls}</strong><small>实际模型调用</small></span>
           <span><strong>${usage.tokens}</strong><small>实际 Token</small></span>
-          <p>${usage.reused ? '检测到相同内容；会话已标记为可复用，正式接入模型时可避免重复计费。' : '能力提炼和名片生成只在明确确认后执行；演示版使用本地规则，不产生 Token 成本。'}</p>
+          <p>${usage.reused
+    ? '检测到相同内容；本次会话复用了已有结果，避免重复计费。'
+    : usage.modelCalls
+      ? `本次通过国内模型生成 L0 能力草稿，估算模型费用约 ¥${usage.costCny.toFixed(4)}；不代表能力认证。`
+      : '本次使用浏览器内规则生成演示结果，不产生 Token 成本。'}</p>
         </div>
       </details>
       <div class="result-actions">
