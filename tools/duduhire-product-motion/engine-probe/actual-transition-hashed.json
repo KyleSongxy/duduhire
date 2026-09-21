@@ -1,0 +1,131 @@
+{
+  "variant": "hashed",
+  "frames": [
+    {
+      "frame": 481,
+      "seconds": 1.377,
+      "visible_objects": [
+        {
+          "name": "Warm white studio / artwork",
+          "world_z_min": -6.0,
+          "world_z_max": -6.0,
+          "opacity": 1.0,
+          "parent": "Warm white studio",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "Corner brand / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1,
+          "parent": "Corner brand",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "Demonstration label / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1,
+          "parent": "Demonstration label",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "structure-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0,
+          "parent": "structure-title",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Original demand / artwork",
+          "world_z_min": -0.45872044563293457,
+          "world_z_max": -0.08975934982299805,
+          "opacity": 1,
+          "parent": "03 / Original demand",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Original demand / soft shadow",
+          "world_z_min": -0.6101662516593933,
+          "world_z_max": -0.14073118567466736,
+          "opacity": 1,
+          "parent": "03 / Original demand",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 1 / artwork",
+          "world_z_min": -0.21670317649841309,
+          "world_z_max": 0.053503286093473434,
+          "opacity": 1,
+          "parent": "03 / Demand field 1",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 1 / soft shadow",
+          "world_z_min": -0.3784109652042389,
+          "world_z_max": 0.017131738364696503,
+          "opacity": 1,
+          "parent": "03 / Demand field 1",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 2 / artwork",
+          "world_z_min": -0.1519031673669815,
+          "world_z_max": 0.11830329895019531,
+          "opacity": 1,
+          "parent": "03 / Demand field 2",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 2 / soft shadow",
+          "world_z_min": -0.3136109411716461,
+          "world_z_max": 0.08193175494670868,
+          "opacity": 1,
+          "parent": "03 / Demand field 2",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 3 / artwork",
+          "world_z_min": -0.08710311353206635,
+          "world_z_max": 0.18310333788394928,
+          "opacity": 1,
+          "parent": "03 / Demand field 3",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "03 / Demand field 3 / soft shadow",
+          "world_z_min": -0.24881088733673096,
+          "world_z_max": 0.14673180878162384,
+          "opacity": 1,
+          "parent": "03 / Demand field 3",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "talent-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0,
+          "parent": "talent-title",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "04 / Experience input / artwork",
+          "world_z_min": -1.5126960277557373,
+          "world_z_max": 0.08837488293647766,
+          "opacity": 0,
+          "parent": "04 / Experience input",
+          "blend_method": "HASHED"
+        },
+        {
+          "name": "04 / Experience input / soft shadow",
+          "world_z_min": -1.7842249870300293,
+          "world_z_max": 0.16856306791305542,
+          "opacity": 0,
+          "parent": "04 / Experience input",
+          "blend_method": "HASHED"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[[ ${DUDUHIRE_OPS_TEST:-} = true ]] || exit 99
+printf 'api=%s web=%s command=%s\n' "${DUDUHIRE_API_IMAGE:-unset}" "${DUDUHIRE_WEB_IMAGE:-unset}" "$*" >> "$DUDUHIRE_TEST_CALLS"
+if [[ $1 = image && $2 = inspect ]]; then
+  printf '%s\n' "$3"
+elif [[ $* = *'config --format json'* ]]; then
+  printf '{"services":{"api":{"image":"%s"},"web":{"image":"%s"}}}\n' "$DUDUHIRE_TEST_API" "$DUDUHIRE_TEST_WEB"
+elif [[ $* = *'pull api web'* && ${DUDUHIRE_TEST_FAIL_PULL:-false} = true ]]; then
+  exit 1
+elif [[ $* = *'up -d'* && ${DUDUHIRE_TEST_FAIL_FIRST_UP:-false} = true && ! -f $DUDUHIRE_TEST_MARKER ]]; then
+  touch "$DUDUHIRE_TEST_MARKER"
+  exit 1
+fi

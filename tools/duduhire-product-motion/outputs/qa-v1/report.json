@@ -1,0 +1,238 @@
+{
+  "source": "/Users/xiangyusong/Dropbox/Mac/Documents/ChatGPT/AI Marketplace/tools/duduhire-product-motion/outputs/duduhire-product-motion-preview-v1.mp4",
+  "technical_status": "PASS",
+  "checks": [
+    {
+      "name": "video_streams",
+      "actual": 1,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "name": "resolution",
+      "actual": [
+        1920,
+        1080
+      ],
+      "expected": [
+        1920,
+        1080
+      ],
+      "passed": true
+    },
+    {
+      "name": "average_fps",
+      "actual": 30.0,
+      "expected": 30.0,
+      "passed": true
+    },
+    {
+      "name": "nominal_fps",
+      "actual": 30.0,
+      "expected": 30.0,
+      "passed": true
+    },
+    {
+      "name": "decoded_frame_count_ffprobe",
+      "actual": 1320,
+      "expected": 1320,
+      "passed": true
+    },
+    {
+      "name": "video_duration_seconds",
+      "actual": 44.0,
+      "expected": 44.0,
+      "passed": true
+    },
+    {
+      "name": "audio_streams",
+      "actual": 0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "name": "container_duration_seconds",
+      "actual": 44.0,
+      "expected": 44.0,
+      "passed": true
+    },
+    {
+      "name": "complete_ffmpeg_decode",
+      "actual": 0,
+      "expected": 0,
+      "passed": true,
+      "command": [
+        "ffmpeg",
+        "-hide_banner",
+        "-v",
+        "error",
+        "-xerror",
+        "-err_detect",
+        "explode",
+        "-i",
+        "/Users/xiangyusong/Dropbox/Mac/Documents/ChatGPT/AI Marketplace/tools/duduhire-product-motion/outputs/duduhire-product-motion-preview-v1.mp4",
+        "-map",
+        "0:v:0",
+        "-an",
+        "-f",
+        "null",
+        "-"
+      ]
+    },
+    {
+      "name": "metric_decode_frame_count",
+      "actual": 1320,
+      "expected": 1320,
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "human_motion_review": "not performed by script",
+  "scene_boundaries_seconds": [
+    0.0,
+    4.0,
+    10.0,
+    16.0,
+    21.0,
+    28.0,
+    34.0,
+    40.0,
+    44.0
+  ],
+  "analysis": {
+    "measurement": "Every decoded video frame, scaled to 160x90 grayscale; luma and absolute difference use a 0-255 scale.",
+    "classification_policy": "Uniform near-black / near-white and brightness jumps are manual-review candidates, never automatic design failures. Large white surfaces are expected in this film.",
+    "uniform_black_candidates": [],
+    "uniform_white_candidates": [],
+    "brightness_jump_candidates": [],
+    "scene_metrics": [
+      {
+        "scene": 1,
+        "name": "brand / two entrances",
+        "start": 0.0,
+        "end": 4.0,
+        "frames": 120,
+        "mean_luma": 201.5348,
+        "min_luma": 181.541181,
+        "max_luma": 235.826319,
+        "max_previous_frame_mad": 19.864167
+      },
+      {
+        "scene": 2,
+        "name": "demand input",
+        "start": 4.0,
+        "end": 10.0,
+        "frames": 180,
+        "mean_luma": 234.5256,
+        "min_luma": 184.41875,
+        "max_luma": 238.327708,
+        "max_previous_frame_mad": 21.268889
+      },
+      {
+        "scene": 3,
+        "name": "demand structure",
+        "start": 10.0,
+        "end": 16.0,
+        "frames": 180,
+        "mean_luma": 238.0158,
+        "min_luma": 236.199236,
+        "max_luma": 239.616597,
+        "max_previous_frame_mad": 6.729792
+      },
+      {
+        "scene": 4,
+        "name": "experience input",
+        "start": 16.0,
+        "end": 21.0,
+        "frames": 150,
+        "mean_luma": 236.2061,
+        "min_luma": 231.459236,
+        "max_luma": 238.852014,
+        "max_previous_frame_mad": 6.817222
+      },
+      {
+        "scene": 5,
+        "name": "capability and evidence",
+        "start": 21.0,
+        "end": 28.0,
+        "frames": 210,
+        "mean_luma": 205.4041,
+        "min_luma": 202.448681,
+        "max_luma": 229.9275,
+        "max_previous_frame_mad": 10.685556
+      },
+      {
+        "scene": 6,
+        "name": "user confirmation",
+        "start": 28.0,
+        "end": 34.0,
+        "frames": 180,
+        "mean_luma": 236.4112,
+        "min_luma": 224.348542,
+        "max_luma": 238.037222,
+        "max_previous_frame_mad": 6.132014
+      },
+      {
+        "scene": 7,
+        "name": "related information",
+        "start": 34.0,
+        "end": 40.0,
+        "frames": 180,
+        "mean_luma": 198.8781,
+        "min_luma": 196.018542,
+        "max_luma": 234.4425,
+        "max_previous_frame_mad": 5.833125
+      },
+      {
+        "scene": 8,
+        "name": "brand ending",
+        "start": 40.0,
+        "end": 44.0,
+        "frames": 120,
+        "mean_luma": 230.8702,
+        "min_luma": 207.930208,
+        "max_luma": 232.544306,
+        "max_previous_frame_mad": 4.096806
+      }
+    ],
+    "last_three_seconds": {
+      "start_frame": 1230,
+      "start_seconds": 41.0,
+      "frames": 90,
+      "max_frame_difference_mad": 0.073542,
+      "max_changed_fraction_gt_8": 0.0,
+      "mean_luma_span": 0.02368,
+      "conservative_stability_check_passed": true,
+      "thresholds": {
+        "max_mad": 0.3,
+        "max_changed_fraction": 0.005,
+        "max_luma_span": 0.5
+      },
+      "interpretation": "Low-resolution stability is supporting evidence only; text legibility and stable main information still need visual review."
+    }
+  },
+  "contact_sheets": {
+    "sample_count": 87,
+    "contact_sheets": [
+      "contact-sheet-01.jpg",
+      "contact-sheet-02.jpg",
+      "contact-sheet-03.jpg",
+      "contact-sheet-04.jpg",
+      "contact-sheet-05.jpg",
+      "contact-sheet-06.jpg",
+      "contact-sheet-07.jpg",
+      "contact-sheet-08.jpg"
+    ],
+    "manifest": "sample-manifest.json",
+    "thumbnail_size": [
+      640,
+      360
+    ]
+  },
+  "independent_sampled_visual_review": {
+    "status": "No delivery-blocking issue observed in the sampled final MP4 frames",
+    "report": "visual-review.md",
+    "source_sha256": "01ee17460de1b5c8ffbaa0f913226462458f8f3115a5f4b34196c1726e007ece",
+    "continuous_normal_speed_playback_observed": false
+  }
+}

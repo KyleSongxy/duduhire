@@ -1,0 +1,4042 @@
+{
+  "version": "mock-20260913-20-demands-100-capabilities-v1",
+  "records": [
+    {
+      "id": "example-20260913-demand-01",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 01｜制造企业设备手册问答",
+        "summary": "虚构测试场景：设备手册分散，售后查找故障步骤耗时。首期范围为手册分段、出处引用和无答案拒答，以检索问题集与引用准确性检查作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "智能问答",
+          "模型评估"
+        ],
+        "requiredSkills": [
+          "知识库",
+          "RAG检索"
+        ],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "上海",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 60000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-01-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 01-1｜制造企业设备手册问答·方案设计",
+        "summary": "虚构能力档案：在制造企业设备手册问答的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括检索问题集与引用准确性检查；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "智能问答",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "上海",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 36000,
+          "budgetMax": 45000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-01-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 01-2｜制造企业设备手册问答·工程实施",
+        "summary": "虚构能力档案：在制造企业设备手册问答的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括检索问题集与引用准确性检查；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "智能问答",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "上海",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 45000,
+          "budgetMax": 54000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-01-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 01-3｜制造企业设备手册问答·质量评估",
+        "summary": "虚构能力档案：在制造企业设备手册问答的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括检索问题集与引用准确性检查；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "RAG检索",
+          "智能问答",
+          "模型评估",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "上海",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 25000,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-01-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 01-4｜制造企业设备手册问答·交付协调",
+        "summary": "虚构能力档案：在制造企业设备手册问答的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括检索问题集与引用准确性检查；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "智能问答",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 33000,
+          "budgetMax": 42000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-01-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 01-5｜制造企业设备手册问答·持续运营",
+        "summary": "虚构能力档案：在制造企业设备手册问答的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括检索问题集与引用准确性检查；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "智能问答",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "上海",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 27000,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-02",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 02｜财务报销审核助手",
+        "summary": "虚构测试场景：报销附件格式不一，财务需要减少重复核对。首期范围为票据结构化、规则核对和人工复核队列，以异常票据集与审计记录作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "财务流程",
+          "流程自动化",
+          "系统集成",
+          "测试验收"
+        ],
+        "requiredSkills": [
+          "财务流程",
+          "流程自动化"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 45000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-02-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 02-1｜财务报销审核助手·方案设计",
+        "summary": "虚构能力档案：在财务报销审核助手的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括异常票据集与审计记录；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "财务流程",
+          "流程自动化",
+          "系统集成",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 27000,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-02-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 02-2｜财务报销审核助手·工程实施",
+        "summary": "虚构能力档案：在财务报销审核助手的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括异常票据集与审计记录；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "财务流程",
+          "流程自动化",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 34000,
+          "budgetMax": 41000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-02-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 02-3｜财务报销审核助手·质量评估",
+        "summary": "虚构能力档案：在财务报销审核助手的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括异常票据集与审计记录；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 19000,
+          "budgetMax": 26000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-02-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 02-4｜财务报销审核助手·交付协调",
+        "summary": "虚构能力档案：在财务报销审核助手的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括异常票据集与审计记录；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "财务流程",
+          "流程自动化",
+          "系统集成",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 25000,
+          "budgetMax": 32000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-02-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 02-5｜财务报销审核助手·持续运营",
+        "summary": "虚构能力档案：在财务报销审核助手的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括异常票据集与审计记录；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "财务流程",
+          "流程自动化",
+          "系统集成",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 20000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-03",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 03｜售前方案检索与草稿",
+        "summary": "虚构测试场景：售前需要从历史方案中找到可复用内容。首期范围为方案检索、模板草稿和来源链接，以方案覆盖率与引用核对报告作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "内容创作",
+          "提示词设计"
+        ],
+        "requiredSkills": [
+          "知识库",
+          "RAG检索"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 40000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-03-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 03-1｜售前方案检索与草稿·方案设计",
+        "summary": "虚构能力档案：在售前方案检索与草稿的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括方案覆盖率与引用核对报告；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "内容创作",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 24000,
+          "budgetMax": 30000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-03-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 03-2｜售前方案检索与草稿·工程实施",
+        "summary": "虚构能力档案：在售前方案检索与草稿的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括方案覆盖率与引用核对报告；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "内容创作",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 30000,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-03-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 03-3｜售前方案检索与草稿·质量评估",
+        "summary": "虚构能力档案：在售前方案检索与草稿的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括方案覆盖率与引用核对报告；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "RAG检索",
+          "内容创作",
+          "提示词设计",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-03-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 03-4｜售前方案检索与草稿·交付协调",
+        "summary": "虚构能力档案：在售前方案检索与草稿的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括方案覆盖率与引用核对报告；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "内容创作",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 22000,
+          "budgetMax": 28000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-03-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 03-5｜售前方案检索与草稿·持续运营",
+        "summary": "虚构能力档案：在售前方案检索与草稿的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括方案覆盖率与引用核对报告；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "内容创作",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 18000,
+          "budgetMax": 24000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-04",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 04｜客服智能体转人工流程",
+        "summary": "虚构测试场景：客服机器人遇到复杂问题需要可靠转人工。首期范围为意图分类、工单转接和人工确认，以转接成功率与越权问题测试集作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "AI智能体",
+          "客户服务",
+          "系统集成",
+          "模型评估"
+        ],
+        "requiredSkills": [
+          "AI智能体",
+          "客户服务"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 55000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-04-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 04-1｜客服智能体转人工流程·方案设计",
+        "summary": "虚构能力档案：在客服智能体转人工流程的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括转接成功率与越权问题测试集；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "AI智能体",
+          "客户服务",
+          "系统集成",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 33000,
+          "budgetMax": 41000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-04-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 04-2｜客服智能体转人工流程·工程实施",
+        "summary": "虚构能力档案：在客服智能体转人工流程的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括转接成功率与越权问题测试集；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "AI智能体",
+          "客户服务",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 41000,
+          "budgetMax": 50000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-04-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 04-3｜客服智能体转人工流程·质量评估",
+        "summary": "虚构能力档案：在客服智能体转人工流程的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括转接成功率与越权问题测试集；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "客户服务",
+          "系统集成",
+          "模型评估",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 31000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-04-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 04-4｜客服智能体转人工流程·交付协调",
+        "summary": "虚构能力档案：在客服智能体转人工流程的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括转接成功率与越权问题测试集；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "AI智能体",
+          "客户服务",
+          "系统集成",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 30000,
+          "budgetMax": 39000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-04-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 04-5｜客服智能体转人工流程·持续运营",
+        "summary": "虚构能力档案：在客服智能体转人工流程的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括转接成功率与越权问题测试集；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "AI智能体",
+          "客户服务",
+          "系统集成",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 25000,
+          "budgetMax": 33000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-05",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 05｜销售CRM自动化",
+        "summary": "虚构测试场景：销售线索重复录入，跟进状态不同步。首期范围为表单去重、CRM同步和失败重试，以接口回放用例与重试记录作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "后端开发",
+          "测试验收"
+        ],
+        "requiredSkills": [
+          "流程自动化",
+          "系统集成"
+        ],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 35000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-05-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 05-1｜销售CRM自动化·方案设计",
+        "summary": "虚构能力档案：在销售CRM自动化的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括接口回放用例与重试记录；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "后端开发",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 21000,
+          "budgetMax": 26000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-05-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 05-2｜销售CRM自动化·工程实施",
+        "summary": "虚构能力档案：在销售CRM自动化的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括接口回放用例与重试记录；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "后端开发"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 26000,
+          "budgetMax": 32000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-05-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 05-3｜销售CRM自动化·质量评估",
+        "summary": "虚构能力档案：在销售CRM自动化的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括接口回放用例与重试记录；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "系统集成",
+          "后端开发",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 15000,
+          "budgetMax": 20000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-05-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 05-4｜销售CRM自动化·交付协调",
+        "summary": "虚构能力档案：在销售CRM自动化的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括接口回放用例与重试记录；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "后端开发",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 19000,
+          "budgetMax": 25000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-05-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 05-5｜销售CRM自动化·持续运营",
+        "summary": "虚构能力档案：在销售CRM自动化的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括接口回放用例与重试记录；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "流程自动化",
+          "系统集成",
+          "后端开发",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 16000,
+          "budgetMax": 21000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-06",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 06｜电商商品内容工作台",
+        "summary": "虚构测试场景：商品上新需要统一文案并减少重复编辑。首期范围为产品信息整理、草稿生成和编辑审批，以文案质量清单与可用性记录作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "内容创作",
+          "提示词设计",
+          "前端开发",
+          "产品设计"
+        ],
+        "requiredSkills": [
+          "内容创作",
+          "提示词设计"
+        ],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "杭州",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 38000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-06-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 06-1｜电商商品内容工作台·方案设计",
+        "summary": "虚构能力档案：在电商商品内容工作台的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括文案质量清单与可用性记录；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "提示词设计",
+          "前端开发",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "杭州",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 29000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-06-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 06-2｜电商商品内容工作台·工程实施",
+        "summary": "虚构能力档案：在电商商品内容工作台的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括文案质量清单与可用性记录；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "提示词设计",
+          "前端开发",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "杭州",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 29000,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-06-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 06-3｜电商商品内容工作台·质量评估",
+        "summary": "虚构能力档案：在电商商品内容工作台的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括文案质量清单与可用性记录；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "提示词设计",
+          "前端开发",
+          "产品设计",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "杭州",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 16000,
+          "budgetMax": 22000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-06-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 06-4｜电商商品内容工作台·交付协调",
+        "summary": "虚构能力档案：在电商商品内容工作台的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括文案质量清单与可用性记录；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "提示词设计",
+          "前端开发",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 21000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-06-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 06-5｜电商商品内容工作台·持续运营",
+        "summary": "虚构能力档案：在电商商品内容工作台的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括文案质量清单与可用性记录；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "提示词设计",
+          "前端开发",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "杭州",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-07",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 07｜制造质检数据看板",
+        "summary": "虚构测试场景：质检记录缺少统一分类，无法追溯异常趋势。首期范围为缺陷分类、指标口径和异常看板，以数据对账结果与指标字典作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "数据治理",
+          "数据分析",
+          "数据可视化",
+          "系统集成"
+        ],
+        "requiredSkills": [
+          "数据治理",
+          "数据分析"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 50000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-07-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 07-1｜制造质检数据看板·方案设计",
+        "summary": "虚构能力档案：在制造质检数据看板的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括数据对账结果与指标字典；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "数据治理",
+          "数据分析",
+          "数据可视化",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 30000,
+          "budgetMax": 38000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-07-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 07-2｜制造质检数据看板·工程实施",
+        "summary": "虚构能力档案：在制造质检数据看板的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括数据对账结果与指标字典；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "数据治理",
+          "数据分析",
+          "数据可视化",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 38000,
+          "budgetMax": 45000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-07-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 07-3｜制造质检数据看板·质量评估",
+        "summary": "虚构能力档案：在制造质检数据看板的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括数据对账结果与指标字典；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "数据分析",
+          "数据可视化",
+          "系统集成",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 21000,
+          "budgetMax": 28000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-07-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 07-4｜制造质检数据看板·交付协调",
+        "summary": "虚构能力档案：在制造质检数据看板的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括数据对账结果与指标字典；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "数据治理",
+          "数据分析",
+          "数据可视化",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 28000,
+          "budgetMax": 35000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-07-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 07-5｜制造质检数据看板·持续运营",
+        "summary": "虚构能力档案：在制造质检数据看板的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括数据对账结果与指标字典；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "数据治理",
+          "数据分析",
+          "数据可视化"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 30000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-08",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 08｜内部模型推理监控",
+        "summary": "虚构测试场景：模型服务偶发超时，成本和错误缺少监控。首期范围为延迟监控、成本统计和回滚操作，以负载测试结果与故障演练记录作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "模型部署",
+          "后端开发",
+          "模型评估",
+          "数据可视化"
+        ],
+        "requiredSkills": [
+          "模型部署",
+          "后端开发"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 65000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-08-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 08-1｜内部模型推理监控·方案设计",
+        "summary": "虚构能力档案：在内部模型推理监控的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括负载测试结果与故障演练记录；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "模型部署",
+          "后端开发",
+          "模型评估",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 39000,
+          "budgetMax": 49000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-08-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 08-2｜内部模型推理监控·工程实施",
+        "summary": "虚构能力档案：在内部模型推理监控的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括负载测试结果与故障演练记录；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "模型部署",
+          "后端开发",
+          "模型评估",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 49000,
+          "budgetMax": 59000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-08-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 08-3｜内部模型推理监控·质量评估",
+        "summary": "虚构能力档案：在内部模型推理监控的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括负载测试结果与故障演练记录；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "后端开发",
+          "模型评估",
+          "数据可视化",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 27000,
+          "budgetMax": 37000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-08-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 08-4｜内部模型推理监控·交付协调",
+        "summary": "虚构能力档案：在内部模型推理监控的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括负载测试结果与故障演练记录；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "模型部署",
+          "后端开发",
+          "模型评估",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 36000,
+          "budgetMax": 46000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-08-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 08-5｜内部模型推理监控·持续运营",
+        "summary": "虚构能力档案：在内部模型推理监控的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括负载测试结果与故障演练记录；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "模型部署",
+          "后端开发",
+          "模型评估",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 29000,
+          "budgetMax": 39000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-09",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 09｜招聘能力证据整理",
+        "summary": "虚构测试场景：招聘团队需要从候选材料整理可追溯能力证据。首期范围为材料结构化、证据定位和人工确认，以证据遗漏与错误归因检查作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "人力资源",
+          "需求分析",
+          "提示词设计",
+          "产品设计"
+        ],
+        "requiredSkills": [
+          "人力资源",
+          "需求分析"
+        ],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 42000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-09-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 09-1｜招聘能力证据整理·方案设计",
+        "summary": "虚构能力档案：在招聘能力证据整理的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括证据遗漏与错误归因检查；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "人力资源",
+          "需求分析",
+          "提示词设计"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 25000,
+          "budgetMax": 32000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-09-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 09-2｜招聘能力证据整理·工程实施",
+        "summary": "虚构能力档案：在招聘能力证据整理的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括证据遗漏与错误归因检查；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "人力资源",
+          "需求分析",
+          "提示词设计",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 32000,
+          "budgetMax": 38000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-09-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 09-3｜招聘能力证据整理·质量评估",
+        "summary": "虚构能力档案：在招聘能力证据整理的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括证据遗漏与错误归因检查；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "需求分析",
+          "提示词设计",
+          "产品设计",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 18000,
+          "budgetMax": 24000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-09-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 09-4｜招聘能力证据整理·交付协调",
+        "summary": "虚构能力档案：在招聘能力证据整理的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括证据遗漏与错误归因检查；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "人力资源",
+          "需求分析",
+          "提示词设计",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 29000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-09-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 09-5｜招聘能力证据整理·持续运营",
+        "summary": "虚构能力档案：在招聘能力证据整理的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括证据遗漏与错误归因检查；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "人力资源",
+          "需求分析",
+          "提示词设计",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 19000,
+          "budgetMax": 25000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-10",
+      "kind": "problem",
+      "domain": "ai",
+      "draft": {
+        "title": "示例需求 10｜合同条款检索试点",
+        "summary": "虚构测试场景：采购查找标准条款耗时，需要能定位出处的工具。首期范围为条款检索、版本对照和权限界面，以访问权限与版本一致性测试作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "前端开发",
+          "测试验收"
+        ],
+        "requiredSkills": [
+          "知识库",
+          "RAG检索"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 58000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-10-1",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 10-1｜合同条款检索试点·方案设计",
+        "summary": "虚构能力档案：在合同条款检索试点的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括访问权限与版本一致性测试；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "前端开发",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 35000,
+          "budgetMax": 44000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-10-2",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 10-2｜合同条款检索试点·工程实施",
+        "summary": "虚构能力档案：在合同条款检索试点的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括访问权限与版本一致性测试；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "前端开发",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 44000,
+          "budgetMax": 52000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-10-3",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 10-3｜合同条款检索试点·质量评估",
+        "summary": "虚构能力档案：在合同条款检索试点的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括访问权限与版本一致性测试；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "RAG检索",
+          "前端开发",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 24000,
+          "budgetMax": 33000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-10-4",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 10-4｜合同条款检索试点·交付协调",
+        "summary": "虚构能力档案：在合同条款检索试点的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括访问权限与版本一致性测试；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "前端开发",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 32000,
+          "budgetMax": 41000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-10-5",
+      "kind": "capability",
+      "domain": "ai",
+      "draft": {
+        "title": "示例能力 10-5｜合同条款检索试点·持续运营",
+        "summary": "虚构能力档案：在合同条款检索试点的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括访问权限与版本一致性测试；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "知识库",
+          "RAG检索",
+          "前端开发",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [],
+          "languages": [
+            "中文"
+          ],
+          "budgetMin": 26000,
+          "budgetMax": 35000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-11",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 11｜新加坡B2B软件市场验证",
+        "summary": "虚构测试场景：软件团队需要验证当地客户痛点与采购路径。首期范围为客户分层、竞争研究和访谈提纲，以研究来源表与访谈问题清单作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "海外市场调研",
+          "出海策略",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [
+          "海外市场调研",
+          "出海策略"
+        ],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "北京",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 40000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-11-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 11-1｜新加坡B2B软件市场验证·方案设计",
+        "summary": "虚构能力档案：在新加坡B2B软件市场验证的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括研究来源表与访谈问题清单；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "出海策略",
+          "数据分析",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "北京",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 24000,
+          "budgetMax": 30000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-11-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 11-2｜新加坡B2B软件市场验证·工程实施",
+        "summary": "虚构能力档案：在新加坡B2B软件市场验证的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括研究来源表与访谈问题清单；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "出海策略",
+          "数据分析",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "北京",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 30000,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-11-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 11-3｜新加坡B2B软件市场验证·质量评估",
+        "summary": "虚构能力档案：在新加坡B2B软件市场验证的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括研究来源表与访谈问题清单；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "出海策略",
+          "数据分析",
+          "项目管理",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "北京",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-11-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 11-4｜新加坡B2B软件市场验证·交付协调",
+        "summary": "虚构能力档案：在新加坡B2B软件市场验证的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括研究来源表与访谈问题清单；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "出海策略",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 22000,
+          "budgetMax": 28000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-11-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 11-5｜新加坡B2B软件市场验证·持续运营",
+        "summary": "虚构能力档案：在新加坡B2B软件市场验证的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括研究来源表与访谈问题清单；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "出海策略",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "北京",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "新加坡"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 18000,
+          "budgetMax": 24000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-12",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 12｜美国家居品牌获客试点",
+        "summary": "虚构测试场景：独立站访问量低，需要验证可复查的获客渠道。首期范围为广告结构、转化追踪和落地页实验，以渠道归因看板与实验复盘作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "海外获客",
+          "广告投放",
+          "数据分析",
+          "市场营销"
+        ],
+        "requiredSkills": [
+          "海外获客",
+          "广告投放"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-12-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 12-1｜美国家居品牌获客试点·方案设计",
+        "summary": "虚构能力档案：在美国家居品牌获客试点的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括渠道归因看板与实验复盘；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外获客",
+          "广告投放",
+          "数据分析",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 22000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-12-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 12-2｜美国家居品牌获客试点·工程实施",
+        "summary": "虚构能力档案：在美国家居品牌获客试点的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括渠道归因看板与实验复盘；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外获客",
+          "广告投放",
+          "数据分析",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 27000,
+          "budgetMax": 32000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-12-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 12-3｜美国家居品牌获客试点·质量评估",
+        "summary": "虚构能力档案：在美国家居品牌获客试点的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括渠道归因看板与实验复盘；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "广告投放",
+          "数据分析",
+          "市场营销",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 15000,
+          "budgetMax": 21000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-12-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 12-4｜美国家居品牌获客试点·交付协调",
+        "summary": "虚构能力档案：在美国家居品牌获客试点的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括渠道归因看板与实验复盘；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外获客",
+          "广告投放",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 20000,
+          "budgetMax": 25000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-12-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 12-5｜美国家居品牌获客试点·持续运营",
+        "summary": "虚构能力档案：在美国家居品牌获客试点的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括渠道归因看板与实验复盘；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外获客",
+          "广告投放",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "美国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 16000,
+          "budgetMax": 22000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-13",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 13｜日本SaaS产品本地化",
+        "summary": "虚构测试场景：软件帮助中心需要日语术语与关键页面适配。首期范围为术语表、帮助页面和审校流程，以双语对照稿与本地化检查表作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "客户服务",
+          "产品设计"
+        ],
+        "requiredSkills": [
+          "内容本地化",
+          "内容创作"
+        ],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 32000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-13-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 13-1｜日本SaaS产品本地化·方案设计",
+        "summary": "虚构能力档案：在日本SaaS产品本地化的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括双语对照稿与本地化检查表；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "客户服务",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": 19000,
+          "budgetMax": 24000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-13-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 13-2｜日本SaaS产品本地化·工程实施",
+        "summary": "虚构能力档案：在日本SaaS产品本地化的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括双语对照稿与本地化检查表；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "客户服务",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": 24000,
+          "budgetMax": 29000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-13-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 13-3｜日本SaaS产品本地化·质量评估",
+        "summary": "虚构能力档案：在日本SaaS产品本地化的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括双语对照稿与本地化检查表；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "客户服务",
+          "产品设计",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": 13000,
+          "budgetMax": 18000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-13-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 13-4｜日本SaaS产品本地化·交付协调",
+        "summary": "虚构能力档案：在日本SaaS产品本地化的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括双语对照稿与本地化检查表；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "客户服务",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": 18000,
+          "budgetMax": 22000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-13-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 13-5｜日本SaaS产品本地化·持续运营",
+        "summary": "虚构能力档案：在日本SaaS产品本地化的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括双语对照稿与本地化检查表；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "客户服务",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "日本"
+          ],
+          "languages": [
+            "日语",
+            "中文"
+          ],
+          "budgetMin": 14000,
+          "budgetMax": 19000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-14",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 14｜德国工业设备渠道筛选",
+        "summary": "虚构测试场景：设备企业缺少进入当地市场的渠道研究。首期范围为伙伴研究、筛选标准和沟通计划，以研究依据与候选渠道评分表作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "渠道拓展",
+          "海外市场调研",
+          "项目管理",
+          "跨境运营"
+        ],
+        "requiredSkills": [
+          "渠道拓展",
+          "海外市场调研"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 48000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-14-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 14-1｜德国工业设备渠道筛选·方案设计",
+        "summary": "虚构能力档案：在德国工业设备渠道筛选的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括研究依据与候选渠道评分表；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "渠道拓展",
+          "海外市场调研",
+          "项目管理",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": 29000,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-14-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 14-2｜德国工业设备渠道筛选·工程实施",
+        "summary": "虚构能力档案：在德国工业设备渠道筛选的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括研究依据与候选渠道评分表；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "渠道拓展",
+          "海外市场调研",
+          "项目管理",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": 36000,
+          "budgetMax": 43000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-14-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 14-3｜德国工业设备渠道筛选·质量评估",
+        "summary": "虚构能力档案：在德国工业设备渠道筛选的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括研究依据与候选渠道评分表；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "项目管理",
+          "跨境运营",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": 20000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-14-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 14-4｜德国工业设备渠道筛选·交付协调",
+        "summary": "虚构能力档案：在德国工业设备渠道筛选的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括研究依据与候选渠道评分表；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "渠道拓展",
+          "海外市场调研",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": 26000,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-14-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 14-5｜德国工业设备渠道筛选·持续运营",
+        "summary": "虚构能力档案：在德国工业设备渠道筛选的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括研究依据与候选渠道评分表；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "渠道拓展",
+          "海外市场调研",
+          "项目管理",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "德国"
+          ],
+          "languages": [
+            "德语",
+            "英语"
+          ],
+          "budgetMin": 22000,
+          "budgetMax": 29000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-15",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 15｜英国专业服务SEO",
+        "summary": "虚构测试场景：咨询网站需要面向当地企业采购者优化内容。首期范围为关键词分组、内容日历和页面优化，以搜索意图分析与站点审计作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "SEO优化",
+          "内容创作",
+          "海外获客",
+          "数据分析"
+        ],
+        "requiredSkills": [
+          "SEO优化",
+          "内容创作"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 28000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-15-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 15-1｜英国专业服务SEO·方案设计",
+        "summary": "虚构能力档案：在英国专业服务SEO的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括搜索意图分析与站点审计；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "SEO优化",
+          "内容创作",
+          "海外获客",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 21000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-15-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 15-2｜英国专业服务SEO·工程实施",
+        "summary": "虚构能力档案：在英国专业服务SEO的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括搜索意图分析与站点审计；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "SEO优化",
+          "内容创作",
+          "海外获客",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 21000,
+          "budgetMax": 25000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-15-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 15-3｜英国专业服务SEO·质量评估",
+        "summary": "虚构能力档案：在英国专业服务SEO的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括搜索意图分析与站点审计；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "海外获客",
+          "数据分析",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 12000,
+          "budgetMax": 16000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-15-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 15-4｜英国专业服务SEO·交付协调",
+        "summary": "虚构能力档案：在英国专业服务SEO的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括搜索意图分析与站点审计；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "SEO优化",
+          "内容创作",
+          "海外获客",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 15000,
+          "budgetMax": 20000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-15-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 15-5｜英国专业服务SEO·持续运营",
+        "summary": "虚构能力档案：在英国专业服务SEO的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括搜索意图分析与站点审计；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "SEO优化",
+          "内容创作",
+          "海外获客",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "英国"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 13000,
+          "budgetMax": 17000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-16",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 16｜东南亚电商运营整理",
+        "summary": "虚构测试场景：品牌需梳理泰国站点上新和库存协作流程。首期范围为SKU整理、运营看板和异常跟进，以库存对账与运营操作手册作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "跨境电商",
+          "跨境运营",
+          "数据分析",
+          "流程自动化"
+        ],
+        "requiredSkills": [
+          "跨境电商",
+          "跨境运营"
+        ],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "深圳",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 30000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-16-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 16-1｜东南亚电商运营整理·方案设计",
+        "summary": "虚构能力档案：在东南亚电商运营整理的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括库存对账与运营操作手册；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "跨境电商",
+          "跨境运营",
+          "数据分析",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "深圳",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": 18000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-16-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 16-2｜东南亚电商运营整理·工程实施",
+        "summary": "虚构能力档案：在东南亚电商运营整理的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括库存对账与运营操作手册；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "跨境电商",
+          "跨境运营",
+          "数据分析",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "深圳",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-16-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 16-3｜东南亚电商运营整理·质量评估",
+        "summary": "虚构能力档案：在东南亚电商运营整理的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括库存对账与运营操作手册；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "跨境运营",
+          "数据分析",
+          "流程自动化",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "project",
+        "location": "深圳",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": 13000,
+          "budgetMax": 17000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-16-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 16-4｜东南亚电商运营整理·交付协调",
+        "summary": "虚构能力档案：在东南亚电商运营整理的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括库存对账与运营操作手册；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "跨境电商",
+          "跨境运营",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 21000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-16-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 16-5｜东南亚电商运营整理·持续运营",
+        "summary": "虚构能力档案：在东南亚电商运营整理的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括库存对账与运营操作手册；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "跨境电商",
+          "跨境运营",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "hybrid",
+        "engagement": "part_time",
+        "location": "深圳",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "泰国"
+          ],
+          "languages": [
+            "泰语",
+            "英语"
+          ],
+          "budgetMin": 14000,
+          "budgetMax": 18000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-17",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 17｜法国消费品牌内容适配",
+        "summary": "虚构测试场景：品牌准备上线法语产品页和常见问题说明。首期范围为产品文稿、术语整理和编辑校对，以法语审校清单与前后对照稿作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "市场营销",
+          "客户服务"
+        ],
+        "requiredSkills": [
+          "内容本地化",
+          "内容创作"
+        ],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-17-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 17-1｜法国消费品牌内容适配·方案设计",
+        "summary": "虚构能力档案：在法国消费品牌内容适配的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括法语审校清单与前后对照稿；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "市场营销",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": 20000,
+          "budgetMax": 26000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-17-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 17-2｜法国消费品牌内容适配·工程实施",
+        "summary": "虚构能力档案：在法国消费品牌内容适配的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括法语审校清单与前后对照稿；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "市场营销",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": 26000,
+          "budgetMax": 31000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-17-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 17-3｜法国消费品牌内容适配·质量评估",
+        "summary": "虚构能力档案：在法国消费品牌内容适配的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括法语审校清单与前后对照稿；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容创作",
+          "市场营销",
+          "客户服务",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": 14000,
+          "budgetMax": 19000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-17-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 17-4｜法国消费品牌内容适配·交付协调",
+        "summary": "虚构能力档案：在法国消费品牌内容适配的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括法语审校清单与前后对照稿；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "市场营销",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": 19000,
+          "budgetMax": 24000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-17-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 17-5｜法国消费品牌内容适配·持续运营",
+        "summary": "虚构能力档案：在法国消费品牌内容适配的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括法语审校清单与前后对照稿；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "内容创作",
+          "市场营销",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "法国"
+          ],
+          "languages": [
+            "法语",
+            "英语"
+          ],
+          "budgetMin": 15000,
+          "budgetMax": 20000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-18",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 18｜澳大利亚B2B线索研究",
+        "summary": "虚构测试场景：企业需要建立有来源和筛选理由的客户研究库。首期范围为客户画像、渠道研究和研究库结构，以来源清单与筛选标准复核作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "海外市场调研",
+          "海外获客",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [
+          "海外市场调研",
+          "海外获客"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 38000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-18-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 18-1｜澳大利亚B2B线索研究·方案设计",
+        "summary": "虚构能力档案：在澳大利亚B2B线索研究的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括来源清单与筛选标准复核；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "海外获客",
+          "数据分析",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 29000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-18-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 18-2｜澳大利亚B2B线索研究·工程实施",
+        "summary": "虚构能力档案：在澳大利亚B2B线索研究的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括来源清单与筛选标准复核；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "海外获客",
+          "数据分析",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 29000,
+          "budgetMax": 34000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-18-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 18-3｜澳大利亚B2B线索研究·质量评估",
+        "summary": "虚构能力档案：在澳大利亚B2B线索研究的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括来源清单与筛选标准复核；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外获客",
+          "数据分析",
+          "项目管理",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 16000,
+          "budgetMax": 22000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-18-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 18-4｜澳大利亚B2B线索研究·交付协调",
+        "summary": "虚构能力档案：在澳大利亚B2B线索研究的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括来源清单与筛选标准复核；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "海外获客",
+          "数据分析",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 21000,
+          "budgetMax": 27000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-18-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 18-5｜澳大利亚B2B线索研究·持续运营",
+        "summary": "虚构能力档案：在澳大利亚B2B线索研究的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括来源清单与筛选标准复核；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "海外获客",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "澳大利亚"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 17000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-19",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 19｜阿联酋产品市场进入研究",
+        "summary": "虚构测试场景：团队需要了解目标行业采购习惯与进入路径。首期范围为行业研究、进入路径和试点计划，以研究来源与风险假设表作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "出海策略",
+          "海外市场调研",
+          "渠道拓展",
+          "项目管理"
+        ],
+        "requiredSkills": [
+          "出海策略",
+          "海外市场调研"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": null,
+          "budgetMax": 52000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-19-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 19-1｜阿联酋产品市场进入研究·方案设计",
+        "summary": "虚构能力档案：在阿联酋产品市场进入研究的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括研究来源与风险假设表；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "出海策略",
+          "海外市场调研",
+          "渠道拓展",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 31000,
+          "budgetMax": 39000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-19-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 19-2｜阿联酋产品市场进入研究·工程实施",
+        "summary": "虚构能力档案：在阿联酋产品市场进入研究的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括研究来源与风险假设表；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "出海策略",
+          "海外市场调研",
+          "渠道拓展",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 39000,
+          "budgetMax": 47000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-19-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 19-3｜阿联酋产品市场进入研究·质量评估",
+        "summary": "虚构能力档案：在阿联酋产品市场进入研究的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括研究来源与风险假设表；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "海外市场调研",
+          "渠道拓展",
+          "项目管理",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 22000,
+          "budgetMax": 30000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-19-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 19-4｜阿联酋产品市场进入研究·交付协调",
+        "summary": "虚构能力档案：在阿联酋产品市场进入研究的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括研究来源与风险假设表；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "出海策略",
+          "海外市场调研",
+          "渠道拓展",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 29000,
+          "budgetMax": 36000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-19-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 19-5｜阿联酋产品市场进入研究·持续运营",
+        "summary": "虚构能力档案：在阿联酋产品市场进入研究的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括研究来源与风险假设表；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "出海策略",
+          "海外市场调研",
+          "渠道拓展",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "阿联酋"
+          ],
+          "languages": [
+            "英语"
+          ],
+          "budgetMin": 23000,
+          "budgetMax": 31000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-demand-20",
+      "kind": "problem",
+      "domain": "global",
+      "draft": {
+        "title": "示例需求 20｜韩国跨境客服流程",
+        "summary": "虚构测试场景：电商品牌需要建立韩语问答与工单升级规则。首期范围为常见问题、工单分类和升级流程，以问答术语表与工单回放测试作为交付验收依据。先做小范围验证；上线范围及后续投入由需求方另行确认。",
+        "skills": [
+          "客户服务",
+          "内容本地化",
+          "跨境运营",
+          "流程自动化"
+        ],
+        "requiredSkills": [
+          "客户服务",
+          "内容本地化"
+        ],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，仅用于匹配测试，不代表真实招聘、采购或合作机会。服务费为虚构预算，不含媒体或第三方费用。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": null,
+          "budgetMax": 26000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-01"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-20-1",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 20-1｜韩国跨境客服流程·方案设计",
+        "summary": "虚构能力档案：在韩国跨境客服流程的模拟项目中负责需求访谈、边界定义和验收指标，可交付范围说明、原型与验收矩阵。能力证据示例包括问答术语表与工单回放测试；个人职责限于方案设计，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "客户服务",
+          "内容本地化",
+          "跨境运营",
+          "需求分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": 16000,
+          "budgetMax": 20000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 24,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-20-2",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 20-2｜韩国跨境客服流程·工程实施",
+        "summary": "虚构能力档案：在韩国跨境客服流程的模拟项目中负责可运行原型、数据处理和接口实现，可交付操作示例、实现说明与交接清单。能力证据示例包括问答术语表与工单回放测试；个人职责限于工程实施，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "客户服务",
+          "内容本地化",
+          "跨境运营",
+          "系统集成"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": 20000,
+          "budgetMax": 23000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 32,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-20-3",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 20-3｜韩国跨境客服流程·质量评估",
+        "summary": "虚构能力档案：在韩国跨境客服流程的模拟项目中负责样本设计、错误分类和复现检查，可交付测试样本、问题记录与改进建议。能力证据示例包括问答术语表与工单回放测试；个人职责限于质量评估，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "内容本地化",
+          "跨境运营",
+          "流程自动化",
+          "测试验收"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": 11000,
+          "budgetMax": 15000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 16,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-20-4",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 20-4｜韩国跨境客服流程·交付协调",
+        "summary": "虚构能力档案：在韩国跨境客服流程的模拟项目中负责阶段计划、依赖跟踪和跨团队沟通，可交付里程碑、责任清单与风险记录。能力证据示例包括问答术语表与工单回放测试；个人职责限于交付协调，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "客户服务",
+          "内容本地化",
+          "跨境运营",
+          "项目管理"
+        ],
+        "requiredSkills": [],
+        "workMode": "any",
+        "engagement": "project",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": 14000,
+          "budgetMax": 18000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "project",
+          "weeklyHours": 20,
+          "availableFrom": "2026-09-20"
+        }
+      }
+    },
+    {
+      "id": "example-20260913-capability-20-5",
+      "kind": "capability",
+      "domain": "global",
+      "draft": {
+        "title": "示例能力 20-5｜韩国跨境客服流程·持续运营",
+        "summary": "虚构能力档案：在韩国跨境客服流程的模拟项目中负责指标口径、日常跟踪和迭代复盘，可交付指标字典、周报模板与维护说明。能力证据示例包括问答术语表与工单回放测试；个人职责限于持续运营，其他环节需与伙伴配合。经历与材料均为测试设定，未经真实验证。",
+        "skills": [
+          "客户服务",
+          "内容本地化",
+          "跨境运营",
+          "数据分析"
+        ],
+        "requiredSkills": [],
+        "workMode": "remote",
+        "engagement": "part_time",
+        "location": "",
+        "notes": "Mock 数据，非真实个人；无联系方式、认证或合作承诺。用于测试技能覆盖、预算、工时及协作方式差异。",
+        "constraints": {
+          "markets": [
+            "韩国"
+          ],
+          "languages": [
+            "韩语",
+            "中文"
+          ],
+          "budgetMin": 12000,
+          "budgetMax": 16000,
+          "budgetCurrency": "CNY",
+          "budgetPeriod": "month",
+          "weeklyHours": 12,
+          "availableFrom": "2026-10-15"
+        }
+      }
+    }
+  ]
+}

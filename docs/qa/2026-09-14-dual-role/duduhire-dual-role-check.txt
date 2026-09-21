@@ -1,0 +1,1416 @@
+
+> duduhire@1.0.0 check
+> npm run check:repository && npm run lint && npm run test && npm run build
+
+
+> duduhire@1.0.0 check:repository
+> node tools/check-repository.mjs
+
+Repository references OK: 84 local document links, 25 static asset references.
+
+> duduhire@1.0.0 lint
+> npm run lint --workspaces --if-present
+
+
+> @duduhire/web@1.0.0 lint
+> eslint .
+
+
+> @duduhire/api@1.0.0 lint
+> eslint .
+
+
+> duduhire@1.0.0 test
+> npm run test --workspaces --if-present
+
+
+> @duduhire/web@1.0.0 test
+> node --experimental-strip-types --test test/*.test.ts
+
+TAP version 13
+# Subtest: discovery restores nested artifacts, source evidence, request IDs and authoritative thread version
+ok 1 - discovery restores nested artifacts, source evidence, request IDs and authoritative thread version
+  ---
+  duration_ms: 11.703125
+  type: 'test'
+  ...
+# Subtest: discovery supports top-level version and empty-thread state without manufacturing a thread
+ok 2 - discovery supports top-level version and empty-thread state without manufacturing a thread
+  ---
+  duration_ms: 0.388333
+  type: 'test'
+  ...
+# Subtest: unknown schema and unsupported field statuses are not treated as confirmed facts
+ok 3 - unknown schema and unsupported field statuses are not treated as confirmed facts
+  ---
+  duration_ms: 0.70575
+  type: 'test'
+  ...
+# Subtest: confirmation requires a saved timestamp and never becomes platform verification
+ok 4 - confirmation requires a saved timestamp and never becomes platform verification
+  ---
+  duration_ms: 2.0165
+  type: 'test'
+  ...
+# Subtest: capability card stays hidden for premature, inferred or legacy summaries
+ok 5 - capability card stays hidden for premature, inferred or legacy summaries
+  ---
+  duration_ms: 0.689
+  type: 'test'
+  ...
+# Subtest: existing helper communicates the available command for each phase
+ok 6 - existing helper communicates the available command for each phase
+  ---
+  duration_ms: 0.271167
+  type: 'test'
+  ...
+# Subtest: review preserves source quotes and differentiates user facts, suggestions and skipped gaps
+ok 7 - review preserves source quotes and differentiates user facts, suggestions and skipped gaps
+  ---
+  duration_ms: 4.941916
+  type: 'test'
+  ...
+# Subtest: both discovery entries offer editable clearly marked AI and overseas examples
+ok 8 - both discovery entries offer editable clearly marked AI and overseas examples
+  ---
+  duration_ms: 7.992333
+  type: 'test'
+  ...
+# Subtest: latest exact generated draft is shown once while acknowledgement, status, source notice and next step remain
+ok 9 - latest exact generated draft is shown once while acknowledgement, status, source notice and next step remain
+  ---
+  duration_ms: 5.406209
+  type: 'test'
+  ...
+# Subtest: capability display keeps confirmation and safely falls back when server draft format differs
+ok 10 - capability display keeps confirmation and safely falls back when server draft format differs
+  ---
+  duration_ms: 2.213791
+  type: 'test'
+  ...
+# Subtest: short historical structured drafts fold while ordinary brief advice remains open
+ok 11 - short historical structured drafts fold while ordinary brief advice remains open
+  ---
+  duration_ms: 3.0185
+  type: 'test'
+  ...
+# Subtest: composer recovery is account-key isolated, bounded and preserves retry identity/version
+ok 12 - composer recovery is account-key isolated, bounded and preserves retry identity/version
+  ---
+  duration_ms: 1.576583
+  type: 'test'
+  ...
+# Subtest: composer does not keep completed text and tolerates unavailable browser storage
+ok 13 - composer does not keep completed text and tolerates unavailable browser storage
+  ---
+  duration_ms: 1.798792
+  type: 'test'
+  ...
+# Subtest: collapsed conditions reveal all known constraints with currency, period and directional limits
+ok 14 - collapsed conditions reveal all known constraints with currency, period and directional limits
+  ---
+  duration_ms: 297.015125
+  type: 'test'
+  ...
+# Subtest: empty conditions stay concise and one-sided budgets never invent the missing limit
+ok 15 - empty conditions stay concise and one-sided budgets never invent the missing limit
+  ---
+  duration_ms: 0.979333
+  type: 'test'
+  ...
+# Subtest: restores only unexpired matching context, never saves an OTP
+ok 16 - restores only unexpired matching context, never saves an OTP
+  ---
+  duration_ms: 7.369208
+  type: 'test'
+  ...
+# Subtest: corrupt or implausible recovery data is discarded
+ok 17 - corrupt or implausible recovery data is discarded
+  ---
+  duration_ms: 0.775125
+  type: 'test'
+  ...
+# Subtest: clearing and unavailable storage are safe
+ok 18 - clearing and unavailable storage are safe
+  ---
+  duration_ms: 0.521292
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2376.279875
+
+> @duduhire/api@1.0.0 test
+> node --import tsx --test test/*.test.ts
+
+TAP version 13
+# Subtest: matching API requires publication consent, keeps owner data private and invalidates changed discovery
+ok 1 - matching API requires publication consent, keeps owner data private and invalidates changed discovery
+  ---
+  duration_ms: 8134.252292
+  type: 'test'
+  ...
+# Subtest: private matching preview requires a confirmed owner, isolates examples, and never publishes
+ok 2 - private matching preview requires a confirmed owner, isolates examples, and never publishes
+  ---
+  duration_ms: 3577.683083
+  type: 'test'
+  ...
+# Subtest: normalizes email and rejects unsafe return paths
+ok 3 - normalizes email and rejects unsafe return paths
+  ---
+  duration_ms: 14.341791
+  type: 'test'
+  ...
+# Subtest: production config refuses insecure email and cookie settings
+ok 4 - production config refuses insecure email and cookie settings
+  ---
+  duration_ms: 5.264084
+  type: 'test'
+  ...
+# Subtest: SMTP transport cannot downgrade production TLS options
+ok 5 - SMTP transport cannot downgrade production TLS options
+  ---
+  duration_ms: 0.825083
+  type: 'test'
+  ...
+# Subtest: production email can only be disabled explicitly and retains all other startup guards
+ok 6 - production email can only be disabled explicitly and retains all other startup guards
+  ---
+  duration_ms: 13.593042
+  type: 'test'
+  ...
+# Subtest: database pools use bounded workload-specific timeouts
+ok 7 - database pools use bounded workload-specific timeouts
+  ---
+  duration_ms: 7.4865
+  type: 'test'
+  ...
+# Subtest: database transaction failures destroy the connection and preserve the original error
+ok 8 - database transaction failures destroy the connection and preserve the original error
+  ---
+  duration_ms: 3.630875
+  type: 'test'
+  ...
+# Subtest: active database client errors abort and destroy the transaction connection
+ok 9 - active database client errors abort and destroy the transaction connection
+  ---
+  duration_ms: 1.295209
+  type: 'test'
+  ...
+# Subtest: email challenges distinguish development from email delivery without exposing credentials
+ok 10 - email challenges distinguish development from email delivery without exposing credentials
+  ---
+  duration_ms: 2440.5495
+  type: 'test'
+  ...
+# Subtest: disabled email refuses signup, login and existing links without sending or changing authentication state
+ok 11 - disabled email refuses signup, login and existing links without sending or changing authentication state
+  ---
+  duration_ms: 1971.727625
+  type: 'test'
+  ...
+# Subtest: challenge response waits for SMTP acceptance and keeps the delivered link usable
+ok 12 - challenge response waits for SMTP acceptance and keeps the delivered link usable
+  ---
+  duration_ms: 1206.814125
+  type: 'test'
+  ...
+# Subtest: definitive email failure invalidates its challenge
+ok 13 - definitive email failure invalidates its challenge
+  ---
+  duration_ms: 566.811708
+  type: 'test'
+  ...
+# Subtest: malformed connection URLs never echo embedded secrets
+ok 14 - malformed connection URLs never echo embedded secrets
+  ---
+  duration_ms: 1.012209
+  type: 'test'
+  ...
+# Subtest: readiness rejects an incomplete database schema
+ok 15 - readiness rejects an incomplete database schema
+  ---
+  duration_ms: 0.700083
+  type: 'test'
+  ...
+# Subtest: guest session probe pre-seeds the browser binding used by a challenge
+ok 16 - guest session probe pre-seeds the browser binding used by a challenge
+  ---
+  duration_ms: 950.577625
+  type: 'test'
+  ...
+# Subtest: verified magic link creates an initial-role session and server profile
+ok 17 - verified magic link creates an initial-role session and server profile
+  ---
+  duration_ms: 1922.476666
+  type: 'test'
+  ...
+# Subtest: registration does not change the initial role and untrusted origins are rejected
+ok 18 - registration does not change the initial role and untrusted origins are rejected
+  ---
+  duration_ms: 703.667917
+  type: 'test'
+  ...
+# Subtest: the newest same-browser signup link determines the initial role
+ok 19 - the newest same-browser signup link determines the initial role
+  ---
+  duration_ms: 888.262459
+  type: 'test'
+  ...
+# Subtest: login for an unknown address is rejected before creating a challenge or sending email
+ok 20 - login for an unknown address is rejected before creating a challenge or sending email
+  ---
+  duration_ms: 1066.874208
+  type: 'test'
+  ...
+# Subtest: registered email login normalizes the account and preserves its role
+ok 21 - registered email login normalizes the account and preserves its role
+  ---
+  duration_ms: 823.579125
+  type: 'test'
+  ...
+# Subtest: login eligibility validates normalized identities without creating auth state or requiring a provider
+ok 22 - login eligibility validates normalized identities without creating auth state or requiring a provider
+  ---
+  duration_ms: 1659.856834
+  type: 'test'
+  ...
+# Subtest: login eligibility rejects untrusted origins and rate-limits lookups
+ok 23 - login eligibility rejects untrusted origins and rate-limits lookups
+  ---
+  duration_ms: 1734.182417
+  type: 'test'
+  ...
+# Subtest: every state-changing API rejects missing or untrusted origins
+ok 24 - every state-changing API rejects missing or untrusted origins
+  ---
+  duration_ms: 1066.478208
+  type: 'test'
+  ...
+# Subtest: homepage intake is browser-bound, expires from reuse, and can be claimed exactly once
+ok 25 - homepage intake is browser-bound, expires from reuse, and can be claimed exactly once
+  ---
+  duration_ms: 1294.428375
+  type: 'test'
+  ...
+# Subtest: discovery is role-scoped, persisted, idempotent, and continues beyond eight turns with stable source references
+ok 26 - discovery is role-scoped, persisted, idempotent, and continues beyond eight turns with stable source references
+  ---
+  duration_ms: 591.505375
+  type: 'test'
+  ...
+# Subtest: both discovery flows persist draft, explicit confirmation, correction and reload without changing ownership
+ok 27 - both discovery flows persist draft, explicit confirmation, correction and reload without changing ownership
+  ---
+  duration_ms: 412.458458
+  type: 'test'
+  ...
+# Subtest: discovery checks the browser version before calling the advisor and protects reset against stale tabs
+ok 28 - discovery checks the browser version before calling the advisor and protects reset against stale tabs
+  ---
+  duration_ms: 313.796875
+  type: 'test'
+  ...
+# Subtest: concurrent discovery replies preserve compare-and-swap and exact request idempotency
+ok 29 - concurrent discovery replies preserve compare-and-swap and exact request idempotency
+  ---
+  duration_ms: 215.619417
+  type: 'test'
+  ...
+# Subtest: a discovery reset during advisor work discards the stale response
+ok 30 - a discovery reset during advisor work discards the stale response
+  ---
+  duration_ms: 431.1555
+  type: 'test'
+  ...
+# Subtest: enterprise inquiries validate contact data and expose only encrypted, hashed persistence values
+ok 31 - enterprise inquiries validate contact data and expose only encrypted, hashed persistence values
+  ---
+  duration_ms: 353.02625
+  type: 'test'
+  ...
+# Subtest: pricing page inquiries preserve their source and retry idempotently while unsupported sources are rejected
+ok 32 - pricing page inquiries preserve their source and retry idempotently while unsupported sources are rejected
+  ---
+  duration_ms: 615.359667
+  type: 'test'
+  ...
+# Subtest: inquiry administration requires an authenticated explicitly allowlisted user
+ok 33 - inquiry administration requires an authenticated explicitly allowlisted user
+  ---
+  duration_ms: 693.701375
+  type: 'test'
+  ...
+# Subtest: administrator configuration is empty by default and accepts only explicit UUIDs
+ok 34 - administrator configuration is empty by default and accepts only explicit UUIDs
+  ---
+  duration_ms: 5.733208
+  type: 'test'
+  ...
+# Subtest: admins can page safe inquiry summaries, audit contact access and detect stale status updates
+ok 35 - admins can page safe inquiry summaries, audit contact access and detect stale status updates
+  ---
+  duration_ms: 415.670083
+  type: 'test'
+  ...
+# Subtest: profile writes use optimistic concurrency and reject a stale version with 409
+ok 36 - profile writes use optimistic concurrency and reject a stale version with 409
+  ---
+  duration_ms: 188.512916
+  type: 'test'
+  ...
+# Subtest: role switching requires authentication, trusted Origin and a valid role, and preserves the account and session
+ok 37 - role switching requires authentication, trusted Origin and a valid role, and preserves the account and session
+  ---
+  duration_ms: 323.519625
+  type: 'test'
+  ...
+# Subtest: old-role tabs are rejected while discovery already in progress stays with its captured kind
+ok 38 - old-role tabs are rejected while discovery already in progress stays with its captured kind
+  ---
+  duration_ms: 524.701
+  type: 'test'
+  ...
+# Subtest: production allows real Qwen or explicit OpenAI and requires an encryption key
+ok 39 - production allows real Qwen or explicit OpenAI and requires an encryption key
+  ---
+  duration_ms: 182.279083
+  type: 'test'
+  ...
+# Subtest: local discovery advisor explicitly rehearses the stateful flow without invented expertise
+ok 40 - local discovery advisor explicitly rehearses the stateful flow without invented expertise
+  ---
+  duration_ms: 269.41625
+  type: 'test'
+  ...
+# Subtest: OpenAI discovery uses the official Responses endpoint without storage and validates output
+ok 41 - OpenAI discovery uses the official Responses endpoint without storage and validates output
+  ---
+  duration_ms: 2371.0025
+  type: 'test'
+  ...
+# Subtest: OpenAI discovery rejects output that does not exactly match the artifact schema
+ok 42 - OpenAI discovery rejects output that does not exactly match the artifact schema
+  ---
+  duration_ms: 106.591292
+  type: 'test'
+  ...
+# Subtest: contact encryption uses authenticated randomized envelopes
+ok 43 - contact encryption uses authenticated randomized envelopes
+  ---
+  duration_ms: 12.881167
+  type: 'test'
+  ...
+# Subtest: sparse first message remains collecting without fabricated facts or completion
+ok 44 - sparse first message remains collecting without fabricated facts or completion
+  ---
+  duration_ms: 596.651
+  type: 'test'
+  ...
+# Subtest: problem: extract known information, review, explicitly confirm, persist then edit and reconfirm
+ok 45 - problem: extract known information, review, explicitly confirm, persist then edit and reconfirm
+  ---
+  duration_ms: 107.988917
+  type: 'test'
+  ...
+# Subtest: capability: extract known information, review, explicitly confirm, persist then edit and reconfirm
+ok 46 - capability: extract known information, review, explicitly confirm, persist then edit and reconfirm
+  ---
+  duration_ms: 4.254791
+  type: 'test'
+  ...
+# Subtest: unknowns can be skipped without inventing facts, but required facts prevent confirmation
+ok 47 - unknowns can be skipped without inventing facts, but required facts prevent confirmation
+  ---
+  duration_ms: 1.61875
+  type: 'test'
+  ...
+# Subtest: only exact explicit commands confirm; quotes, negation and corrections do not
+ok 48 - only exact explicit commands confirm; quotes, negation and corrections do not
+  ---
+  duration_ms: 8.078833
+  type: 'test'
+  ...
+# Subtest: a model cannot declare confirmation or introduce an unknown field
+ok 49 - a model cannot declare confirmation or introduce an unknown field
+  ---
+  duration_ms: 12.269542
+  type: 'test'
+  ...
+# Subtest: model facts must quote real user or attachment sources and cannot fabricate numbers
+ok 50 - model facts must quote real user or attachment sources and cannot fabricate numbers
+  ---
+  duration_ms: 23.164375
+  type: 'test'
+  ...
+# Subtest: inferred suggestions do not satisfy required personal contributions
+ok 51 - inferred suggestions do not satisfy required personal contributions
+  ---
+  duration_ms: 10.420209
+  type: 'test'
+  ...
+# Subtest: previous attachments remain available with stable source IDs; bounded prompt excludes assistant-as-fact
+ok 52 - previous attachments remain available with stable source IDs; bounded prompt excludes assistant-as-fact
+  ---
+  duration_ms: 11.608083
+  type: 'test'
+  ...
+# Subtest: historical material cannot overwrite a later correction
+ok 53 - historical material cannot overwrite a later correction
+  ---
+  duration_ms: 3.7835
+  type: 'test'
+  ...
+# Subtest: non-mutating questions preserve confirmed status and summary
+ok 54 - non-mutating questions preserve confirmed status and summary
+  ---
+  duration_ms: 1.869417
+  type: 'test'
+  ...
+# Subtest: personal responsibility preserves negation and participation qualifiers rather than upgrading identity
+ok 55 - personal responsibility preserves negation and participation qualifiers rather than upgrading identity
+  ---
+  duration_ms: 0.527
+  type: 'test'
+  ...
+# Subtest: adaptive questions retain their field and context so skip and short replies target the right information
+ok 56 - adaptive questions retain their field and context so skip and short replies target the right information
+  ---
+  duration_ms: 0.81225
+  type: 'test'
+  ...
+# Subtest: fully answered fields cannot be selected for repetitive questions
+ok 57 - fully answered fields cannot be selected for repetitive questions
+  ---
+  duration_ms: 1.081333
+  type: 'test'
+  ...
+# Subtest: malformed model response or timeout is not converted into local advice
+ok 58 - malformed model response or timeout is not converted into local advice
+  ---
+  duration_ms: 5.967583
+  type: 'test'
+  ...
+# Subtest: legacy artifacts remain unconfirmed and are rebuilt from real sources
+ok 59 - legacy artifacts remain unconfirmed and are rebuilt from real sources
+  ---
+  duration_ms: 1.634916
+  type: 'test'
+  ...
+# Subtest: local mode explicitly identifies rehearsal and permits long conversations
+ok 60 - local mode explicitly identifies rehearsal and permits long conversations
+  ---
+  duration_ms: 224.455792
+  type: 'test'
+  ...
+# Subtest: complete essential facts immediately produce a draft even when the provider asks an optional question
+ok 61 - complete essential facts immediately produce a draft even when the provider asks an optional question
+  ---
+  duration_ms: 0.710833
+  type: 'test'
+  ...
+# Subtest: optional suggestions never jump ahead of a missing essential fact
+ok 62 - optional suggestions never jump ahead of a missing essential fact
+  ---
+  duration_ms: 1.438834
+  type: 'test'
+  ...
+# Subtest: the user may resume optional questions and leave them without losing a usable draft
+ok 63 - the user may resume optional questions and leave them without losing a usable draft
+  ---
+  duration_ms: 1.059708
+  type: 'test'
+  ...
+# Subtest: a question without a declared field is replaced with the correct stage question
+ok 64 - a question without a declared field is replaced with the correct stage question
+  ---
+  duration_ms: 0.818875
+  type: 'test'
+  ...
+# Subtest: inferred required facts remain the next necessary question
+ok 65 - inferred required facts remain the next necessary question
+  ---
+  duration_ms: 181.001625
+  type: 'test'
+  ...
+# Subtest: skipping with no open question preserves the confirmed draft
+ok 66 - skipping with no open question preserves the confirmed draft
+  ---
+  duration_ms: 1.88925
+  type: 'test'
+  ...
+# Subtest: numeric evidence keeps original metrics and rejects substring support for a suggested title
+ok 67 - numeric evidence keeps original metrics and rejects substring support for a suggested title
+  ---
+  duration_ms: 52.189041
+  type: 'test'
+  ...
+# Subtest: results retain estimates, team attribution and not-yet-launched qualifications
+ok 68 - results retain estimates, team attribution and not-yet-launched qualifications
+  ---
+  duration_ms: 1.341958
+  type: 'test'
+  ...
+# Subtest: knowledge references guide questions but cannot be quoted as user evidence
+ok 69 - knowledge references guide questions but cannot be quoted as user evidence
+  ---
+  duration_ms: 2.115125
+  type: 'test'
+  ...
+# Subtest: explicit example placeholders are never collected as the user's real experience
+ok 70 - explicit example placeholders are never collected as the user's real experience
+  ---
+  duration_ms: 3.210041
+  type: 'test'
+  ...
+# Subtest: local extraction reads complete natural work stories in one turn with exact excerpts
+ok 71 - local extraction reads complete natural work stories in one turn with exact excerpts
+  ---
+  duration_ms: 8.891959
+  type: 'test'
+  ...
+# Subtest: local labelled natural edits change only the requested field
+ok 72 - local labelled natural edits change only the requested field
+  ---
+  duration_ms: 1.057542
+  type: 'test'
+  ...
+# Subtest: local extraction reads attachment facts and excludes questions or prompt instructions
+ok 73 - local extraction reads attachment facts and excludes questions or prompt instructions
+  ---
+  duration_ms: 1.147
+  type: 'test'
+  ...
+# Subtest: provided facts and artifact bodies cannot inherit model-added tools, guarantees or hard requirements
+ok 74 - provided facts and artifact bodies cannot inherit model-added tools, guarantees or hard requirements
+  ---
+  duration_ms: 1.791625
+  type: 'test'
+  ...
+# Subtest: separate verbatim sentences may be recovered as distinct evidence, never fuzzy or invented quotes
+ok 75 - separate verbatim sentences may be recovered as distinct evidence, never fuzzy or invented quotes
+  ---
+  duration_ms: 1.814709
+  type: 'test'
+  ...
+# Subtest: tool and business identifiers do not become false numeric metrics
+ok 76 - tool and business identifiers do not become false numeric metrics
+  ---
+  duration_ms: 1.744459
+  type: 'test'
+  ...
+# Subtest: a lack of supporting materials does not skip the question about personal responsibility
+ok 77 - a lack of supporting materials does not skip the question about personal responsibility
+  ---
+  duration_ms: 0.679583
+  type: 'test'
+  ...
+# Subtest: unknown labelled essentials do not count as factual completion in local rehearsal
+ok 78 - unknown labelled essentials do not count as factual completion in local rehearsal
+  ---
+  duration_ms: 109.42625
+  type: 'test'
+  ...
+# Subtest: Chinese-number preferences remain verbatim when unused model text rewrites them as digits
+ok 79 - Chinese-number preferences remain verbatim when unused model text rewrites them as digits
+  ---
+  duration_ms: 1.65425
+  type: 'test'
+  ...
+# Subtest: unused expansions and an overlong title cannot reject otherwise valid quoted facts
+ok 80 - unused expansions and an overlong title cannot reject otherwise valid quoted facts
+  ---
+  duration_ms: 352.500625
+  type: 'test'
+  ...
+# Subtest: short skill quotes retain the same clause's negation without absorbing unrelated work
+ok 81 - short skill quotes retain the same clause's negation without absorbing unrelated work
+  ---
+  duration_ms: 1.077375
+  type: 'test'
+  ...
+# Subtest: short contribution quotes keep a colleague's responsibility in the same clause
+ok 82 - short contribution quotes keep a colleague's responsibility in the same clause
+  ---
+  duration_ms: 0.590625
+  type: 'test'
+  ...
+# Subtest: context recovery is exact and bounded and covers postposed preference negation
+ok 83 - context recovery is exact and bounded and covers postposed preference negation
+  ---
+  duration_ms: 0.240584
+  type: 'test'
+  ...
+# Subtest: an explicit lack of materials retracts an earlier evidence claim and its confirmation
+ok 84 - an explicit lack of materials retracts an earlier evidence claim and its confirmation
+  ---
+  duration_ms: 1.0545
+  type: 'test'
+  ...
+# Subtest: disabled email sender rejects delivery without opening SMTP or logging a link
+ok 85 - disabled email sender rejects delivery without opening SMTP or logging a link
+  ---
+  duration_ms: 111.691833
+  type: 'test'
+  ...
+# Subtest: real SMTP sender waits for final acceptance and transmits the supplied private one-time link in both alternatives
+ok 86 - real SMTP sender waits for final acceptance and transmits the supplied private one-time link in both alternatives
+  ---
+  duration_ms: 3533.442584
+  type: 'test'
+  ...
+# Subtest: real SMTP sender rejects reject-recipient without reporting delivery success or automatically resending
+ok 87 - real SMTP sender rejects reject-recipient without reporting delivery success or automatically resending
+  ---
+  duration_ms: 702.528167
+  type: 'test'
+  ...
+# Subtest: real SMTP sender rejects reject-message without reporting delivery success or automatically resending
+ok 88 - real SMTP sender rejects reject-message without reporting delivery success or automatically resending
+  ---
+  duration_ms: 529.690708
+  type: 'test'
+  ...
+# Subtest: real SMTP sender rejects disconnect-after-message without reporting delivery success or automatically resending
+ok 89 - real SMTP sender rejects disconnect-after-message without reporting delivery success or automatically resending
+  ---
+  duration_ms: 39.863625
+  type: 'test'
+  ...
+# Subtest: development SMTP refuses TLS downgrade before transmitting credentials or the message
+ok 90 - development SMTP refuses TLS downgrade before transmitting credentials or the message
+  ---
+  duration_ms: 348.349542
+  type: 'test'
+  ...
+# Subtest: test SMTP refuses TLS downgrade before transmitting credentials or the message
+ok 91 - test SMTP refuses TLS downgrade before transmitting credentials or the message
+  ---
+  duration_ms: 7.138959
+  type: 'test'
+  ...
+# Subtest: production SMTP refuses TLS downgrade before transmitting credentials or the message
+ok 92 - production SMTP refuses TLS downgrade before transmitting credentials or the message
+  ---
+  duration_ms: 14.285458
+  type: 'test'
+  ...
+# Subtest: encoded SMTP credentials require TLS in development while unauthenticated loopback delivery remains available
+ok 93 - encoded SMTP credentials require TLS in development while unauthenticated loopback delivery remains available
+  ---
+  duration_ms: 1.033625
+  type: 'test'
+  ...
+# Subtest: notification delivery is disabled unless a single explicit recipient is configured
+ok 94 - notification delivery is disabled unless a single explicit recipient is configured
+  ---
+  duration_ms: 637.694708
+  type: 'test'
+  ...
+# Subtest: notification message contains only safe operational context and a stable message ID
+ok 95 - notification message contains only safe operational context and a stable message ID
+  ---
+  duration_ms: 877.290083
+  type: 'test'
+  ...
+# Subtest: worker finalizes only after send success and never persists SMTP error details
+ok 96 - worker finalizes only after send success and never persists SMTP error details
+  ---
+  duration_ms: 333.498625
+  type: 'test'
+  ...
+# Subtest: empty queues never send and finalization errors do not turn a successful send into a second failure update
+ok 97 - empty queues never send and finalization errors do not turn a successful send into a second failure update
+  ---
+  duration_ms: 19.192542
+  type: 'test'
+  ...
+# Subtest: local Qwen file access requires explicit opt-in and is disabled in production
+ok 98 - local Qwen file access requires explicit opt-in and is disabled in production
+  ---
+  duration_ms: 3.112417
+  type: 'test'
+  ...
+# Subtest: either injected Qwen credential skips the complete private file configuration
+ok 99 - either injected Qwen credential skips the complete private file configuration
+  ---
+  duration_ms: 0.643666
+  type: 'test'
+  ...
+# Subtest: private files only fill the Qwen whitelist without replacing explicit process configuration
+ok 100 - private files only fill the Qwen whitelist without replacing explicit process configuration
+  ---
+  duration_ms: 6.945292
+  type: 'test'
+  ...
+# Subtest: absent private files leave existing configuration validation in control
+ok 101 - absent private files leave existing configuration validation in control
+  ---
+  duration_ms: 4.590125
+  type: 'test'
+  ...
+# Subtest: relative override paths are rejected without exposing a path or cause
+ok 102 - relative override paths are rejected without exposing a path or cause
+  ---
+  duration_ms: 1.069667
+  type: 'test'
+  ...
+# Subtest: private file and immediate directory must have exact owner-only permissions
+ok 103 - private file and immediate directory must have exact owner-only permissions
+  ---
+  duration_ms: 8.826917
+  type: 'test'
+  ...
+# Subtest: symlinks to a private file or any containing directory are rejected
+ok 104 - symlinks to a private file or any containing directory are rejected
+  ---
+  duration_ms: 39.20875
+  type: 'test'
+  ...
+# Subtest: private configuration owned by a different user is rejected
+ok 105 - private configuration owned by a different user is rejected
+  ---
+  duration_ms: 23.74275
+  type: 'test'
+  ...
+# Subtest: non-regular and oversized private files are rejected with sanitized errors
+ok 106 - non-regular and oversized private files are rejected with sanitized errors
+  ---
+  duration_ms: 7.827792
+  type: 'test'
+  ...
+# Subtest: local PNVS loader imports exactly the credential pair without enabling sending or touching Qwen
+ok 107 - local PNVS loader imports exactly the credential pair without enabling sending or touching Qwen
+  ---
+  duration_ms: 18.769375
+  type: 'test'
+  ...
+# Subtest: production, missing opt-in and injected or partial environment credentials never read a private file
+ok 108 - production, missing opt-in and injected or partial environment credentials never read a private file
+  ---
+  duration_ms: 7.0435
+  type: 'test'
+  ...
+# Subtest: missing local PNVS file or directory is optional
+ok 109 - missing local PNVS file or directory is optional
+  ---
+  duration_ms: 6.65
+  type: 'test'
+  ...
+# Subtest: PNVS loader rejects relative locations and symlinks at every level
+ok 110 - PNVS loader rejects relative locations and symlinks at every level
+  ---
+  duration_ms: 35.002791
+  type: 'test'
+  ...
+# Subtest: PNVS loader rejects dangling symlinks instead of treating them as absent configuration
+ok 111 - PNVS loader rejects dangling symlinks instead of treating them as absent configuration
+  ---
+  duration_ms: 20.545542
+  type: 'test'
+  ...
+# Subtest: PNVS loader requires owner-only directory and file permissions
+ok 112 - PNVS loader requires owner-only directory and file permissions
+  ---
+  duration_ms: 359.761875
+  type: 'test'
+  ...
+# Subtest: PNVS loader rejects other owners, hard links and non-regular files
+ok 113 - PNVS loader rejects other owners, hard links and non-regular files
+  ---
+  duration_ms: 2558.934125
+  type: 'test'
+  ...
+# Subtest: PNVS loader refuses malformed, extra-key, oversized or invalid credential data atomically
+ok 114 - PNVS loader refuses malformed, extra-key, oversized or invalid credential data atomically
+  ---
+  duration_ms: 1970.257125
+  type: 'test'
+  ...
+# Subtest: only current active v2 confirmed artifacts with complete provided facts can enter publication
+ok 115 - only current active v2 confirmed artifacts with complete provided facts can enter publication
+  ---
+  duration_ms: 108.425292
+  type: 'test'
+  ...
+# Subtest: preview uses confirmed field values without exposing full threads, quotes or inferred skills
+ok 116 - preview uses confirmed field values without exposing full threads, quotes or inferred skills
+  ---
+  duration_ms: 68.172917
+  type: 'test'
+  ...
+# Subtest: preview redacts common private contact values and secrets before presenting the proposed public text
+ok 117 - preview redacts common private contact values and secrets before presenting the proposed public text
+  ---
+  duration_ms: 85.574916
+  type: 'test'
+  ...
+# Subtest: publication validates controlled job tags, kind-specific requirements and honest constraints
+ok 118 - publication validates controlled job tags, kind-specific requirements and honest constraints
+  ---
+  duration_ms: 22.371833
+  type: 'test'
+  ...
+# Subtest: public fields reject common contacts and secrets, while ordinary monetary figures remain allowed
+ok 119 - public fields reject common contacts and secrets, while ordinary monetary figures remain allowed
+  ---
+  duration_ms: 1.378875
+  type: 'test'
+  ...
+# Subtest: same evidence gives bilateral results, with reasons but no made-up fit probabilities
+ok 120 - same evidence gives bilateral results, with reasons but no made-up fit probabilities
+  ---
+  duration_ms: 2.571791
+  type: 'test'
+  ...
+# Subtest: exclude same side, self, no related skills, missing required skills and explicit constraint conflicts
+ok 121 - exclude same side, self, no related skills, missing required skills and explicit constraint conflicts
+  ---
+  duration_ms: 1.575625
+  type: 'test'
+  ...
+# Subtest: unknown constraints are transparent and are not claimed to satisfy a condition
+ok 122 - unknown constraints are transparent and are not claimed to satisfy a condition
+  ---
+  duration_ms: 3.618625
+  type: 'test'
+  ...
+# Subtest: ranking is deterministic and unaffected by free text, popularity, demographic data or duplicate records
+ok 123 - ranking is deterministic and unaffected by free text, popularity, demographic data or duplicate records
+  ---
+  duration_ms: 2.265042
+  type: 'test'
+  ...
+# Subtest: candidate serialization strips owner identity, source references, status and unknown sensitive fields
+ok 124 - candidate serialization strips owner identity, source references, status and unknown sensitive fields
+  ---
+  duration_ms: 3.448083
+  type: 'test'
+  ...
+# Subtest: curated guidance has traceable primary sources without claiming user facts
+ok 125 - curated guidance has traceable primary sources without claiming user facts
+  ---
+  duration_ms: 0.927583
+  type: 'test'
+  ...
+# Subtest: skill suggestions retain explicit affirmative work evidence and exclude negation, interests, and others' work
+ok 126 - skill suggestions retain explicit affirmative work evidence and exclude negation, interests, and others' work
+  ---
+  duration_ms: 11.669417
+  type: 'test'
+  ...
+# Subtest: confirmed evidence pre-fills editable skills and unambiguous cooperation while unknown facts remain empty
+ok 127 - confirmed evidence pre-fills editable skills and unambiguous cooperation while unknown facts remain empty
+  ---
+  duration_ms: 73.674375
+  type: 'test'
+  ...
+# Subtest: structured constraints validate date, amount, hours, synonyms and public privacy
+ok 128 - structured constraints validate date, amount, hours, synonyms and public privacy
+  ---
+  duration_ms: 3.034333
+  type: 'test'
+  ...
+# Subtest: natural confirmed statements pre-fill market, mandatory language, range and dates without labelled forms
+ok 129 - natural confirmed statements pre-fill market, mandatory language, range and dates without labelled forms
+  ---
+  duration_ms: 5.158041
+  type: 'test'
+  ...
+# Subtest: budget, hours, start date, market and language hard conflicts exclude bilaterally
+ok 130 - budget, hours, start date, market and language hard conflicts exclude bilaterally
+  ---
+  duration_ms: 2.452417
+  type: 'test'
+  ...
+# Subtest: missing facts and incompatible budget units never appear as known matches
+ok 131 - missing facts and incompatible budget units never appear as known matches
+  ---
+  duration_ms: 0.550209
+  type: 'test'
+  ...
+# Subtest: all synthetic pairs are valid and mutually discoverable with explicit no-contact metadata
+ok 132 - all synthetic pairs are valid and mutually discoverable with explicit no-contact metadata
+  ---
+  duration_ms: 6.662959
+  type: 'test'
+  ...
+# Subtest: recorded synthetic Qwen artifacts become useful matching drafts through scoped work-action mappings
+ok 133 - recorded synthetic Qwen artifacts become useful matching drafts through scoped work-action mappings
+  ---
+  duration_ms: 393.560041
+  type: 'test'
+  ...
+# Subtest: explicit language labels do not turn optional languages or alternatives into requirements
+ok 134 - explicit language labels do not turn optional languages or alternatives into requirements
+  ---
+  duration_ms: 120.147125
+  type: 'test'
+  ...
+# Subtest: legacy confirmed model expansions cannot seed skills, conditions or public summary beyond grounded quotations
+ok 135 - legacy confirmed model expansions cannot seed skills, conditions or public summary beyond grounded quotations
+  ---
+  duration_ms: 6.309083
+  type: 'test'
+  ...
+# Subtest: matching evidence must occur in the named user or attachment source, never assistant output or another turn
+ok 136 - matching evidence must occur in the named user or attachment source, never assistant output or another turn
+  ---
+  duration_ms: 65.963334
+  type: 'test'
+  ...
+# Subtest: physical work requirements stay binding and request a city instead of turning negotiable
+ok 137 - physical work requirements stay binding and request a city instead of turning negotiable
+  ---
+  duration_ms: 21.48825
+  type: 'test'
+  ...
+# Subtest: legacy partial quotations recover omitted negation and other-person attribution before proposing skills
+ok 138 - legacy partial quotations recover omitted negation and other-person attribution before proposing skills
+  ---
+  duration_ms: 131.724375
+  type: 'test'
+  ...
+# Subtest: natural demand carries stated markets, working language and remote project terms
+ok 139 - natural demand carries stated markets, working language and remote project terms
+  ---
+  duration_ms: 135.612583
+  type: 'test'
+  ...
+# Subtest: talent project market is not nationality and language is not inferred from a country
+ok 140 - talent project market is not nationality and language is not inferred from a country
+  ---
+  duration_ms: 5.875833
+  type: 'test'
+  ...
+# Subtest: negated and optional capabilities do not become required markets or languages
+ok 141 - negated and optional capabilities do not become required markets or languages
+  ---
+  duration_ms: 0.53925
+  type: 'test'
+  ...
+# Subtest: multiple distinct alternatives remain negotiable rather than choosing one
+ok 142 - multiple distinct alternatives remain negotiable rather than choosing one
+  ---
+  duration_ms: 0.685792
+  type: 'test'
+  ...
+# Subtest: budget requires currency and a stated billing basis
+ok 143 - budget requires currency and a stated billing basis
+  ---
+  duration_ms: 1.457833
+  type: 'test'
+  ...
+# Subtest: one-sided budgets preserve their direction and conflicting budgets stay unknown
+ok 144 - one-sided budgets preserve their direction and conflicting budgets stay unknown
+  ---
+  duration_ms: 0.758292
+  type: 'test'
+  ...
+# Subtest: hour requirements and availability are not reversed
+ok 145 - hour requirements and availability are not reversed
+  ---
+  duration_ms: 0.723041
+  type: 'test'
+  ...
+# Subtest: absolute start dates require correct role direction and a valid date
+ok 146 - absolute start dates require correct role direction and a valid date
+  ---
+  duration_ms: 279.18925
+  type: 'test'
+  ...
+# Subtest: amount units on both ends and monthly rates preserve values
+ok 147 - amount units on both ends and monthly rates preserve values
+  ---
+  duration_ms: 3.250708
+  type: 'test'
+  ...
+# Subtest: contact key rotation rejects a repeated-character next key before database access
+ok 148 - contact key rotation rejects a repeated-character next key before database access
+  ---
+  duration_ms: 4895.815875
+  type: 'test'
+  ...
+# Subtest: contact key rotation rejects a placeholder next key id before database access
+ok 149 - contact key rotation rejects a placeholder next key id before database access
+  ---
+  duration_ms: 5851.884125
+  type: 'test'
+  ...
+# Subtest: password hashes have independent salts, verify correctly, and never embed plaintext
+ok 150 - password hashes have independent salts, verify correctly, and never embed plaintext
+  ---
+  duration_ms: 35235.25675
+  type: 'test'
+  ...
+# Subtest: password length bounds permit long phrases and Unicode without silent truncation
+ok 151 - password length bounds permit long phrases and Unicode without silent truncation
+  ---
+  duration_ms: 4.59125
+  type: 'test'
+  ...
+# Subtest: SMS stays disabled even with saved or injected credentials
+ok 152 - SMS stays disabled even with saved or injected credentials
+  ---
+  duration_ms: 6.31025
+  type: 'test'
+  ...
+# Subtest: mainland phone normalization accepts only explicit mainland mobile forms
+ok 153 - mainland phone normalization accepts only explicit mainland mobile forms
+  ---
+  duration_ms: 1.987166
+  type: 'test'
+  ...
+# Subtest: enablement requires both dedicated credentials and a bounded allowlist
+ok 154 - enablement requires both dedicated credentials and a bounded allowlist
+  ---
+  duration_ms: 3.322
+  type: 'test'
+  ...
+# Subtest: public mainland access is explicit and retains credentials and a bounded global budget
+ok 155 - public mainland access is explicit and retains credentials and a bounded global budget
+  ---
+  duration_ms: 0.999458
+  type: 'test'
+  ...
+# Subtest: one-off sending windows are absolute, bounded, and do not reopen after restart
+ok 156 - one-off sending windows are absolute, bounded, and do not reopen after restart
+  ---
+  duration_ms: 4.974709
+  type: 'test'
+  ...
+# Subtest: mainland signup/login public access=false preserves shared quota and origin checks
+ok 157 - mainland signup/login public access=false preserves shared quota and origin checks
+  ---
+  duration_ms: 8518.233125
+  type: 'test'
+  ...
+# Subtest: mainland signup/login public access=true preserves shared quota and origin checks
+ok 158 - mainland signup/login public access=true preserves shared quota and origin checks
+  ---
+  duration_ms: 1954.988208
+  type: 'test'
+  ...
+# Subtest: encoded authentication paths preserve origin checks and never log raw phone exceptions
+ok 159 - encoded authentication paths preserve origin checks and never log raw phone exceptions
+  ---
+  duration_ms: 6049.859584
+  type: 'test'
+  ...
+# Subtest: login eligibility errors fail closed without exposing account values in responses or logs
+ok 160 - login eligibility errors fail closed without exposing account values in responses or logs
+  ---
+  duration_ms: 2260.819667
+  type: 'test'
+  ...
+# Subtest: closed send window blocks provider calls without preventing verification of a still-valid code
+ok 161 - closed send window blocks provider calls without preventing verification of a still-valid code
+  ---
+  duration_ms: 6627.330375
+  type: 'test'
+  ...
+# Subtest: credential input diagnostics contain categories only
+ok 162 - credential input diagnostics contain categories only
+  ---
+  duration_ms: 4.67425
+  type: 'test'
+  ...
+# Subtest: AccessKey ID retries empty, oversized, and multiline input without exposing values
+ok 163 - AccessKey ID retries empty, oversized, and multiline input without exposing values
+  ---
+  duration_ms: 1.702083
+  type: 'test'
+  ...
+# Subtest: AccessKey Secret retries empty, oversized, and multiline input without exposing values
+ok 164 - AccessKey Secret retries empty, oversized, and multiline input without exposing values
+  ---
+  duration_ms: 396.172333
+  type: 'test'
+  ...
+# Subtest: retrying an empty Secret does not request the accepted ID again
+ok 165 - retrying an empty Secret does not request the accepted ID again
+  ---
+  duration_ms: 3.891292
+  type: 'test'
+  ...
+# Subtest: cancellation stops the prompt without logging the error or restarting input
+ok 166 - cancellation stops the prompt without logging the error or restarting input
+  ---
+  duration_ms: 3.915625
+  type: 'test'
+  ...
+# Subtest: PNVS credentials are trimmed and saved as JSON with only the two credential properties
+ok 167 - PNVS credentials are trimmed and saved as JSON with only the two credential properties
+  ---
+  duration_ms: 56.483458
+  type: 'test'
+  ...
+# Subtest: PNVS credentials accept the 1-character storage boundary without validating provider format
+ok 168 - PNVS credentials accept the 1-character storage boundary without validating provider format
+  ---
+  duration_ms: 10.2185
+  type: 'test'
+  ...
+# Subtest: PNVS credentials accept the 4096-character storage boundary without validating provider format
+ok 169 - PNVS credentials accept the 4096-character storage boundary without validating provider format
+  ---
+  duration_ms: 89.482625
+  type: 'test'
+  ...
+# Subtest: credential punctuation and Unicode survive JSON round trips without becoming extra properties
+ok 170 - credential punctuation and Unicode survive JSON round trips without becoming extra properties
+  ---
+  duration_ms: 1667.62675
+  type: 'test'
+  ...
+# Subtest: missing credential directories are created with owner-only permissions
+ok 171 - missing credential directories are created with owner-only permissions
+  ---
+  duration_ms: 40.276334
+  type: 'test'
+  ...
+# Subtest: credential files retain exact owner-only permissions under a restrictive umask
+ok 172 - credential files retain exact owner-only permissions under a restrictive umask
+  ---
+  duration_ms: 16.906958
+  type: 'test'
+  ...
+# Subtest: empty, oversized, whitespace and control-character credentials are rejected
+ok 173 - empty, oversized, whitespace and control-character credentials are rejected
+  ---
+  duration_ms: 39.754125
+  type: 'test'
+  ...
+# Subtest: an existing credential file is never overwritten or given different permissions
+ok 174 - an existing credential file is never overwritten or given different permissions
+  ---
+  duration_ms: 14.208791
+  type: 'test'
+  ...
+# Subtest: saving credentials twice preserves the first successful save
+ok 175 - saving credentials twice preserves the first successful save
+  ---
+  duration_ms: 420.464583
+  type: 'test'
+  ...
+# Subtest: relative credential directory paths are rejected
+ok 176 - relative credential directory paths are rejected
+  ---
+  duration_ms: 27.992458
+  type: 'test'
+  ...
+# Subtest: a symlink at the credential directory is rejected without writing through it
+ok 177 - a symlink at the credential directory is rejected without writing through it
+  ---
+  duration_ms: 6.983
+  type: 'test'
+  ...
+# Subtest: a symlink in any ancestor directory is rejected
+ok 178 - a symlink in any ancestor directory is rejected
+  ---
+  duration_ms: 6.068625
+  type: 'test'
+  ...
+# Subtest: an existing credential symlink is preserved and its target stays unchanged
+ok 179 - an existing credential symlink is preserved and its target stays unchanged
+  ---
+  duration_ms: 6.11525
+  type: 'test'
+  ...
+# Subtest: a dangling credential symlink is preserved without creating its target
+ok 180 - a dangling credential symlink is preserved without creating its target
+  ---
+  duration_ms: 3.927
+  type: 'test'
+  ...
+# Subtest: a non-regular credential target is rejected without removing it
+ok 181 - a non-regular credential target is rejected without removing it
+  ---
+  duration_ms: 7.246542
+  type: 'test'
+  ...
+# Subtest: a non-directory credential directory is rejected with a sanitized error
+ok 182 - a non-directory credential directory is rejected with a sanitized error
+  ---
+  duration_ms: 5.120125
+  type: 'test'
+  ...
+# Subtest: credential directories must already have exact owner-only permissions
+ok 183 - credential directories must already have exact owner-only permissions
+  ---
+  duration_ms: 15.326709
+  type: 'test'
+  ...
+# Subtest: credential directories owned by a different user are rejected
+ok 184 - credential directories owned by a different user are rejected
+  ---
+  duration_ms: 385.835834
+  type: 'test'
+  ...
+# Subtest: PNVS send uses the documented signature/template, six server-generated digits and exact challenge metadata
+ok 185 - PNVS send uses the documented signature/template, six server-generated digits and exact challenge metadata
+  ---
+  duration_ms: 74.589084
+  type: 'test'
+  ...
+# Subtest: PNVS preserves exact expiry seconds while rounding up the displayed minutes
+ok 186 - PNVS preserves exact expiry seconds while rounding up the displayed minutes
+  ---
+  duration_ms: 2.068417
+  type: 'test'
+  ...
+# Subtest: PNVS pins HTTPS and bypasses environment proxies, disables retries and validates TLS
+ok 187 - PNVS pins HTTPS and bypasses environment proxies, disables retries and validates TLS
+  ---
+  duration_ms: 2.516583
+  type: 'test'
+  ...
+# Subtest: PNVS check uses the same scheme and OutId and accepts only the explicit PASS result
+ok 188 - PNVS check uses the same scheme and OutId and accepts only the explicit PASS result
+  ---
+  duration_ms: 76.881584
+  type: 'test'
+  ...
+# Subtest: PNVS rejects incomplete or inconsistent business responses even when the network request succeeded
+ok 189 - PNVS rejects incomplete or inconsistent business responses even when the network request succeeded
+  ---
+  duration_ms: 172.4435
+  type: 'test'
+  ...
+# Subtest: PNVS refuses missing or malformed server-returned codes without exposing them
+ok 190 - PNVS refuses missing or malformed server-returned codes without exposing them
+  ---
+  duration_ms: 66.062834
+  type: 'test'
+  ...
+# Subtest: PNVS rejects invalid destinations, metadata and lifetime before invoking the client
+ok 191 - PNVS rejects invalid destinations, metadata and lifetime before invoking the client
+  ---
+  duration_ms: 4.999292
+  type: 'test'
+  ...
+# Subtest: PNVS provider errors discard private provider messages and causes without retrying
+ok 192 - PNVS provider errors discard private provider messages and causes without retrying
+  ---
+  duration_ms: 1.37575
+  type: 'test'
+  ...
+# Subtest: PNVS enforces an overall deadline without retries for both operations
+ok 193 - PNVS enforces an overall deadline without retries for both operations
+  ---
+  duration_ms: 970.907166
+  type: 'test'
+  ...
+# Subtest: PNVS rejects invalid configuration and SDK initialization errors without leaking credentials
+ok 194 - PNVS rejects invalid configuration and SDK initialization errors without leaking credentials
+  ---
+  duration_ms: 5.175458
+  type: 'test'
+  ...
+# Subtest: the installed official SDK maps only the authorized Send/Check actions without network access
+ok 195 - the installed official SDK maps only the authorized Send/Check actions without network access
+  ---
+  duration_ms: 18.1975
+  type: 'test'
+  ...
+# Subtest: Qwen is the default and never falls back when credentials are missing
+ok 196 - Qwen is the default and never falls back when credentials are missing
+  ---
+  duration_ms: 25.959084
+  type: 'test'
+  ...
+# Subtest: Qwen only accepts documented official regional HTTPS base URLs
+ok 197 - Qwen only accepts documented official regional HTTPS base URLs
+  ---
+  duration_ms: 8.048459
+  type: 'test'
+  ...
+# Subtest: Qwen sends server-side Chat Completions with JSON mode and thinking disabled
+ok 198 - Qwen sends server-side Chat Completions with JSON mode and thinking disabled
+  ---
+  duration_ms: 772.866917
+  type: 'test'
+  ...
+# Subtest: Qwen advisor passes model extraction into the shared flow with source validation
+ok 199 - Qwen advisor passes model extraction into the shared flow with source validation
+  ---
+  duration_ms: 93.456292
+  type: 'test'
+  ...
+# Subtest: Qwen errors expose only safe categories and never fall back or leak provider content
+ok 200 - Qwen errors expose only safe categories and never fall back or leak provider content
+  ---
+  duration_ms: 155.427042
+  type: 'test'
+  ...
+# Subtest: Qwen rejects truncation, refusals, tools, missing or malformed responses
+ok 201 - Qwen rejects truncation, refusals, tools, missing or malformed responses
+  ---
+  duration_ms: 154.723834
+  type: 'test'
+  ...
+# Subtest: Qwen applies a byte limit even when content-length is absent or misleading
+ok 202 - Qwen applies a byte limit even when content-length is absent or misleading
+  ---
+  duration_ms: 55.500667
+  type: 'test'
+  ...
+# Subtest: Qwen aborts stalled requests and does not expose transport error details
+ok 203 - Qwen aborts stalled requests and does not expose transport error details
+  ---
+  duration_ms: 34.489917
+  type: 'test'
+  ...
+# Subtest: Qwen timeout covers reading the response body after headers arrive
+ok 204 - Qwen timeout covers reading the response body after headers arrive
+  ---
+  duration_ms: 18.598667
+  type: 'test'
+  ...
+1..204
+# tests 204
+# suites 0
+# pass 204
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 54787.691333
+
+> duduhire@1.0.0 build
+> npm run build --workspaces --if-present
+
+
+> @duduhire/web@1.0.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 139 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                1.03 kB │ gzip:   0.62 kB
+dist/assets/AdminInquiriesPage-DJcovLeu.css    8.94 kB │ gzip:   2.24 kB
+dist/assets/index-nBij8O6J.css               163.20 kB │ gzip:  29.38 kB
+dist/assets/AdminInquiriesPage-CIMNJsKK.js    27.31 kB │ gzip:   8.93 kB
+dist/assets/index-DBiHRR0N.js                513.42 kB │ gzip: 154.76 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.07s
+
+> @duduhire/web@1.0.0 postbuild
+> cp dist/index.html dist/404.html
+
+
+> @duduhire/api@1.0.0 build
+> tsc -p tsconfig.json

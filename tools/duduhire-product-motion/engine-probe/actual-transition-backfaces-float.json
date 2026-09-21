@@ -1,0 +1,637 @@
+{
+  "variant": "backfaces-float",
+  "frames": [
+    {
+      "frame": 124,
+      "seconds": 1.038,
+      "visible_objects": [
+        {
+          "name": "Warm white studio / artwork",
+          "world_z_min": -6.0,
+          "world_z_max": -6.0,
+          "opacity": 1.0,
+          "parent": "Warm white studio",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Corner brand / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Corner brand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Demonstration label / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.9128473997116089,
+          "parent": "Demonstration label",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "01 / DuduHire homepage / artwork",
+          "world_z_min": -0.6482061147689819,
+          "world_z_max": 0.34057044982910156,
+          "opacity": 0.9514073729515076,
+          "parent": "01 / DuduHire homepage",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "01 / DuduHire homepage / soft shadow",
+          "world_z_min": -0.8895846605300903,
+          "world_z_max": 0.26508501172065735,
+          "opacity": 0.9514073729515076,
+          "parent": "01 / DuduHire homepage",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "demand-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.5679938793182373,
+          "parent": "demand-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "02 / Demand input shell / artwork",
+          "world_z_min": -1.5085508823394775,
+          "world_z_max": 0.15941143035888672,
+          "opacity": 0.6348611116409302,
+          "parent": "02 / Demand input shell",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "02 / Demand input shell / soft shadow",
+          "world_z_min": -1.787941575050354,
+          "world_z_max": 0.24651089310646057,
+          "opacity": 0.6348611116409302,
+          "parent": "02 / Demand input shell",
+          "blend_method": "BLEND"
+        }
+      ]
+    },
+    {
+      "frame": 481,
+      "seconds": 0.392,
+      "visible_objects": [
+        {
+          "name": "Warm white studio / artwork",
+          "world_z_min": -6.0,
+          "world_z_max": -6.0,
+          "opacity": 1.0,
+          "parent": "Warm white studio",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Corner brand / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Corner brand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Demonstration label / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Demonstration label",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "structure-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.4170095920562744,
+          "parent": "structure-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Original demand / artwork",
+          "world_z_min": -0.45872044563293457,
+          "world_z_max": -0.08975934982299805,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Original demand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Original demand / soft shadow",
+          "world_z_min": -0.6101662516593933,
+          "world_z_max": -0.14073118567466736,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Original demand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 1 / artwork",
+          "world_z_min": -0.21670317649841309,
+          "world_z_max": 0.053503286093473434,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 1",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 1 / soft shadow",
+          "world_z_min": -0.3784109652042389,
+          "world_z_max": 0.017131738364696503,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 1",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 2 / artwork",
+          "world_z_min": -0.1519031673669815,
+          "world_z_max": 0.11830329895019531,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 2",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 2 / soft shadow",
+          "world_z_min": -0.3136109411716461,
+          "world_z_max": 0.08193175494670868,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 2",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 3 / artwork",
+          "world_z_min": -0.08710311353206635,
+          "world_z_max": 0.18310333788394928,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 3",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "03 / Demand field 3 / soft shadow",
+          "world_z_min": -0.24881088733673096,
+          "world_z_max": 0.14673180878162384,
+          "opacity": 0.9617340564727783,
+          "parent": "03 / Demand field 3",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "talent-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.07407408207654953,
+          "parent": "talent-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "04 / Experience input / artwork",
+          "world_z_min": -1.5126960277557373,
+          "world_z_max": 0.08837488293647766,
+          "opacity": 0.3395249843597412,
+          "parent": "04 / Experience input",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "04 / Experience input / soft shadow",
+          "world_z_min": -1.7842249870300293,
+          "world_z_max": 0.16856306791305542,
+          "opacity": 0.3395249843597412,
+          "parent": "04 / Experience input",
+          "blend_method": "BLEND"
+        }
+      ]
+    },
+    {
+      "frame": 628,
+      "seconds": 0.372,
+      "visible_objects": [
+        {
+          "name": "Warm white studio / artwork",
+          "world_z_min": -6.0,
+          "world_z_max": -6.0,
+          "opacity": 1.0,
+          "parent": "Warm white studio",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Corner brand / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Corner brand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Demonstration label / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Demonstration label",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "talent-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.8737996816635132,
+          "parent": "talent-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "04 / Experience input / artwork",
+          "world_z_min": -0.6599519848823547,
+          "world_z_max": 0.23221763968467712,
+          "opacity": 0.9887694716453552,
+          "parent": "04 / Experience input",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "04 / Experience input / soft shadow",
+          "world_z_min": -0.8245591521263123,
+          "world_z_max": 0.20598633587360382,
+          "opacity": 0.9887694716453552,
+          "parent": "04 / Experience input",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "04 / Experience words / artwork",
+          "world_z_min": -0.6259769201278687,
+          "world_z_max": 0.2661927342414856,
+          "opacity": 0.9887694716453552,
+          "parent": "04 / Experience words",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "05 / Capability identity / artwork",
+          "world_z_min": -0.5667078495025635,
+          "world_z_max": -0.07736562192440033,
+          "opacity": 0.20558446645736694,
+          "parent": "05 / Capability identity",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "05 / Capability identity / soft shadow",
+          "world_z_min": -0.7364691495895386,
+          "world_z_max": -0.09783607721328735,
+          "opacity": 0.20558446645736694,
+          "parent": "05 / Capability identity",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "DH lanyard left woven strap",
+          "world_z_min": -0.4062668979167938,
+          "world_z_max": -0.22423557937145233,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard left woven strap restrained edge stitching",
+          "world_z_min": -0.36669519543647766,
+          "world_z_max": -0.22772996127605438,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard left woven strap fabric cross weave",
+          "world_z_min": -0.36579447984695435,
+          "world_z_max": -0.22877024114131927,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap",
+          "world_z_min": -0.2556300163269043,
+          "world_z_max": -0.0735987052321434,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap restrained edge stitching",
+          "world_z_min": -0.21509094536304474,
+          "world_z_max": -0.07612569630146027,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap fabric cross weave",
+          "world_z_min": -0.21479205787181854,
+          "world_z_max": -0.07776780426502228,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard top slot rim",
+          "world_z_min": -0.3655056357383728,
+          "world_z_max": -0.2586638629436493,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard top slot recess",
+          "world_z_min": -0.35165542364120483,
+          "world_z_max": -0.25460049510002136,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard connector ring",
+          "world_z_min": -0.3017033636569977,
+          "world_z_max": -0.18313822150230408,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp back",
+          "world_z_min": -0.30251383781433105,
+          "world_z_max": -0.12062538415193558,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard rounded clasp face",
+          "world_z_min": -0.24848712980747223,
+          "world_z_max": -0.03731457516551018,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp top glint",
+          "world_z_min": -0.13471020758152008,
+          "world_z_max": -0.037638772279024124,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp inset opening",
+          "world_z_min": -0.12440924346446991,
+          "world_z_max": -0.04395892843604088,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp lower fold",
+          "world_z_min": -0.13085326552391052,
+          "world_z_max": -0.03751491382718086,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp rivet",
+          "world_z_min": -0.13332293927669525,
+          "world_z_max": -0.11598125100135803,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp rivet.001",
+          "world_z_min": -0.046415749937295914,
+          "world_z_max": -0.029074061661958694,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        }
+      ]
+    },
+    {
+      "frame": 839,
+      "seconds": 0.353,
+      "visible_objects": [
+        {
+          "name": "Warm white studio / artwork",
+          "world_z_min": -6.0,
+          "world_z_max": -6.0,
+          "opacity": 1.0,
+          "parent": "Warm white studio",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Corner brand / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Corner brand",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "Demonstration label / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 1.0,
+          "parent": "Demonstration label",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "card-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.5829904079437256,
+          "parent": "card-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "card-note / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.5829904079437256,
+          "parent": "card-note",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "05 / Capability identity / artwork",
+          "world_z_min": -0.1415168046951294,
+          "world_z_max": 0.020757608115673065,
+          "opacity": 0.7944155335426331,
+          "parent": "05 / Capability identity",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "05 / Capability identity / soft shadow",
+          "world_z_min": -0.26767832040786743,
+          "world_z_max": -0.055896468460559845,
+          "opacity": 0.7944155335426331,
+          "parent": "05 / Capability identity",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "DH lanyard left woven strap",
+          "world_z_min": -0.003211961593478918,
+          "world_z_max": 0.09731966257095337,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard left woven strap restrained edge stitching",
+          "world_z_min": 0.034481845796108246,
+          "world_z_max": 0.09715043008327484,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard left woven strap fabric cross weave",
+          "world_z_min": 0.03428247943520546,
+          "world_z_max": 0.09640564024448395,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap",
+          "world_z_min": -0.05316577106714249,
+          "world_z_max": 0.04736584797501564,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap restrained edge stitching",
+          "world_z_min": -0.015792760998010635,
+          "world_z_max": 0.04687582701444626,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard right woven strap fabric cross weave",
+          "world_z_min": -0.01579255610704422,
+          "world_z_max": 0.04633060470223427,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard top slot rim",
+          "world_z_min": -0.07144739478826523,
+          "world_z_max": -0.02932232990860939,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard top slot recess",
+          "world_z_min": -0.060829393565654755,
+          "world_z_max": -0.02194981649518013,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard connector ring",
+          "world_z_min": -0.02284209616482258,
+          "world_z_max": 0.06199862062931061,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp back",
+          "world_z_min": -0.006374668329954147,
+          "world_z_max": 0.10749852657318115,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard rounded clasp face",
+          "world_z_min": 0.04936533421278,
+          "world_z_max": 0.1896858513355255,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp top glint",
+          "world_z_min": 0.15671831369400024,
+          "world_z_max": 0.1962728202342987,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp inset opening",
+          "world_z_min": 0.16113844513893127,
+          "world_z_max": 0.19585056602954865,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp lower fold",
+          "world_z_min": 0.15565426647663116,
+          "world_z_max": 0.20133474469184875,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp rivet",
+          "world_z_min": 0.18867607414722443,
+          "world_z_max": 0.20312970876693726,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "DH lanyard clasp rivet.001",
+          "world_z_min": 0.1598561406135559,
+          "world_z_max": 0.17430977523326874,
+          "opacity": null,
+          "parent": "05 / Hanging identity rig",
+          "blend_method": "OPAQUE"
+        },
+        {
+          "name": "05 / Evidence and responsibility / artwork",
+          "world_z_min": -0.2453639954328537,
+          "world_z_max": 0.09429758787155151,
+          "opacity": 0.8313473463058472,
+          "parent": "05 / Evidence and responsibility",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "05 / Evidence and responsibility / soft shadow",
+          "world_z_min": -0.38541048765182495,
+          "world_z_max": 0.035767875611782074,
+          "opacity": 0.8313473463058472,
+          "parent": "05 / Evidence and responsibility",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "confirm-title / overlay",
+          "world_z_min": 24.66666603088379,
+          "world_z_max": 24.66666603088379,
+          "opacity": 0.0,
+          "parent": "confirm-title",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "06 / Review source before confirming / artwork",
+          "world_z_min": -1.6843866109848022,
+          "world_z_max": 0.18526551127433777,
+          "opacity": 0.06372308731079102,
+          "parent": "06 / Review source before confirming",
+          "blend_method": "BLEND"
+        },
+        {
+          "name": "06 / Review source before confirming / soft shadow",
+          "world_z_min": -1.9941024780273438,
+          "world_z_max": 0.2944338321685791,
+          "opacity": 0.06372308731079102,
+          "parent": "06 / Review source before confirming",
+          "blend_method": "BLEND"
+        }
+      ]
+    }
+  ]
+}

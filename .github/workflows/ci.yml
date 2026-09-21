@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: duduhire_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d duduhire_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+      DATABASE_SSL: "false"
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm audit --omit=dev --audit-level=high
+      - run: bash ops/test-operations.sh
+      - run: npm run db:migrate
+      - run: npm run db:migrate:compiled
+      - run: npm run test:integration --workspace @duduhire/api
+        env:
+          RUN_POSTGRES_TESTS: "true"
+          TEST_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+      - run: npm run auth:cleanup:compiled
+      - name: Phone identity and API integration (synthetic SMS only)
+        run: npm run test:integration:phone
+        env:
+          RUN_POSTGRES_TESTS: "true"
+          TEST_PHONE_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+          TEST_PHONE_ROUTES_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+      - name: Create isolated browser-test database
+        run: createdb --host=127.0.0.1 --port=5432 --username=postgres duduhire_e2e_test
+        env:
+          PGPASSWORD: postgres
+      - run: npx playwright install --with-deps chromium
+      - name: Browser acceptance tests
+        run: npm run test:e2e
+        env:
+          E2E_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_e2e_test
+      - run: docker build -f apps/api/Dockerfile -t duduhire-api:ci .
+      - run: docker build -f apps/web/Dockerfile -t duduhire-web:ci .
+      - name: Validate production Compose configuration
+        run: docker compose --env-file deployment.env.example -f compose.production.yaml config --quiet
+      - name: Compose runtime smoke test
+        env:
+          # Isolated infrastructure check; real-provider acceptance runs separately.
+          AI_MODE: local
+          AUTH_TOKEN_SECRET: ci-compose-secret-with-more-than-32-characters
+        run: |
+          docker compose up -d --build
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:8080/api/health/ready >/dev/null; then
+              bash ops/healthcheck.sh --origin http://127.0.0.1:8080
+              test "$(docker compose exec -T web id -u)" != "0"
+              curl --fail --silent http://127.0.0.1:8080/ >/dev/null
+              exit 0
+            fi
+            sleep 2
+          done
+          docker compose logs
+          exit 1
+      - name: Stop Compose stack
+        if: always()
+        env:
+          AUTH_TOKEN_SECRET: ci-compose-secret-with-more-than-32-characters
+        run: docker compose down --volumes

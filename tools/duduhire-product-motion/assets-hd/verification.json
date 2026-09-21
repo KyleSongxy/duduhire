@@ -1,0 +1,88 @@
+{
+  "output_scale": 3,
+  "native_draw_scale": 3,
+  "original_assets_unchanged": true,
+  "original_files_compared": 723,
+  "default_output_pngs_byte_identical": 19,
+  "copy_unchanged": true,
+  "input_layers_composite_exactly": true,
+  "original_logo_bytes_unchanged": true,
+  "dimensions": {
+    "brand-logo.png": [
+      1245,
+      314
+    ],
+    "hero-window.png": [
+      4680,
+      2550
+    ],
+    "demand-input-base.png": [
+      4140,
+      1320
+    ],
+    "demand-input-text.png": [
+      4140,
+      1320
+    ],
+    "demand-input.png": [
+      4140,
+      1320
+    ],
+    "talent-input-base.png": [
+      4140,
+      1320
+    ],
+    "talent-input-text.png": [
+      4140,
+      1320
+    ],
+    "talent-input.png": [
+      4140,
+      1320
+    ],
+    "demand-source.png": [
+      1920,
+      2010
+    ],
+    "demand-field-1.png": [
+      2100,
+      540
+    ],
+    "demand-field-2.png": [
+      2100,
+      540
+    ],
+    "demand-field-3.png": [
+      2100,
+      540
+    ],
+    "capability-card.png": [
+      1770,
+      2250
+    ],
+    "evidence-panel.png": [
+      2700,
+      1890
+    ],
+    "confirm-before.png": [
+      3300,
+      1860
+    ],
+    "confirm-edited.png": [
+      3300,
+      1860
+    ],
+    "confirm-after.png": [
+      3300,
+      1860
+    ],
+    "compare-demand.png": [
+      2100,
+      1770
+    ],
+    "compare-capability.png": [
+      2100,
+      1770
+    ]
+  }
+}

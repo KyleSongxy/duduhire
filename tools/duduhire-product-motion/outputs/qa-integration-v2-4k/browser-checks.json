@@ -1,0 +1,97 @@
+[
+  {
+    "name": "fresh-navigation",
+    "wallClock": "2026-09-09T15:38:52.869Z",
+    "video": {
+      "autoplay": true,
+      "duration": 44,
+      "height": 2160,
+      "muted": true,
+      "paused": false,
+      "ready": 1,
+      "rect": {
+        "height": 363.375,
+        "width": 646
+      },
+      "src": "http://127.0.0.1:5173/images/how-it-works-product-motion-v2-4k.mp4",
+      "time": 0,
+      "width": 3840
+    }
+  },
+  {
+    "name": "autoplay-progress",
+    "elapsedMs": 18583,
+    "video": {
+      "duration": 44,
+      "ended": false,
+      "height": 2160,
+      "paused": false,
+      "ready": 4,
+      "time": 18.511344,
+      "width": 3840
+    }
+  },
+  {
+    "name": "autoplay-complete",
+    "elapsedMs": 70677,
+    "video": {
+      "ended": true,
+      "height": 2160,
+      "paused": true,
+      "ready": 4,
+      "time": 44,
+      "width": 3840
+    }
+  },
+  {
+    "name": "desktop",
+    "video": {
+      "height": 2160,
+      "overflow": false,
+      "paused": false,
+      "ready": 4,
+      "rect": {
+        "height": 684,
+        "width": 1216
+      },
+      "src": "http://127.0.0.1:5173/images/how-it-works-product-motion-v2-4k.mp4",
+      "time": 39.242289,
+      "width": 3840
+    }
+  },
+  {
+    "name": "manual-replay",
+    "video": {
+      "ended": false,
+      "height": 2160,
+      "paused": false,
+      "time": 0,
+      "width": 3840
+    }
+  },
+  {
+    "name": "manual-pause",
+    "video": {
+      "paused": true,
+      "time": 0
+    }
+  },
+  {
+    "name": "manual-pause-stable",
+    "video": {
+      "paused": true,
+      "time": 0
+    }
+  },
+  {
+    "name": "final-preview-refreshed",
+    "video": {
+      "height": 2160,
+      "muted": true,
+      "paused": false,
+      "src": "http://127.0.0.1:5173/images/how-it-works-product-motion-v2-4k.mp4",
+      "time": 0,
+      "width": 3840
+    }
+  }
+]

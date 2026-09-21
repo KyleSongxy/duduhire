@@ -1,0 +1,43 @@
+{
+  "validatedAt": "2026-09-06T16:58:02.740Z",
+  "environment": "isolated synthetic PostgreSQL; actual Qwen API",
+  "turns": [
+    {
+      "email": "e2e-qwen-visual-client@example.test",
+      "kind": "problem",
+      "sequence": 1,
+      "question": "我们是一家工业设备公司，准备开拓德国市场，现在缺少潜在渠道伙伴资料。想找人做海外市场调研、渠道伙伴筛选和首轮英语商务沟通，把跟进记录整理到 CRM。先交付有依据的伙伴名单与沟通计划，不要求保证成交。希望远程按项目合作，预算三至五万元人民币，每周至少十六小时。",
+      "provider": "qwen",
+      "model": "qwen-plus",
+      "prompt_version": "duduhire.discovery.v2.1"
+    },
+    {
+      "email": "e2e-qwen-visual-client@example.test",
+      "kind": "problem",
+      "sequence": 2,
+      "question": "确认保存当前版本",
+      "provider": "qwen",
+      "model": "qwen-plus",
+      "prompt_version": "duduhire.discovery.v2.1"
+    },
+    {
+      "email": "e2e-qwen-visual-talent@example.test",
+      "kind": "capability",
+      "sequence": 1,
+      "question": "我在一个制造业售后项目里负责知识库检索和问答评测，前端页面由同事负责。我清洗维修手册，做RAG向量检索和来源引用，并编写评估样本检查无答案时是否转人工。试点后售后人员反馈找资料更方便，暂时没有统计准确率。可以提供脱敏测试记录。希望远程按项目合作，每周可投入二十四小时，项目报价三到六万元人民币。",
+      "provider": "qwen",
+      "model": "qwen-plus",
+      "prompt_version": "duduhire.discovery.v2.1"
+    },
+    {
+      "email": "e2e-qwen-visual-talent@example.test",
+      "kind": "capability",
+      "sequence": 2,
+      "question": "确认保存当前版本",
+      "provider": "qwen",
+      "model": "qwen-plus",
+      "prompt_version": "duduhire.discovery.v2.1"
+    }
+  ],
+  "realPublications": 0
+}

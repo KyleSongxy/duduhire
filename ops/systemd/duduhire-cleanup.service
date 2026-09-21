@@ -1,0 +1,16 @@
+[Unit]
+Description=DuduHire database retention cleanup
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/duduhire
+ExecStart=/usr/bin/bash /opt/duduhire/ops/maintenance.sh --env-file /etc/duduhire/production.env --confirm CLEANUP
+TimeoutStartSec=10min
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Enable only after editing paths, credentials, backup policy and failure monitoring.

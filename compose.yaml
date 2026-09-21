@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: duduhire
+      POSTGRES_USER: duduhire
+      POSTGRES_PASSWORD: duduhire
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U duduhire -d duduhire"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - duduhire-postgres:/var/lib/postgresql/data
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:8025:8025"
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 8787
+      DATABASE_URL: postgresql://duduhire:duduhire@db:5432/duduhire
+      DATABASE_SSL: "false"
+      WEB_ORIGIN: http://localhost:8080
+      AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET:?Set AUTH_TOKEN_SECRET to at least 32 random characters}
+      AUTH_COOKIE_NAME: duduhire_session
+      AUTH_COOKIE_SECURE: "false"
+      EMAIL_DELIVERY_MODE: smtp
+      SMTP_URL: smtp://mailpit:1025
+      EMAIL_FROM: "DuduHire <no-reply@localhost.test>"
+      AI_MODE: ${AI_MODE:-qwen}
+      QWEN_API_KEY: ${QWEN_API_KEY-}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY-}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen3.8-max}
+      QWEN_BASE_URL: ${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      OPENAI_API_KEY: ${OPENAI_API_KEY-}
+      OPENAI_MODEL: ${OPENAI_MODEL-}
+      TRUST_PROXY_CIDRS: "uniquelocal"
+    command: ["sh", "-c", "node apps/api/dist/migrate.js && exec node apps/api/dist/server.js"]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      - api
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "127.0.0.1:8080:8080"
+
+volumes:
+  duduhire-postgres:

@@ -1,0 +1,50 @@
+
+> @duduhire/api@1.0.0 test:integration
+> node --import tsx --test test/postgres.integration.ts
+
+TAP version 13
+# Subtest: PostgreSQL matching enforces runtime grants, bilateral privacy, consent, source invalidation and concurrent publication
+ok 1 - PostgreSQL matching enforces runtime grants, bilateral privacy, consent, source invalidation and concurrent publication
+  ---
+  duration_ms: 1735.715375
+  type: 'test'
+  ...
+# Subtest: inquiry operations enforce DB roles, audited contact access, optimistic concurrency and notification leases
+ok 2 - inquiry operations enforce DB roles, audited contact access, optimistic concurrency and notification leases
+  ---
+  duration_ms: 548.565375
+  type: 'test'
+  ...
+# Subtest: PostgreSQL persists authentication, marketplace workflows, encrypted contacts, and exact idempotency
+ok 3 - PostgreSQL persists authentication, marketplace workflows, encrypted contacts, and exact idempotency
+  ---
+  duration_ms: 522.456416
+  type: 'test'
+  ...
+# Subtest: checked-in PostgreSQL grants enforce runtime and maintenance isolation
+ok 4 - checked-in PostgreSQL grants enforce runtime and maintenance isolation
+  ---
+  duration_ms: 481.153917
+  type: 'test'
+  ...
+# Subtest: one account keeps two discovery drafts and publications through session role changes
+ok 5 - one account keeps two discovery drafts and publications through session role changes
+  ---
+  duration_ms: 368.021708
+  type: 'test'
+  ...
+# Subtest: active role migration backfills existing client and talent sessions and enforces valid values
+ok 6 - active role migration backfills existing client and talent sessions and enforces valid values
+  ---
+  duration_ms: 42.385375
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5656.17525

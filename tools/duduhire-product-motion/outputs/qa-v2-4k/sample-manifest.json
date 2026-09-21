@@ -1,0 +1,611 @@
+[
+  {
+    "frame": 0,
+    "seconds": 0.0,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0001.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 30,
+    "seconds": 1.0,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0002.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 60,
+    "seconds": 2.0,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0003.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 90,
+    "seconds": 3.0,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0004.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 105,
+    "seconds": 3.5,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0005.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 112,
+    "seconds": 3.733333,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0006.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 119,
+    "seconds": 3.966667,
+    "scene": 1,
+    "thumbnail": "thumbnails/sample-0007.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 120,
+    "seconds": 4.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0008.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 121,
+    "seconds": 4.033333,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0009.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 128,
+    "seconds": 4.266667,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0010.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 135,
+    "seconds": 4.5,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0011.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 150,
+    "seconds": 5.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0012.jpg",
+    "contact_sheet": "contact-sheet-01.jpg"
+  },
+  {
+    "frame": 180,
+    "seconds": 6.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0013.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 210,
+    "seconds": 7.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0014.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 240,
+    "seconds": 8.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0015.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 270,
+    "seconds": 9.0,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0016.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 285,
+    "seconds": 9.5,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0017.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 292,
+    "seconds": 9.733333,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0018.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 299,
+    "seconds": 9.966667,
+    "scene": 2,
+    "thumbnail": "thumbnails/sample-0019.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 300,
+    "seconds": 10.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0020.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 301,
+    "seconds": 10.033333,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0021.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 308,
+    "seconds": 10.266667,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0022.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 315,
+    "seconds": 10.5,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0023.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 330,
+    "seconds": 11.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0024.jpg",
+    "contact_sheet": "contact-sheet-02.jpg"
+  },
+  {
+    "frame": 360,
+    "seconds": 12.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0025.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 390,
+    "seconds": 13.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0026.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 420,
+    "seconds": 14.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0027.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 450,
+    "seconds": 15.0,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0028.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 465,
+    "seconds": 15.5,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0029.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 472,
+    "seconds": 15.733333,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0030.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 479,
+    "seconds": 15.966667,
+    "scene": 3,
+    "thumbnail": "thumbnails/sample-0031.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 480,
+    "seconds": 16.0,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0032.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 481,
+    "seconds": 16.033333,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0033.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 488,
+    "seconds": 16.266667,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0034.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 495,
+    "seconds": 16.5,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0035.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 510,
+    "seconds": 17.0,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0036.jpg",
+    "contact_sheet": "contact-sheet-03.jpg"
+  },
+  {
+    "frame": 540,
+    "seconds": 18.0,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0037.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 570,
+    "seconds": 19.0,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0038.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 600,
+    "seconds": 20.0,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0039.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 615,
+    "seconds": 20.5,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0040.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 622,
+    "seconds": 20.733333,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0041.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 629,
+    "seconds": 20.966667,
+    "scene": 4,
+    "thumbnail": "thumbnails/sample-0042.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 630,
+    "seconds": 21.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0043.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 631,
+    "seconds": 21.033333,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0044.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 638,
+    "seconds": 21.266667,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0045.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 645,
+    "seconds": 21.5,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0046.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 660,
+    "seconds": 22.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0047.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 690,
+    "seconds": 23.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0048.jpg",
+    "contact_sheet": "contact-sheet-04.jpg"
+  },
+  {
+    "frame": 720,
+    "seconds": 24.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0049.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 750,
+    "seconds": 25.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0050.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 780,
+    "seconds": 26.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0051.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 810,
+    "seconds": 27.0,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0052.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 825,
+    "seconds": 27.5,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0053.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 832,
+    "seconds": 27.733333,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0054.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 839,
+    "seconds": 27.966667,
+    "scene": 5,
+    "thumbnail": "thumbnails/sample-0055.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 840,
+    "seconds": 28.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0056.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 841,
+    "seconds": 28.033333,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0057.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 848,
+    "seconds": 28.266667,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0058.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 855,
+    "seconds": 28.5,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0059.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 870,
+    "seconds": 29.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0060.jpg",
+    "contact_sheet": "contact-sheet-05.jpg"
+  },
+  {
+    "frame": 900,
+    "seconds": 30.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0061.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 930,
+    "seconds": 31.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0062.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 960,
+    "seconds": 32.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0063.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 990,
+    "seconds": 33.0,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0064.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1005,
+    "seconds": 33.5,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0065.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1012,
+    "seconds": 33.733333,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0066.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1019,
+    "seconds": 33.966667,
+    "scene": 6,
+    "thumbnail": "thumbnails/sample-0067.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1020,
+    "seconds": 34.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0068.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1021,
+    "seconds": 34.033333,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0069.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1028,
+    "seconds": 34.266667,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0070.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1035,
+    "seconds": 34.5,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0071.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1050,
+    "seconds": 35.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0072.jpg",
+    "contact_sheet": "contact-sheet-06.jpg"
+  },
+  {
+    "frame": 1080,
+    "seconds": 36.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0073.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1110,
+    "seconds": 37.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0074.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1140,
+    "seconds": 38.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0075.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1170,
+    "seconds": 39.0,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0076.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1185,
+    "seconds": 39.5,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0077.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1192,
+    "seconds": 39.733333,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0078.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1199,
+    "seconds": 39.966667,
+    "scene": 7,
+    "thumbnail": "thumbnails/sample-0079.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1200,
+    "seconds": 40.0,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0080.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1201,
+    "seconds": 40.033333,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0081.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1208,
+    "seconds": 40.266667,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0082.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1215,
+    "seconds": 40.5,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0083.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1230,
+    "seconds": 41.0,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0084.jpg",
+    "contact_sheet": "contact-sheet-07.jpg"
+  },
+  {
+    "frame": 1260,
+    "seconds": 42.0,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0085.jpg",
+    "contact_sheet": "contact-sheet-08.jpg"
+  },
+  {
+    "frame": 1290,
+    "seconds": 43.0,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0086.jpg",
+    "contact_sheet": "contact-sheet-08.jpg"
+  },
+  {
+    "frame": 1319,
+    "seconds": 43.966667,
+    "scene": 8,
+    "thumbnail": "thumbnails/sample-0087.jpg",
+    "contact_sheet": "contact-sheet-08.jpg"
+  }
+]

@@ -1,0 +1,20 @@
+[Unit]
+Description=DuduHire enterprise inquiry notification worker
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/duduhire
+ExecStart=/usr/bin/bash /opt/duduhire/ops/notifications.sh --env-file /etc/duduhire/production.env --confirm NOTIFY
+ExecStop=-/usr/bin/docker stop --time 20 duduhire-notifications
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=40
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
