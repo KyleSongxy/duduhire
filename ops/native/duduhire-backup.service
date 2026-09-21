@@ -1,0 +1,22 @@
+[Unit]
+Description=DuduHire local PostgreSQL backup
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+# Verify these installed Node/script paths before enabling the template.
+ExecStart=/usr/local/bin/node /opt/duduhire/ops/backup-duduhire.mjs
+StateDirectory=duduhire-backup
+StateDirectoryMode=0700
+TimeoutStartSec=15min
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/duduhire-backup
+
+# No EnvironmentFile: the script reads migration.env through Node parseEnv.
+# No notification, upload, or automatic retry is configured.

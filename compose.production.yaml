@@ -1,0 +1,186 @@
+name: duduhire-production
+
+x-service-logging: &service-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  migrate:
+    profiles: ["release"]
+    image: ${DUDUHIRE_API_IMAGE:?Set DUDUHIRE_API_IMAGE to an immutable API image tag or digest}
+    init: true
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      NODE_ENV: production
+      MIGRATION_DATABASE_URL: ${MIGRATION_DATABASE_URL:?Set the migration-owner PostgreSQL URL}
+      MIGRATION_DATABASE_SSL: "true"
+    command: ["node", "apps/api/dist/migrate.js"]
+    healthcheck:
+      disable: true
+    logging: *service-logging
+
+  api:
+    image: ${DUDUHIRE_API_IMAGE:?Set DUDUHIRE_API_IMAGE to an immutable API image tag or digest}
+    init: true
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 256
+    mem_limit: 768m
+    stop_grace_period: 15s
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 8787
+      DATABASE_URL: ${DATABASE_URL:?Set the runtime PostgreSQL URL}
+      DATABASE_SSL: "true"
+      WEB_ORIGIN: ${WEB_ORIGIN:?Set the public HTTPS origin}
+      AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET:?Set a random authentication secret}
+      AUTH_COOKIE_NAME: ${AUTH_COOKIE_NAME:-__Host-duduhire_session}
+      AUTH_COOKIE_SECURE: "true"
+      SESSION_TTL_DAYS: ${SESSION_TTL_DAYS:-30}
+      MAGIC_LINK_TTL_MINUTES: ${MAGIC_LINK_TTL_MINUTES:-15}
+      EMAIL_RESEND_SECONDS: ${EMAIL_RESEND_SECONDS:-60}
+      EMAIL_HOURLY_LIMIT: ${EMAIL_HOURLY_LIMIT:-5}
+      EMAIL_DELIVERY_MODE: ${EMAIL_DELIVERY_MODE:-smtp}
+      SMTP_URL: ${SMTP_URL-}
+      EMAIL_FROM: ${EMAIL_FROM-}
+      PHONE_AUTH_ENABLED: ${PHONE_AUTH_ENABLED:-false}
+      PHONE_AUTH_ALLOWED_NUMBERS: ${PHONE_AUTH_ALLOWED_NUMBERS-}
+      PNVS_ACCESS_KEY_ID: ${PNVS_ACCESS_KEY_ID-}
+      PNVS_ACCESS_KEY_SECRET: ${PNVS_ACCESS_KEY_SECRET-}
+      PHONE_AUTH_CODE_TTL_SECONDS: ${PHONE_AUTH_CODE_TTL_SECONDS:-300}
+      PHONE_AUTH_RESEND_SECONDS: ${PHONE_AUTH_RESEND_SECONDS:-60}
+      PHONE_AUTH_PHONE_HOURLY_LIMIT: ${PHONE_AUTH_PHONE_HOURLY_LIMIT:-3}
+      PHONE_AUTH_IP_HOURLY_LIMIT: ${PHONE_AUTH_IP_HOURLY_LIMIT:-5}
+      PHONE_AUTH_DAILY_LIMIT: ${PHONE_AUTH_DAILY_LIMIT:-10}
+      PHONE_AUTH_MAX_ATTEMPTS: ${PHONE_AUTH_MAX_ATTEMPTS:-5}
+      AI_MODE: ${AI_MODE:-qwen}
+      QWEN_API_KEY: ${QWEN_API_KEY-}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY-}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen3.8-max}
+      QWEN_BASE_URL: ${QWEN_BASE_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      OPENAI_API_KEY: ${OPENAI_API_KEY-}
+      OPENAI_MODEL: ${OPENAI_MODEL-}
+      OPENAI_BASE_URL: https://api.openai.com/v1
+      CONTACT_DATA_KEY: ${CONTACT_DATA_KEY:?Set a 64-character hexadecimal encryption key}
+      CONTACT_DATA_KEY_ID: ${CONTACT_DATA_KEY_ID:?Set the non-secret contact encryption key identifier}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TRUST_PROXY_CIDRS: ${TRUST_PROXY_CIDRS:?Set the exact trusted proxy IP/CIDR list}
+      ADMIN_USER_IDS: ${ADMIN_USER_IDS-}
+    logging: *service-logging
+
+  web:
+    image: ${DUDUHIRE_WEB_IMAGE:?Set DUDUHIRE_WEB_IMAGE to an immutable Web image tag or digest}
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 256m
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${DUDUHIRE_BIND_ADDRESS:-127.0.0.1}:${DUDUHIRE_HTTP_PORT:-8080}:8080"
+    logging: *service-logging
+
+  notifications:
+    profiles: ["notifications"]
+    image: ${DUDUHIRE_API_IMAGE:?Set DUDUHIRE_API_IMAGE to an immutable API image tag or digest}
+    init: true
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 64
+    mem_limit: 256m
+    environment:
+      NODE_ENV: production
+      NOTIFICATION_DATABASE_URL: ${NOTIFICATION_DATABASE_URL-}
+      DATABASE_SSL: "true"
+      INQUIRY_NOTIFICATION_EMAIL: ${INQUIRY_NOTIFICATION_EMAIL-}
+      INQUIRY_NOTIFICATION_POLL_MS: ${INQUIRY_NOTIFICATION_POLL_MS:-5000}
+      WEB_ORIGIN: ${WEB_ORIGIN:?Set the public HTTPS origin}
+      SMTP_URL: ${SMTP_URL-}
+      EMAIL_FROM: ${EMAIL_FROM-}
+    command: ["node", "apps/api/dist/notificationWorker.js"]
+    healthcheck:
+      disable: true
+    logging: *service-logging
+
+  maintenance:
+    profiles: ["maintenance"]
+    image: ${DUDUHIRE_API_IMAGE:?Set DUDUHIRE_API_IMAGE to an immutable API image tag or digest}
+    init: true
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      NODE_ENV: production
+      MAINTENANCE_DATABASE_URL: ${MAINTENANCE_DATABASE_URL:?Set the maintenance PostgreSQL URL}
+      MAINTENANCE_DATABASE_SSL: "true"
+    command: ["node", "apps/api/dist/cleanup.js"]
+    healthcheck:
+      disable: true
+    logging: *service-logging
+
+  contact-key-rotation:
+    profiles: ["key-rotation"]
+    image: ${DUDUHIRE_API_IMAGE:?Set DUDUHIRE_API_IMAGE to an immutable API image tag or digest}
+    init: true
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    environment:
+      NODE_ENV: production
+      ROTATION_DATABASE_URL: ${ROTATION_DATABASE_URL-}
+      ROTATION_DATABASE_SSL: "true"
+      CURRENT_CONTACT_DATA_KEY: ${CURRENT_CONTACT_DATA_KEY-}
+      CURRENT_CONTACT_DATA_KEY_ID: ${CURRENT_CONTACT_DATA_KEY_ID-}
+      NEXT_CONTACT_DATA_KEY: ${NEXT_CONTACT_DATA_KEY-}
+      NEXT_CONTACT_DATA_KEY_ID: ${NEXT_CONTACT_DATA_KEY_ID-}
+      CONTACT_KEY_ROTATION_CONFIRM: ${CONTACT_KEY_ROTATION_CONFIRM-}
+    command: ["node", "apps/api/dist/rotateContactDataKey.js"]
+    healthcheck:
+      disable: true
+    logging: *service-logging
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${DUDUHIRE_NETWORK_CIDR:-172.31.250.0/24}

@@ -1,0 +1,24 @@
+{
+  "source_sha256": "01ee17460de1b5c8ffbaa0f913226462458f8f3115a5f4b34196c1726e007ece",
+  "status": "No delivery-blocking issue observed in the sampled final MP4 frames",
+  "method": "Viewed all 87 time-ordered samples on eight contact sheets, then six 960x540 frames at 2,18,24,33,41,43.966667 seconds. This is sampled visual review, not continuous normal-speed viewing.",
+  "continuous_normal_speed_playback_observed_by_this_reviewer": false,
+  "findings": [
+    "Transition samples around 4,10,16,21,28,34,40 seconds have continuous panel boundaries; prior triangular cutouts were not reproduced.",
+    "18-second three-line experience input is legible at 960x540. The first-person and colleague-responsibility sentences match the later visible source excerpt.",
+    "24-second source highlight corresponds to personal responsibility; colleague responsibility remains separated.",
+    "Unknown budget, AI-suggestion state, example content and user confirmation vs platform verification boundaries remain visible.",
+    "33-second private-content notice sits below the confirmation card without crossing its edge; the lower-left demonstration label stays separate.",
+    "41-second and final-frame logo, slogan and entry labels remain in the same visual positions. All final 90 decoded frames pass the numeric low-resolution stability check."
+  ],
+  "nonblocking_motion_observation": "At 2.0 seconds, the advancing homepage edge briefly overlaps the last character of the outgoing introductory slogan. The lead reviewer should assess its normal-speed appearance; sampled evidence alone does not establish a pacing failure.",
+  "visual_evidence": {
+    "visual-01.png": "2.000 s; opening focus transition",
+    "visual-02.png": "18.000 s; final three-line experience input",
+    "visual-03.png": "24.000 s; source attribution",
+    "visual-04.png": "33.000 s; confirmation notice after repositioning",
+    "visual-05.png": "41.000 s; beginning of final stable interval",
+    "visual-06.png": "43.966667 s; final frame"
+  },
+  "continuous_playback_owner": "Root agent, independently using QuickTime; no result inferred in this report."
+}

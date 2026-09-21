@@ -1,0 +1,54 @@
+{
+  "name": "@duduhire/api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "DUDUHIRE_LOAD_LOCAL_ENV=true node --watch --env-file-if-exists=.env --import tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "notifications:work": "node --env-file-if-exists=.env --import tsx src/notificationWorker.ts",
+    "notifications:work:compiled": "node dist/notificationWorker.js",
+    "lint": "eslint .",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:qwen": "DUDUHIRE_LOAD_LOCAL_ENV=true node --env-file-if-exists=.env --import tsx src/qwenSmoke.ts",
+    "test:integration": "node --import tsx --test test/postgres.integration.ts",
+    "test:integration:phone": "node --import tsx --test test/phonePostgres.integration.ts test/phoneRoutes.integration.ts",
+    "db:migrate": "node --env-file-if-exists=.env --import tsx src/migrate.ts",
+    "db:migrate:compiled": "node --env-file-if-exists=.env dist/migrate.js",
+    "auth:cleanup": "node --env-file-if-exists=.env --import tsx src/cleanup.ts",
+    "auth:cleanup:compiled": "node --env-file-if-exists=.env dist/cleanup.js",
+    "auth:configure:pnvs": "node --import tsx src/configurePnvsCredentials.ts",
+    "data:cleanup": "node --env-file-if-exists=.env --import tsx src/cleanup.ts",
+    "data:cleanup:compiled": "node --env-file-if-exists=.env dist/cleanup.js",
+    "contact-key:rotate": "node --env-file-if-exists=.env --import tsx src/rotateContactDataKey.ts",
+    "contact-key:rotate:compiled": "node --env-file-if-exists=.env dist/rotateContactDataKey.js",
+    "db:seed:matching": "node --env-file-if-exists=.env --import tsx src/seedMatchingExamples.ts"
+  },
+  "dependencies": {
+    "@alicloud/dypnsapi20170525": "^2.0.0",
+    "@alicloud/openapi-core": "^1.0.8",
+    "@darabonba/typescript": "^1.0.5",
+    "@fastify/cookie": "^11.1.2",
+    "@fastify/cors": "^11.3.0",
+    "@fastify/helmet": "^13.1.1",
+    "@fastify/rate-limit": "^11.2.0",
+    "fastify": "^5.12.1",
+    "nodemailer": "^9.1.1",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@types/node": "^24.3.0",
+    "@types/nodemailer": "^8.0.1",
+    "@types/pg": "^8.23.1",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1"
+  }
+}

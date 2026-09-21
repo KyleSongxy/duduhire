@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: PostgreSQL matching enforces runtime grants, bilateral privacy, consent, source invalidation and concurrent publication
+ok 1 - PostgreSQL matching enforces runtime grants, bilateral privacy, consent, source invalidation and concurrent publication
+  ---
+  duration_ms: 1713.513125
+  type: 'test'
+  ...
+# Subtest: inquiry operations enforce DB roles, audited contact access, optimistic concurrency and notification leases
+ok 2 - inquiry operations enforce DB roles, audited contact access, optimistic concurrency and notification leases
+  ---
+  duration_ms: 480.622041
+  type: 'test'
+  ...
+# Subtest: PostgreSQL persists authentication, marketplace workflows, encrypted contacts, and exact idempotency
+ok 3 - PostgreSQL persists authentication, marketplace workflows, encrypted contacts, and exact idempotency
+  ---
+  duration_ms: 519.670916
+  type: 'test'
+  ...
+# Subtest: checked-in PostgreSQL grants enforce runtime and maintenance isolation
+ok 4 - checked-in PostgreSQL grants enforce runtime and maintenance isolation
+  ---
+  duration_ms: 566.387625
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4419.029625

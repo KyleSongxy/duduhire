@@ -1,0 +1,9 @@
+PASS ai-rag-demand 19ms
+PASS ai-agent-demand 5ms
+PASS global-b2b-demand 2ms
+PASS global-content-demand 1ms
+PASS ai-rag-capability 16ms
+PASS ai-agent-capability 1ms
+PASS global-b2b-capability 1ms
+PASS global-content-capability 1ms
+8/8 synthetic scenarios passed; report: /Users/xiangyusong/Dropbox/Mac/Documents/ChatGPT/AI Marketplace/tools/.generated/discovery-eval-local.json

@@ -1,28 +1,43 @@
 {
   "name": "duduhire",
-  "version": "0.0.0",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "node scripts/clean-dist.mjs && vite build && node scripts/stage-sites-build.mjs",
-    "preview": "vite preview",
-    "ai:seed": "node scripts/build-ai-eval-seed.mjs",
-    "ai:validate": "node scripts/validate-ai-contracts.mjs",
-    "ai:test": "node scripts/test-analysis-runtime.mjs",
-    "resume:test": "node scripts/test-resume-parser.mjs",
-    "ai:evaluate": "node scripts/evaluate-ai-results.mjs",
-    "ai:review-export": "node scripts/export-ai-review-batch.mjs",
-    "ai:review-apply": "node scripts/apply-ai-reviews.mjs"
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "engines": {
+    "node": ">=22.13"
   },
-  "dependencies": {
-    "mammoth": "1.12.0",
-    "pdfjs-dist": "5.4.530"
+  "scripts": {
+    "dev": "concurrently --kill-others --names api,web --prefix-colors cyan,green \"npm run dev --workspace @duduhire/api\" \"npm run dev --workspace @duduhire/web\"",
+    "dev:api": "npm run dev --workspace @duduhire/api",
+    "dev:web": "npm run dev --workspace @duduhire/web",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "playwright test --config apps/web/playwright.config.ts",
+    "test:integration": "npm run test:integration --workspace @duduhire/api",
+    "test:integration:phone": "npm run test:integration:phone --workspace @duduhire/api",
+    "test:qwen": "npm run test:qwen --workspace @duduhire/api",
+    "build": "npm run build --workspaces --if-present",
+    "check": "npm run check:repository && npm run lint && npm run test && npm run build",
+    "db:migrate": "npm run db:migrate --workspace @duduhire/api",
+    "db:migrate:compiled": "npm run db:migrate:compiled --workspace @duduhire/api",
+    "auth:cleanup": "npm run auth:cleanup --workspace @duduhire/api",
+    "auth:cleanup:compiled": "npm run auth:cleanup:compiled --workspace @duduhire/api",
+    "auth:configure:pnvs": "npm run auth:configure:pnvs --workspace @duduhire/api",
+    "data:cleanup": "npm run data:cleanup --workspace @duduhire/api",
+    "data:cleanup:compiled": "npm run data:cleanup:compiled --workspace @duduhire/api",
+    "contact-key:rotate": "npm run contact-key:rotate --workspace @duduhire/api",
+    "contact-key:rotate:compiled": "npm run contact-key:rotate:compiled --workspace @duduhire/api",
+    "start:api": "npm run start --workspace @duduhire/api",
+    "preview:web": "npm run preview --workspace @duduhire/web",
+    "db:seed:matching": "npm run db:seed:matching --workspace @duduhire/api",
+    "check:repository": "node tools/check-repository.mjs"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.37.1",
-    "ajv": "^8.17.1",
-    "vite": "^8.1.1",
-    "wrangler": "^4.92.0"
+    "@playwright/test": "^1.63.0",
+    "concurrently": "^10.0.5"
   }
 }

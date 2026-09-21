@@ -1,0 +1,29 @@
+{
+  "blender_version": "4.0.0",
+  "engine": "BLENDER_EEVEE",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "render_samples": 32,
+  "camera": "ORTHO",
+  "ambient_occlusion": true,
+  "soft_shadows": true,
+  "transparent_ui_texture": "/Users/xiangyusong/Dropbox/Mac/Documents/ChatGPT/AI Marketplace/tools/how-it-works-cinematic-v3/.generated/v7/layers/concept-preview.png",
+  "frames": [
+    {
+      "frame": 1,
+      "render_write_seconds": 1.462
+    },
+    {
+      "frame": 2,
+      "render_write_seconds": 1.241
+    },
+    {
+      "frame": 3,
+      "render_write_seconds": 1.137
+    }
+  ],
+  "total_script_seconds": 3.899,
+  "scope": "Minimal local engine probe only; not final video quality or duration acceptance"
+}

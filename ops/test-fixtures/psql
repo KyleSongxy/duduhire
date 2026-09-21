@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[[ ${DUDUHIRE_OPS_TEST:-} = true ]] || exit 99
+if [[ $* = *'SELECT current_database()'* ]]; then
+  printf '%s\n' "${DUDUHIRE_TEST_RESTORE_DB:-customer_production}"
+elif [[ $* = *'SELECT count(*) FROM pg_class'* ]]; then
+  printf '3\n'
+else
+  exit 99
+fi

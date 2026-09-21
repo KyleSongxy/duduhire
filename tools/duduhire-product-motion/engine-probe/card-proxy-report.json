@@ -1,0 +1,16 @@
+{
+  "function": "add_lanyard(parent, card_width=5.0, card_height=6.36, card_center_y=-4.6)",
+  "objects_created": 16,
+  "all_objects_direct_children": true,
+  "card_top_y": -1.42,
+  "strap_width": 0.31,
+  "strap_thickness": 0.035,
+  "clasp_width": 1.09,
+  "clasp_height": 0.355,
+  "slot_center_y": -1.65,
+  "slot_width": 0.99,
+  "materials": "sRGB hex decoded into linear Principled base colors; matte fabric and satin metal",
+  "camera": "orthographic on +Z; preview parent tilted 3/-6/-2 degrees",
+  "shadow_casting": false,
+  "scope": "Unlabelled proxy tests proportion and connection geometry only; no production card UI"
+}

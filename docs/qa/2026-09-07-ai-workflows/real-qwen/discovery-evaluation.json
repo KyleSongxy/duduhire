@@ -1,0 +1,1452 @@
+{
+  "generatedAt": "2026-09-06T16:35:59.613Z",
+  "provider": "qwen",
+  "syntheticOnly": true,
+  "note": "Fixed synthetic acceptance cases; this is not a population accuracy estimate or independent verification of professional experience.",
+  "passed": 8,
+  "total": 8,
+  "results": [
+    {
+      "id": "ai-rag-demand",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 24729,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到您关于客服知识库智能化升级的需求，目标是提升查找效率并确保答案可追溯。\n\n用人需求说明 · 草稿\n工作背景：我们公司客服每天重复回答产品问题，已有产品手册但查找困难。\n主要工作：想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。\n预期结果：希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。\n合作方式：按项目远程合作，预算 3万到5万元人民币，六周完成。\n时间与合作条件：按项目远程合作，预算 3万到5万元人民币，六周完成。\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+          "action": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+          "profile": "AI 建议方向：RAG智能问答系统建设（含知识库整理与评估集构建）",
+          "evidence": [
+            "工作背景：我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+            "主要工作：想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+            "预期结果：希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。",
+            "合作方式：按项目远程合作，预算 3万到5万元人民币，六周完成。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "按项目远程合作，预算 3万到5万元人民币，六周完成。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "按项目远程合作，预算 3万到5万元人民币，六周完成。"
+                  }
+                ]
+              },
+              "constraints": {
+                "value": "按项目远程合作，预算 3万到5万元人民币，六周完成。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "按项目远程合作，预算 3万到5万元人民币，六周完成。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到合作方式更新为远程项目合作，其他内容保持不变。\n\n用人需求说明 · 草稿\n工作背景：我们公司客服每天重复回答产品问题，已有产品手册但查找困难。\n主要工作：想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。\n预期结果：希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。\n合作方式：修改合作方式：改为远程项目合作，其他内容不变。\n时间与合作条件：按项目远程合作，预算 3万到5万元人民币，六周完成。\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+          "action": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+          "profile": "AI 建议方向：搭建带原文引用的 RAG 智能问答系统并建立评估集",
+          "evidence": [
+            "工作背景：我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+            "主要工作：想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+            "预期结果：希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。",
+            "合作方式：修改合作方式：改为远程项目合作，其他内容不变。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "我们公司客服每天重复回答产品问题，已有产品手册但查找困难。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "想找人整理知识库，搭建带原文引用的 RAG 智能问答，并建立模型评估集。希望客服能找到准确答案，不能回答时转人工。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "希望客服能找到准确答案，不能回答时转人工。按项目远程合作，预算 3万到5万元人民币，六周完成。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "修改合作方式：改为远程项目合作，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ffb1d13d-9659-4e7b-a96d-e1ab2f865d50",
+                    "quote": "修改合作方式：改为远程项目合作，其他内容不变。"
+                  }
+                ]
+              },
+              "constraints": {
+                "value": "按项目远程合作，预算 3万到5万元人民币，六周完成。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:299bc6a0-208f-440e-b71c-de3b0f0e9620",
+                    "quote": "按项目远程合作，预算 3万到5万元人民币，六周完成。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-agent-demand",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 21635,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "明白了，你们希望用 n8n 和 AI Agent 自动化询盘处理流程，重点是分类邮件、写入 CRM、保留人工审批环节，并确保入库准确和失败可重试。\n\n用人需求说明 · 草稿\n工作背景：我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。\n主要工作：需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。\n预期结果：验收看询盘能否正确入库、失败能否重试。\n合作方式：远程项目合作，预算还没定。\n时间与合作条件：待补充\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+          "action": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+          "profile": "AI 建议方向：搭建稳定可靠的询盘自动化流程：邮件分类 → CRM 入库 → 人工审批",
+          "evidence": [
+            "工作背景：我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+            "主要工作：需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+            "预期结果：验收看询盘能否正确入库、失败能否重试。",
+            "合作方式：远程项目合作，预算还没定。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "验收看询盘能否正确入库、失败能否重试。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "验收看询盘能否正确入库、失败能否重试。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "远程项目合作，预算还没定。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "远程项目合作，预算还没定。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已将合作方式更新为远程项目合作。\n\n用人需求说明 · 草稿\n工作背景：我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。\n主要工作：需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。\n预期结果：验收看询盘能否正确入库、失败能否重试。\n合作方式：修改合作方式：改为远程项目合作，其他内容不变。\n时间与合作条件：待补充\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+          "action": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+          "profile": "AI 建议方向：外贸询盘自动化流程开发（远程项目）",
+          "evidence": [
+            "工作背景：我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+            "主要工作：需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+            "预期结果：验收看询盘能否正确入库、失败能否重试。",
+            "合作方式：修改合作方式：改为远程项目合作，其他内容不变。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "我们是小型外贸团队，每天在邮件和 CRM 间手工录入询盘。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "需要一位开发者用 n8n 和 Agent 接好邮件分类、CRM 写入和人工审批，先别自动给客户发信。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "验收看询盘能否正确入库、失败能否重试。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:ec53d396-8ef4-4be6-8d90-19ae8d752ec3",
+                    "quote": "验收看询盘能否正确入库、失败能否重试。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "修改合作方式：改为远程项目合作，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:d2fd6b70-d3c9-44e0-93a4-fec145d5f4d6",
+                    "quote": "修改合作方式：改为远程项目合作，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "global-b2b-demand",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 23553,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到您关于开拓德国市场的初步需求，明确了当前阶段的核心任务。\n\n用人需求说明 · 草稿\n工作背景：我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。\n主要工作：需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。\n预期结果：前两个月先验收有效客户名单和意向访谈，不保证成交额。\n合作方式：远程兼职。\n时间与合作条件：待补充\n必要能力与加分经验：希望英文商务沟通，德语是加分项，远程兼职。\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+          "action": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+          "profile": "AI 建议方向：德国工业传感器市场前期开拓支持",
+          "evidence": [
+            "工作背景：我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+            "主要工作：需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+            "预期结果：前两个月先验收有效客户名单和意向访谈，不保证成交额。",
+            "合作方式：远程兼职。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "前两个月先验收有效客户名单和意向访谈，不保证成交额。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "前两个月先验收有效客户名单和意向访谈，不保证成交额。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "远程兼职。"
+                  }
+                ]
+              },
+              "requirements": {
+                "value": "希望英文商务沟通，德语是加分项，远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "希望英文商务沟通，德语是加分项，远程兼职。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到，合作方式更新为远程项目合作。\n\n用人需求说明 · 草稿\n工作背景：我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。\n主要工作：需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。\n预期结果：前两个月先验收有效客户名单和意向访谈，不保证成交额。\n合作方式：修改合作方式：改为远程项目合作，其他内容不变。\n时间与合作条件：待补充\n必要能力与加分经验：希望英文商务沟通，德语是加分项，远程兼职。\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+          "action": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+          "profile": "AI 建议方向：德国工业传感器市场前期线索开发与客户画像梳理",
+          "evidence": [
+            "工作背景：我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+            "主要工作：需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+            "预期结果：前两个月先验收有效客户名单和意向访谈，不保证成交额。",
+            "合作方式：修改合作方式：改为远程项目合作，其他内容不变。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "我们做工业传感器，准备开拓德国市场，暂时没有海外客户线索。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "需要有人做市场调研、梳理目标客户画像，通过 LinkedIn 开发 B2B 线索并把过程记录在 CRM。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "前两个月先验收有效客户名单和意向访谈，不保证成交额。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "前两个月先验收有效客户名单和意向访谈，不保证成交额。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "修改合作方式：改为远程项目合作，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:64a585ea-771c-48b7-8a00-821e26dd62c1",
+                    "quote": "修改合作方式：改为远程项目合作，其他内容不变。"
+                  }
+                ]
+              },
+              "requirements": {
+                "value": "希望英文商务沟通，德语是加分项，远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:b3fdb554-5ac7-432e-a92a-9193fea87da9",
+                    "quote": "希望英文商务沟通，德语是加分项，远程兼职。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "global-content-demand",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 22331,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "明白了，你们的 Shopify 独立站面向美国消费者，当前英文产品页质量不足，需要专业英语内容本地化支持。\n\n用人需求说明 · 草稿\n工作背景：我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。\n主要工作：想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。\n预期结果：希望交付可审核的英文页面和关键词清单，先不投 Google Ads。\n合作方式：可以远程按项目合作。\n时间与合作条件：待补充\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+          "action": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+          "profile": "AI 建议方向：面向美国市场的 Shopify 英文产品页本地化与SEO文案优化",
+          "evidence": [
+            "工作背景：我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+            "主要工作：想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+            "预期结果：希望交付可审核的英文页面和关键词清单，先不投 Google Ads。",
+            "合作方式：可以远程按项目合作。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "希望交付可审核的英文页面和关键词清单，先不投 Google Ads。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "希望交付可审核的英文页面和关键词清单，先不投 Google Ads。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "可以远程按项目合作。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "可以远程按项目合作。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已更新合作方式为远程项目合作。\n\n用人需求说明 · 草稿\n工作背景：我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。\n主要工作：想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。\n预期结果：希望交付可审核的英文页面和关键词清单，先不投 Google Ads。\n合作方式：修改合作方式：改为远程项目合作，其他内容不变。\n时间与合作条件：待补充\n必要能力与加分经验：待补充\n面谈核实重点：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "problem_brief",
+          "diagnosis": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+          "action": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+          "profile": "AI 建议方向：Shopify独立站面向美国市场的英文内容本地化与SEO关键词研究",
+          "evidence": [
+            "工作背景：我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+            "主要工作：想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+            "预期结果：希望交付可审核的英文页面和关键词清单，先不投 Google Ads。",
+            "合作方式：修改合作方式：改为远程项目合作，其他内容不变。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "context": {
+                "value": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "我们的 Shopify 独立站要面向美国消费者，英文产品页现在像机器翻译。"
+                  }
+                ]
+              },
+              "work": {
+                "value": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "想找英语内容本地化人员重写产品页、做 SEO 关键词研究并配合设计整理文案。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "希望交付可审核的英文页面和关键词清单，先不投 Google Ads。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:e46b69c6-1e06-40b9-9b0e-e120e6c5c914",
+                    "quote": "希望交付可审核的英文页面和关键词清单，先不投 Google Ads。"
+                  }
+                ]
+              },
+              "collaboration": {
+                "value": "修改合作方式：改为远程项目合作，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:a4a824d4-5b71-4aeb-9ae9-46d3696f5fef",
+                    "quote": "修改合作方式：改为远程项目合作，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-rag-capability",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 26478,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "明白了，你参与了 SaaS 客服知识库问答项目，作为后端开发聚焦 RAG 检索与模型评估。\n\n能力档案 · 草稿\n经历背景：上个项目是给 SaaS 客服做知识库问答。\n个人职责：我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。\n具体行动：我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。\n实际结果：试用时客服反馈查资料更方便，没有统计准确率。\n可提供的依据：可以提供脱敏评估报告，希望接远程 AI 项目。\n适合承担的工作：适合承担远程 AI 项目中知识库构建、RAG 检索优化、问答效果评估等后端开发与验证工作。（AI 建议，待确认）\n合作偏好：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+          "capabilityIdentity": "AI 建议方向：AI 知识库后端开发与评估",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：上个项目是给 SaaS 客服做知识库问答。",
+            "个人职责：我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。",
+            "具体行动：我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+            "实际结果：试用时客服反馈查资料更方便，没有统计准确率。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "上个项目是给 SaaS 客服做知识库问答。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "上个项目是给 SaaS 客服做知识库问答。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "试用时客服反馈查资料更方便，没有统计准确率。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "试用时客服反馈查资料更方便，没有统计准确率。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏评估报告，希望接远程 AI 项目。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "可以提供脱敏评估报告，希望接远程 AI 项目。"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "适合承担远程 AI 项目中知识库构建、RAG 检索优化、问答效果评估等后端开发与验证工作。",
+                "status": "inferred",
+                "evidence": []
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到合作偏好更新：只接远程项目，不接受全职。\n\n能力档案 · 草稿\n经历背景：上个项目是给 SaaS 客服做知识库问答。\n个人职责：我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。\n具体行动：我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。\n实际结果：试用时客服反馈查资料更方便，没有统计准确率。\n可提供的依据：可以提供脱敏评估报告，希望接远程 AI 项目。\n适合承担的工作：适合承担远程 AI 项目中知识库构建、RAG 检索优化、问答效果评估等后端开发与验证工作。（AI 建议，待确认）\n合作偏好：修改合作偏好：只接远程项目，不接受全职，其他内容不变。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+          "capabilityIdentity": "AI 建议方向：远程AI项目中知识库构建、RAG检索优化与问答效果评估的后端开发与验证工作",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：上个项目是给 SaaS 客服做知识库问答。",
+            "个人职责：我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。",
+            "具体行动：我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+            "实际结果：试用时客服反馈查资料更方便，没有统计准确率。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "上个项目是给 SaaS 客服做知识库问答。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "上个项目是给 SaaS 客服做知识库问答。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "我是后端开发，负责 RAG 检索与模型评估，前端由同事负责。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "我清洗产品文档，做向量检索和重排，写了 80 条评估问题，并为答案加上引用。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "试用时客服反馈查资料更方便，没有统计准确率。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "试用时客服反馈查资料更方便，没有统计准确率。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏评估报告，希望接远程 AI 项目。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9f62f75d-d050-46d7-b942-3eefc5eb10ff",
+                    "quote": "可以提供脱敏评估报告，希望接远程 AI 项目。"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "适合承担远程 AI 项目中知识库构建、RAG 检索优化、问答效果评估等后端开发与验证工作。",
+                "status": "inferred",
+                "evidence": []
+              },
+              "preferences": {
+                "value": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:49c21b40-3779-4fc5-889a-ac14887e10fe",
+                    "quote": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "ai-agent-capability",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 27808,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "你用 n8n 实现了销售表单到 CRM 的自动化流程，包含去重、审批和失败重试，解决了手工汇总慢的问题。\n\n能力档案 · 草稿\n经历背景：之前销售团队手工汇总表单很慢。\n个人职责：我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。\n具体行动：我接入表单，增加去重、人工审批和失败重试。\n实际结果：最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。\n可提供的依据：可以提供脱敏流程图\n适合承担的工作：业务流程自动化（如表单→CRM/ERP/IM 等系统集成）、低代码/工作流平台（n8n/Make/Zapier）开发与运维。（AI 建议，待确认）\n合作偏好：每周可投入20小时，远程兼职。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我接入表单，增加去重、人工审批和失败重试。",
+          "capabilityIdentity": "AI 建议方向：业务流程自动化开发（n8n + CRM 集成）",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：之前销售团队手工汇总表单很慢。",
+            "个人职责：我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。",
+            "具体行动：我接入表单，增加去重、人工审批和失败重试。",
+            "实际结果：最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "之前销售团队手工汇总表单很慢。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "之前销售团队手工汇总表单很慢。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我接入表单，增加去重、人工审批和失败重试。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "我接入表单，增加去重、人工审批和失败重试。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏流程图",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "可以提供脱敏流程图"
+                  }
+                ]
+              },
+              "preferences": {
+                "value": "每周可投入20小时，远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "每周可投入20小时，远程兼职。"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "业务流程自动化（如表单→CRM/ERP/IM 等系统集成）、低代码/工作流平台（n8n/Make/Zapier）开发与运维。",
+                "status": "inferred",
+                "evidence": []
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到合作偏好更新：只接远程项目，不接受全职。\n\n能力档案 · 草稿\n经历背景：之前销售团队手工汇总表单很慢。\n个人职责：我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。\n具体行动：我接入表单，增加去重、人工审批和失败重试。\n实际结果：最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。\n可提供的依据：可以提供脱敏流程图\n适合承担的工作：业务流程自动化（如表单→CRM/ERP/IM 等系统集成）、低代码/工作流平台（n8n/Make/Zapier）开发与运维。（AI 建议，待确认）\n合作偏好：修改合作偏好：只接远程项目，不接受全职，其他内容不变。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我接入表单，增加去重、人工审批和失败重试。",
+          "capabilityIdentity": "AI 建议方向：业务流程自动化开发（表单→CRM 系统集成）",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：之前销售团队手工汇总表单很慢。",
+            "个人职责：我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。",
+            "具体行动：我接入表单，增加去重、人工审批和失败重试。",
+            "实际结果：最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "之前销售团队手工汇总表单很慢。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "之前销售团队手工汇总表单很慢。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "我担任自动化开发，独立负责 n8n 工作流和 CRM 接口。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我接入表单，增加去重、人工审批和失败重试。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "我接入表单，增加去重、人工审批和失败重试。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "最后销售同事可以直接在 CRM 看到待跟进记录，不用重复录入。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏流程图",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:dc8c506e-f765-45cc-91cb-0be2bdddb13d",
+                    "quote": "可以提供脱敏流程图"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "业务流程自动化（如表单→CRM/ERP/IM 等系统集成）、低代码/工作流平台（n8n/Make/Zapier）开发与运维。",
+                "status": "inferred",
+                "evidence": []
+              },
+              "preferences": {
+                "value": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:97357a81-eeba-47db-b94c-f6d99e6747ec",
+                    "quote": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "global-b2b-capability",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 29514,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已记录你在工业设备团队负责德国市场调研与B2B客户开发的经历，明确不涉及签约，成果归属清晰。\n\n能力档案 · 草稿\n经历背景：之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。\n个人职责：我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。\n具体行动：我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。\n实际结果：最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。\n可提供的依据：可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。\n适合承担的工作：适合承担海外市场前期拓展类工作，如目标市场调研、B2B线索挖掘与客户画像构建、销售支持材料准备等。（AI 建议，待确认）\n合作偏好：希望远程兼职。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+          "capabilityIdentity": "AI 建议方向：德国工业设备市场前期拓展支持",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。",
+            "个人职责：我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+            "具体行动：我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+            "实际结果：最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "适合承担海外市场前期拓展类工作，如目标市场调研、B2B线索挖掘与客户画像构建、销售支持材料准备等。",
+                "status": "inferred",
+                "evidence": []
+              },
+              "preferences": {
+                "value": "希望远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "希望远程兼职。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到合作偏好更新：只接远程项目，不接受全职。\n\n能力档案 · 草稿\n经历背景：之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。\n个人职责：我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。\n具体行动：我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。\n实际结果：最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。\n可提供的依据：可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。\n适合承担的工作：适合承担海外市场前期拓展类工作，如目标市场调研、B2B线索挖掘与客户画像构建、销售支持材料准备等。（AI 建议，待确认）\n合作偏好：修改合作偏好：只接远程项目，不接受全职，其他内容不变。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+          "capabilityIdentity": "AI 建议方向：海外市场前期拓展支持（德国B2B方向）",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。",
+            "个人职责：我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+            "具体行动：我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+            "实际结果：最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "之前在工业设备团队做德国市场拓展，我负责市场调研和 B2B 客户开发，不负责签约。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "我负责市场调研和 B2B 客户开发，不负责签约。我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "我分析竞争产品、整理客户画像，用 LinkedIn 筛选潜在线索并记录到 CRM。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "最终整理出 120 家目标客户名单，销售团队完成了后续访谈，成交额不能算我的成果。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:1e1121a9-19aa-4dce-9cbc-a960b3ad4509",
+                    "quote": "可以提供脱敏调研表，能用英语商务沟通，希望远程兼职。"
+                  }
+                ]
+              },
+              "direction": {
+                "value": "适合承担海外市场前期拓展类工作，如目标市场调研、B2B线索挖掘与客户画像构建、销售支持材料准备等。",
+                "status": "inferred",
+                "evidence": []
+              },
+              "preferences": {
+                "value": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:9a32a9d9-b592-4c24-b7a2-faa5187e8262",
+                    "quote": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    },
+    {
+      "id": "global-content-capability",
+      "passed": true,
+      "checks": {
+        "provider": true,
+        "readyInOneTurn": true,
+        "requiredComplete": true,
+        "explicitConfirmationOnly": true,
+        "relevantFacts": true,
+        "sourceIntegrity": true,
+        "noInventedTools": true,
+        "confirmation": true,
+        "correctionRevokesConfirmation": true,
+        "latestEvidence": true
+      },
+      "elapsedMs": 24937,
+      "providerCalls": 2,
+      "initial": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已记录你为美国 Shopify 品牌做的英文内容本地化工作。\n\n能力档案 · 草稿\n经历背景：我为一个面向美国的 Shopify 品牌做过英文内容本地化。\n个人职责：我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。\n具体行动：我分析搜索意图，重写产品页并与设计师校对术语。\n实际结果：结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。\n可提供的依据：可以提供脱敏前后对照稿，接受远程项目。\n适合承担的工作：待补充\n合作偏好：待补充\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我分析搜索意图，重写产品页并与设计师校对术语。",
+          "capabilityIdentity": "AI 建议方向：面向美国市场的电商内容本地化执行者",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：我为一个面向美国的 Shopify 品牌做过英文内容本地化。",
+            "个人职责：我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。",
+            "具体行动：我分析搜索意图，重写产品页并与设计师校对术语。",
+            "实际结果：结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "我为一个面向美国的 Shopify 品牌做过英文内容本地化。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我为一个面向美国的 Shopify 品牌做过英文内容本地化。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我分析搜索意图，重写产品页并与设计师校对术语。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我分析搜索意图，重写产品页并与设计师校对术语。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏前后对照稿，接受远程项目。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "可以提供脱敏前后对照稿，接受远程项目。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      },
+      "corrected": {
+        "provider": "qwen",
+        "model": "qwen-plus",
+        "promptVersion": "duduhire.discovery.v2.1",
+        "answer": "已收到你关于合作偏好的更新：只接远程项目，不接受全职。\n\n能力档案 · 草稿\n经历背景：我为一个面向美国的 Shopify 品牌做过英文内容本地化。\n个人职责：我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。\n具体行动：我分析搜索意图，重写产品页并与设计师校对术语。\n实际结果：结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。\n可提供的依据：可以提供脱敏前后对照稿，接受远程项目。\n适合承担的工作：待补充\n合作偏好：修改合作偏好：只接远程项目，不接受全职，其他内容不变。\n依据来自本人陈述或所附材料，未经平台核验。\n\n如需调整，直接告诉我要改哪里；确认无误后，请回复“确认保存当前版本”。",
+        "artifact": {
+          "kind": "capability_identity",
+          "coreValue": "我分析搜索意图，重写产品页并与设计师校对术语。",
+          "capabilityIdentity": "AI 建议方向：面向美国市场的英文内容本地化与SEO优化支持",
+          "nextStep": "阅读草稿后，可回复“确认保存当前版本”。",
+          "evidence": [
+            "经历背景：我为一个面向美国的 Shopify 品牌做过英文内容本地化。",
+            "个人职责：我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。",
+            "具体行动：我分析搜索意图，重写产品页并与设计师校对术语。",
+            "实际结果：结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。"
+          ],
+          "flow": {
+            "schemaVersion": 2,
+            "status": "ready",
+            "stage": "review",
+            "fields": {
+              "situation": {
+                "value": "我为一个面向美国的 Shopify 品牌做过英文内容本地化。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我为一个面向美国的 Shopify 品牌做过英文内容本地化。"
+                  }
+                ]
+              },
+              "role": {
+                "value": "我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我负责 SEO 关键词研究和产品页文案，没有负责广告投放。我分析搜索意图，重写产品页并与设计师校对术语。"
+                  }
+                ]
+              },
+              "actions": {
+                "value": "我分析搜索意图，重写产品页并与设计师校对术语。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "我分析搜索意图，重写产品页并与设计师校对术语。"
+                  }
+                ]
+              },
+              "outcome": {
+                "value": "结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "结果是交付了 12 个审核通过的英文页面，尚未获得流量统计。"
+                  }
+                ]
+              },
+              "evidence": {
+                "value": "可以提供脱敏前后对照稿，接受远程项目。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:184737ac-be5a-465a-b76b-f771572e5988",
+                    "quote": "可以提供脱敏前后对照稿，接受远程项目。"
+                  }
+                ]
+              },
+              "preferences": {
+                "value": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。",
+                "status": "provided",
+                "evidence": [
+                  {
+                    "sourceId": "user:33010f02-d7d8-4af0-b890-173eced4543e",
+                    "quote": "修改合作偏好：只接远程项目，不接受全职，其他内容不变。"
+                  }
+                ]
+              }
+            },
+            "missingFields": [],
+            "nextQuestion": "",
+            "confirmedAt": null
+          }
+        }
+      }
+    }
+  ]
+}

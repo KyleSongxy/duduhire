@@ -1,0 +1,33 @@
+{
+  "source_path": "/Users/xiangyusong/Desktop/81be96f13424478eb48b17b7c9decb38.mp4",
+  "sha256": "8dba3890ec642410ce18f254a1a1d11b6e25bfb6906964677b0ad8279aab31e6",
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 960,
+        "height": 540,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1"
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "44100",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0"
+      }
+    ],
+    "format": {
+      "duration": "60.650680",
+      "size": "19343457"
+    }
+  },
+  "analysis": "Visual contact-sheet review with 25 fps inspection of selected transitions. No fitted motion curves. Audio content not assessed.",
+  "proposal": "44 second DuduHire product motion film; not rendered or approved."
+}

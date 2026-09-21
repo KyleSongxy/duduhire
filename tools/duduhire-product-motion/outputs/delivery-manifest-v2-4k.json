@@ -1,0 +1,37 @@
+{
+  "created": "2026-09-09",
+  "version": "v2-4k",
+  "duration_seconds": 44,
+  "resolution": [
+    3840,
+    2160
+  ],
+  "fps": 30,
+  "frames": 1320,
+  "audio_streams": 0,
+  "native_ui_and_title_scale": 3,
+  "status": "4K render integrated locally; technical, sampled visual and browser playback checks passed",
+  "website_url": "http://127.0.0.1:5173/how-it-works",
+  "files": [
+    {
+      "name": "duduhire-product-motion-v2-4k.mp4",
+      "bytes": 47773180,
+      "sha256": "8b9669cf8907df29bef06d797a545b05bf9ef334e99612976259d10f3962b01b"
+    },
+    {
+      "name": "duduhire-product-motion-poster-v2-4k.jpg",
+      "bytes": 351240,
+      "sha256": "84eaed2fbf8bca204a0faec253806046d2d4406fa1fa39e1c809270e6026a4e8"
+    },
+    {
+      "name": "duduhire-product-motion-v2-4k.blend",
+      "bytes": 12065324,
+      "sha256": "d033b46082033a184c6297ae394e1d183dd5badc3141e5a46b77102e0de358b7"
+    }
+  ],
+  "qa": [
+    "qa-v2-4k/report.md",
+    "qa-v2-4k/visual-review.md",
+    "qa-integration-v2-4k/report.md"
+  ]
+}

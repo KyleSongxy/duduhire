@@ -1,0 +1,45 @@
+{
+  "blender_version": "4.0.0",
+  "engine": "BLENDER_EEVEE",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "alpha": {
+    "material_blend_method": "BLEND",
+    "texture_alpha_mode": "STRAIGHT",
+    "texture_interpolation": "Linear",
+    "shader": "Transparent BSDF / Emission mixed by texture Alpha",
+    "show_transparent_back": false,
+    "film_transparent_test": "Ground hidden; opaque white card and translucent UI remain; no separate shadow catcher"
+  },
+  "records": [
+    {
+      "samples": 8,
+      "frame": 1,
+      "seconds_including_png_write": 1.048
+    },
+    {
+      "samples": 8,
+      "frame": 2,
+      "seconds_including_png_write": 0.4
+    },
+    {
+      "samples": 16,
+      "frame": 1,
+      "seconds_including_png_write": 0.627
+    },
+    {
+      "samples": 16,
+      "frame": 2,
+      "seconds_including_png_write": 0.669
+    },
+    {
+      "samples": 8,
+      "frame": 2,
+      "film_transparent_no_ground": true,
+      "seconds_including_png_write": 0.352
+    }
+  ],
+  "scope": "Same minimal local probe; no final scene throughput claim"
+}

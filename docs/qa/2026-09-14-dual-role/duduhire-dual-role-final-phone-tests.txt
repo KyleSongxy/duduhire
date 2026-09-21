@@ -1,0 +1,136 @@
+
+> @duduhire/api@1.0.0 test:integration:phone
+> node --import tsx --test test/phonePostgres.integration.ts test/phoneRoutes.integration.ts
+
+TAP version 13
+# Subtest: PostgreSQL phone authentication uses isolated persistence, atomic budgets and one-time identity verification
+    # Subtest: migration preserves old email identities, rejects unverified accounts and never merges profile contacts
+    ok 1 - migration preserves old email identities, rejects unverified accounts and never merges profile contacts
+      ---
+      duration_ms: 196.672333
+      type: 'test'
+      ...
+    # Subtest: signup commits one session and profile, rejects replay, and retains the existing role
+    ok 2 - signup commits one session and profile, rejects replay, and retains the existing role
+      ---
+      duration_ms: 160.995375
+      type: 'test'
+      ...
+    # Subtest: unknown login creates no challenge and preserves a pending signup
+    ok 3 - unknown login creates no challenge and preserves a pending signup
+      ---
+      duration_ms: 25.461458
+      type: 'test'
+      ...
+    # Subtest: registered login works but a removed account cannot be recreated during verification
+    ok 4 - registered login works but a removed account cannot be recreated during verification
+      ---
+      duration_ms: 89.88325
+      type: 'test'
+      ...
+    # Subtest: only sent challenges activate, incorrect codes and bindings commit attempts, and the limit closes verification
+    ok 5 - only sent challenges activate, incorrect codes and bindings commit attempts, and the limit closes verification
+      ---
+      duration_ms: 98.604
+      type: 'test'
+      ...
+    # Subtest: verification leases are exclusive, expire, and cannot be released by an older worker
+    ok 6 - verification leases are exclusive, expire, and cannot be released by an older worker
+      ---
+      duration_ms: 263.26375
+      type: 'test'
+      ...
+    # Subtest: global, phone and IP budgets reserve atomically and still count failed sends
+    ok 7 - global, phone and IP budgets reserve atomically and still count failed sends
+      ---
+      duration_ms: 410.771959
+      type: 'test'
+      ...
+    # Subtest: a replacement invalidates an earlier browser and any active provider lease
+    ok 8 - a replacement invalidates an earlier browser and any active provider lease
+      ---
+      duration_ms: 90.281708
+      type: 'test'
+      ...
+    # Subtest: a failed session insert rolls back consumption and identity creation
+    ok 9 - a failed session insert rolls back consumption and identity creation
+      ---
+      duration_ms: 123.131292
+      type: 'test'
+      ...
+    # Subtest: maintenance retention deletes expired old phone records and retains the rolling budget history
+    ok 10 - maintenance retention deletes expired old phone records and retains the rolling budget history
+      ---
+      duration_ms: 53.06225
+      type: 'test'
+      ...
+    1..10
+ok 1 - PostgreSQL phone authentication uses isolated persistence, atomic budgets and one-time identity verification
+  ---
+  duration_ms: 2220.451416
+  type: 'test'
+  ...
+# Subtest: phone API with real PostgreSQL and synthetic PNVS: never sends real SMS
+    # Subtest: disabled configuration, cross-origin and unapproved numbers cannot send
+    ok 1 - disabled configuration, cross-origin and unapproved numbers cannot send
+      ---
+      duration_ms: 970.985667
+      type: 'test'
+      ...
+    # Subtest: phone signup creates a session with no fictitious email; replay and logout fail closed
+    ok 2 - phone signup creates a session with no fictitious email; replay and logout fail closed
+      ---
+      duration_ms: 227.793542
+      type: 'test'
+      ...
+    # Subtest: browser binding and local code hash reject errors before any provider check
+    ok 3 - browser binding and local code hash reject errors before any provider check
+      ---
+      duration_ms: 121.459583
+      type: 'test'
+      ...
+    # Subtest: unknown login cannot reserve or send SMS; simultaneous signup verify consumes once
+    ok 4 - unknown login cannot reserve or send SMS; simultaneous signup verify consumes once
+      ---
+      duration_ms: 81.876667
+      type: 'test'
+      ...
+    # Subtest: registered phone login and eligibility use the same normalized identity and retain its role
+    ok 5 - registered phone login and eligibility use the same normalized identity and retain its role
+      ---
+      duration_ms: 129.235625
+      type: 'test'
+      ...
+    # Subtest: email lookup, send guard and verified signup agree on account registration
+    ok 6 - email lookup, send guard and verified signup agree on account registration
+      ---
+      duration_ms: 156.099958
+      type: 'test'
+      ...
+    # Subtest: provider outage releases the lease for retry, but a rejected code never authenticates
+    ok 7 - provider outage releases the lease for retry, but a rejected code never authenticates
+      ---
+      duration_ms: 97.260625
+      type: 'test'
+      ...
+    # Subtest: failed send is not reported as sent and is counted against retry cooldown
+    ok 8 - failed send is not reported as sent and is counted against retry cooldown
+      ---
+      duration_ms: 31.388041
+      type: 'test'
+      ...
+    1..8
+ok 2 - phone API with real PostgreSQL and synthetic PNVS: never sends real SMS
+  ---
+  duration_ms: 2631.7865
+  type: 'test'
+  ...
+1..2
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5772.333708

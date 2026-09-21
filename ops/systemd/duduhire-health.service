@@ -1,0 +1,18 @@
+[Unit]
+Description=DuduHire public health probes
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/duduhire/health.env
+ExecStart=/usr/bin/bash /opt/duduhire/ops/healthcheck.sh --origin ${DUDUHIRE_HEALTH_ORIGIN}
+User=nobody
+Group=nogroup
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+
+# Collect nonzero results using your monitoring platform; no alert receiver is assumed.

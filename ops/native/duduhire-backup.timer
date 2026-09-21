@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily DuduHire PostgreSQL backup
+
+[Timer]
+# 03:30 in the server's configured timezone; Persistent catches a missed run.
+OnCalendar=*-*-* 03:30:00
+RandomizedDelaySec=15min
+Persistent=true
+Unit=duduhire-backup.service
+
+[Install]
+WantedBy=timers.target

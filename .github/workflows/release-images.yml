@@ -1,0 +1,135 @@
+name: Build release images
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type BUILD_AND_PUSH to publish this commit's images to GHCR
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-images-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: inputs.confirmation == 'BUILD_AND_PUSH'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: duduhire_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d duduhire_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+      DATABASE_SSL: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm audit --omit=dev --audit-level=high
+      - run: npm run db:migrate
+      - run: npm run db:migrate:compiled
+      - name: Real PostgreSQL integration tests
+        run: npm run test:integration
+        env:
+          RUN_POSTGRES_TESTS: "true"
+          TEST_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_test
+      - name: Create isolated browser-test database
+        run: createdb --host=127.0.0.1 --port=5432 --username=postgres duduhire_e2e_test
+        env:
+          PGPASSWORD: postgres
+      - run: npx playwright install --with-deps chromium
+      - name: Browser acceptance tests
+        run: npm run test:e2e
+        env:
+          E2E_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/duduhire_e2e_test
+      - name: Validate operation scripts
+        run: bash ops/test-operations.sh
+      - name: Smoke-test release containers before publishing
+        env:
+          # Isolated infrastructure check; real-provider acceptance runs separately.
+          AI_MODE: local
+          AUTH_TOKEN_SECRET: release-smoke-local-auth-secret-more-than-32-characters
+        run: |
+          docker compose --project-name duduhire-release-smoke up -d --build
+          for attempt in $(seq 1 60); do
+            if bash ops/healthcheck.sh --origin http://127.0.0.1:8080 >/dev/null; then
+              test "$(docker compose --project-name duduhire-release-smoke exec -T web id -u)" != "0"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo 'Container health smoke test failed; inspect the isolated CI run.' >&2
+          exit 1
+      - name: Stop isolated release smoke containers
+        if: always()
+        env:
+          AUTH_TOKEN_SECRET: release-smoke-local-auth-secret-more-than-32-characters
+        run: docker compose --project-name duduhire-release-smoke down --volumes
+      - id: names
+        name: Set commit image names
+        env:
+          REPOSITORY: ${{ github.repository }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          repository="${REPOSITORY,,}"
+          echo "api=ghcr.io/${repository}-api" >> "$GITHUB_OUTPUT"
+          echo "web=ghcr.io/${repository}-web" >> "$GITHUB_OUTPUT"
+          echo "tag=sha-${COMMIT}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: api
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: true
+          tags: ${{ steps.names.outputs.api }}:${{ steps.names.outputs.tag }}
+          provenance: mode=max
+          sbom: true
+      - id: web
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          push: true
+          tags: ${{ steps.names.outputs.web }}:${{ steps.names.outputs.tag }}
+          provenance: mode=max
+          sbom: true
+      - name: Record immutable release references
+        env:
+          API_IMAGE: ${{ steps.names.outputs.api }}@${{ steps.api.outputs.digest }}
+          WEB_IMAGE: ${{ steps.names.outputs.web }}@${{ steps.web.outputs.digest }}
+        run: |
+          printf 'DUDUHIRE_API_IMAGE=%s\nDUDUHIRE_WEB_IMAGE=%s\n' "$API_IMAGE" "$WEB_IMAGE" > release-images.env
+          printf 'Published commit `%s`. Deploy using the digest references in the release-images artifact. No server was deployed.\n' "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-images-${{ github.sha }}
+          path: release-images.env
+          retention-days: 90

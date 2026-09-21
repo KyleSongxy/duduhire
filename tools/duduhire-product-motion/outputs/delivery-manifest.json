@@ -1,0 +1,29 @@
+{
+  "created": "2026-09-09",
+  "duration_seconds": 44,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "frames": 1320,
+  "audio_streams": 0,
+  "status": "Independent preview v1; technical, sampled visual and local playback checks completed",
+  "files": [
+    {
+      "name": "duduhire-product-motion-preview-v1.mp4",
+      "bytes": 10932061,
+      "sha256": "01ee17460de1b5c8ffbaa0f913226462458f8f3115a5f4b34196c1726e007ece"
+    },
+    {
+      "name": "duduhire-product-motion-poster-v1.jpg",
+      "bytes": 134161,
+      "sha256": "51dbfb05f007016ad8e33ecd9c7764ab0000bf60df11e1be81e67b71eb7af67d"
+    },
+    {
+      "name": "duduhire-product-motion-v1.blend",
+      "bytes": 5787752,
+      "sha256": "b4cc5914b13893452e18e59763edaf06ad4ab4e7ddb731bc7e4cf34ed325a5fc"
+    }
+  ]
+}

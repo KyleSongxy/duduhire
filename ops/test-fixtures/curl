@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[[ ${DUDUHIRE_OPS_TEST:-} = true ]] || exit 99
+if [[ $* = *'/healthz'* ]]; then printf '204';
+elif [[ ${DUDUHIRE_TEST_BAD_HEALTH_BODY:-false} = true ]]; then printf '<html>SPA fallback</html>';
+elif [[ $* = *'/api/health/live'* ]]; then printf '{"status":"ok"}';
+else printf '{"status":"ready"}'; fi

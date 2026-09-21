@@ -1,0 +1,1104 @@
+{
+  "schema_version": 1,
+  "render_scale": 3,
+  "color_space": "sRGB",
+  "source_classification": "Product interaction demonstration with explicitly labeled sample content",
+  "chinese_font": {
+    "path": "/System/Library/Fonts/STHeiti Medium.ttc",
+    "index": 1,
+    "family": "Heiti SC Medium",
+    "regular_path": "/System/Library/Fonts/STHeiti Light.ttc",
+    "reason": "PingFang unavailable; website Noto Sans SC is a 597-glyph subset. Use consistent Chinese system fallback."
+  },
+  "latin_font": {
+    "path": "/Users/xiangyusong/Dropbox/Mac/Documents/ChatGPT/AI Marketplace/tools/duduhire-product-motion/assets-hd/duduhire-sans-600.ttf",
+    "family": "Website DuduHire Sans / Noto Sans SC",
+    "weight": 600
+  },
+  "brand_colors": {
+    "surface": "#fdfdfd",
+    "ink": "#181818",
+    "muted": "#5e5e5e",
+    "green": "#0f8300",
+    "lime": "#9fe870",
+    "pale": "#d8f7c7",
+    "deep": "#102a1d",
+    "deep_secondary": "#173728"
+  },
+  "global_notes": [
+    "No real customer, candidate, or matching result is represented.",
+    "Sample input remains sample throughout confirmation.",
+    "No external shadow, cursor, lanyard, headline or timeline included."
+  ],
+  "assets": {
+    "brand-logo.png": {
+      "width": 1245,
+      "height": 314,
+      "purpose": "Original transparent DuduHire logo, no wordmark reconstruction",
+      "copy": "DuduHire",
+      "sources": [
+        "apps/web/public/images/duduhire-logo.png"
+      ],
+      "crop_bbox": [
+        48,
+        48,
+        1293,
+        362
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "existing_brand_asset",
+      "logical_width": 1245,
+      "logical_height": 314,
+      "output_scale": 1,
+      "coordinate_space": "source_image_pixels",
+      "crop_bbox_coordinate_space": "source_image_pixels",
+      "native_source_preserved": true,
+      "note": "The original logo pixels are retained; no interpolation or reconstruction."
+    },
+    "hero-window.png": {
+      "width": 4680,
+      "height": 2550,
+      "purpose": "Existing homepage in minimal browser frame; positioning shot only",
+      "copy": [
+        "让真实痛点",
+        "与真实能力更好地相遇",
+        "我想解决业务问题",
+        "我想发现自己的价值"
+      ],
+      "sources": [
+        "tools/duduhire-product-motion/reference/home-demand.png"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "existing_screenshot_with_browser_frame",
+      "crop_bbox": [
+        0,
+        0,
+        1280,
+        639
+      ],
+      "logical_width": 1560,
+      "logical_height": 850,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {},
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        4678,
+        2547
+      ],
+      "crop_bbox_coordinate_space": "source_image_pixels"
+    },
+    "demand-input-base.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Input frame, role, example label and action button",
+      "copy": [
+        "梳理用人需求",
+        "需求示例"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        141,
+        541,
+        313
+      ],
+      "text_layout_area": [
+        49,
+        142,
+        1300,
+        311
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "梳理用人需求",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          423,
+          1623,
+          939
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          426,
+          3900,
+          933
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        4138,
+        1318
+      ]
+    },
+    "demand-input-text.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Transparent input content for phrase reveal",
+      "copy": [
+        "客服资料太分散，",
+        "想做能引用出处的知识库。",
+        "6 周试点",
+        "远程合作",
+        "预算未定"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        141,
+        541,
+        313
+      ],
+      "text_layout_area": [
+        49,
+        142,
+        1300,
+        311
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "梳理用人需求",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          423,
+          1623,
+          939
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          426,
+          3900,
+          933
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        147,
+        432,
+        1615,
+        931
+      ]
+    },
+    "demand-input.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Composite reference for QA of input layers",
+      "copy": [
+        "客服资料太分散，",
+        "想做能引用出处的知识库。",
+        "6 周试点",
+        "远程合作",
+        "预算未定"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        141,
+        541,
+        313
+      ],
+      "text_layout_area": [
+        49,
+        142,
+        1300,
+        311
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "梳理用人需求",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          423,
+          1623,
+          939
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          426,
+          3900,
+          933
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        4138,
+        1318
+      ]
+    },
+    "talent-input-base.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Input frame, role, example label and action button",
+      "copy": [
+        "完善能力档案",
+        "经历示例"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        134,
+        695,
+        331
+      ],
+      "text_layout_area": [
+        49,
+        136,
+        1300,
+        330
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "完善能力档案",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          402,
+          2085,
+          993
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          408,
+          3900,
+          990
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        4138,
+        1318
+      ]
+    },
+    "talent-input-text.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Transparent input content for phrase reveal",
+      "copy": [
+        "做过内部知识库。",
+        "我负责文档整理、检索与评测；",
+        "同事负责权限和上线。可提供脱敏报告。",
+        "个人职责",
+        "团队分工",
+        "依据线索"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        134,
+        695,
+        331
+      ],
+      "text_layout_area": [
+        49,
+        136,
+        1300,
+        330
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "完善能力档案",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          402,
+          2085,
+          993
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          408,
+          3900,
+          990
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        147,
+        408,
+        2076,
+        985
+      ]
+    },
+    "talent-input.png": {
+      "width": 4140,
+      "height": 1320,
+      "purpose": "Composite reference for QA of input layers",
+      "copy": [
+        "做过内部知识库。",
+        "我负责文档整理、检索与评测；",
+        "同事负责权限和上线。可提供脱敏报告。",
+        "个人职责",
+        "团队分工",
+        "依据线索"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "text_bbox": [
+        46,
+        134,
+        695,
+        331
+      ],
+      "text_layout_area": [
+        49,
+        136,
+        1300,
+        330
+      ],
+      "button_bbox": [
+        1052,
+        325,
+        1336,
+        401
+      ],
+      "button_center": [
+        1194,
+        363
+      ],
+      "entry_label": "完善能力档案",
+      "example": true,
+      "content_alignment": "same-pixel-coordinate across base, text, and composite",
+      "logical_width": 1380,
+      "logical_height": 440,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "text_bbox": [
+          138,
+          402,
+          2085,
+          993
+        ],
+        "button_bbox": [
+          3156,
+          975,
+          4008,
+          1203
+        ],
+        "text_layout_area": [
+          147,
+          408,
+          3900,
+          990
+        ],
+        "button_center": [
+          3582,
+          1089
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        4138,
+        1318
+      ]
+    },
+    "demand-source.png": {
+      "width": 1920,
+      "height": 2010,
+      "purpose": "Original description to remain beside extracted fields",
+      "copy": [
+        "原始描述",
+        "客服资料太分散，想做能引用出处的知识库。",
+        "6 周试点 · 远程合作",
+        "预算未定"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "logical_width": 640,
+      "logical_height": 670,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {},
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        1918,
+        2008
+      ]
+    },
+    "demand-field-1.png": {
+      "width": 2100,
+      "height": 540,
+      "purpose": "Independent structured field plane",
+      "copy": [
+        "主要工作",
+        "资料整理 · 知识库 · 检索测试",
+        "AI 建议 · 待确认"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "source_status": "inferred",
+      "logical_width": 700,
+      "logical_height": 180,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {},
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2098,
+        538
+      ]
+    },
+    "demand-field-2.png": {
+      "width": 2100,
+      "height": 540,
+      "purpose": "Independent structured field plane",
+      "copy": [
+        "预期结果",
+        "回答附出处，便于核对",
+        "来自你的描述"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "source_status": "provided",
+      "logical_width": 700,
+      "logical_height": 180,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {},
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2098,
+        538
+      ]
+    },
+    "demand-field-3.png": {
+      "width": 2100,
+      "height": 540,
+      "purpose": "Independent structured field plane",
+      "copy": [
+        "时间与合作条件",
+        "6 周试点 · 远程 · 预算未定",
+        "来自你的描述"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "source_status": "provided",
+      "logical_width": 700,
+      "logical_height": 180,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {},
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2098,
+        538
+      ]
+    },
+    "capability-card.png": {
+      "width": 1770,
+      "height": 2250,
+      "purpose": "Deep green physical identity card face, no lanyard",
+      "copy": [
+        "示例能力档案",
+        "知识库资料整理",
+        "检索与评测",
+        "文档整理",
+        "检索评测",
+        "AI 草稿",
+        "经历示例 · 待本人核对"
+      ],
+      "sources": [
+        "apps/web/src/CapabilityIdentityCard.tsx",
+        "apps/web/src/discoveryFlow.ts",
+        "docs/PRODUCT.md"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "attachment_point": [
+        295,
+        18
+      ],
+      "logical_width": 590,
+      "logical_height": 750,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "attachment_point": [
+          885,
+          54
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        1768,
+        2248
+      ]
+    },
+    "evidence-panel.png": {
+      "width": 2700,
+      "height": 1890,
+      "purpose": "Evidence excerpt with personal and teammate attribution",
+      "copy": [
+        "我负责文档整理、检索与评测；同事负责权限和上线。",
+        "个人职责",
+        "团队分工",
+        "可提供脱敏报告"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "highlight_bbox": [
+        52,
+        171,
+        538.0,
+        216
+      ],
+      "highlight_meaning": "Personal responsibilities, paired with the green personal-responsibility label below",
+      "logical_width": 900,
+      "logical_height": 630,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "highlight_bbox": [
+          156,
+          513,
+          1614.0,
+          648
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2698,
+        1888
+      ]
+    },
+    "confirm-before.png": {
+      "width": 3300,
+      "height": 1860,
+      "purpose": "Before/after attribution correction and explicit user confirmation",
+      "copy": [
+        "实际结果",
+        "知识库上线",
+        "角色核对",
+        "我负责文档整理、检索与评测；同事负责权限和上线。",
+        "修改前 · 待核对"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "correction_demo": true,
+      "field_bbox": [
+        37,
+        190,
+        1063,
+        326
+      ],
+      "edit_button_center": [
+        991,
+        257
+      ],
+      "confirmation_button_center": [
+        917,
+        524
+      ],
+      "role_evidence_bbox": [
+        194,
+        348,
+        1022,
+        423
+      ],
+      "role_evidence_lines": [
+        "我负责文档整理、检索与评测；",
+        "同事负责权限和上线。"
+      ],
+      "verification_note": "Edited state has revised copy and awaits explicit confirmation; user confirmation is not platform verification; before state is an illustrative editable statement.",
+      "logical_width": 1100,
+      "logical_height": 620,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "edit_button_center": [
+          2973,
+          771
+        ],
+        "confirmation_button_center": [
+          2751,
+          1572
+        ],
+        "field_bbox": [
+          111,
+          570,
+          3189,
+          978
+        ],
+        "role_evidence_bbox": [
+          582,
+          1044,
+          3066,
+          1269
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        3298,
+        1858
+      ]
+    },
+    "confirm-edited.png": {
+      "width": 3300,
+      "height": 1860,
+      "purpose": "Before/after attribution correction and explicit user confirmation",
+      "copy": [
+        "实际结果",
+        "完成检索与评测",
+        "角色核对",
+        "我负责文档整理、检索与评测；同事负责权限和上线。",
+        "已修改 · 待确认"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "correction_demo": true,
+      "field_bbox": [
+        37,
+        190,
+        1063,
+        326
+      ],
+      "edit_button_center": [
+        991,
+        257
+      ],
+      "confirmation_button_center": [
+        917,
+        524
+      ],
+      "role_evidence_bbox": [
+        194,
+        348,
+        1022,
+        423
+      ],
+      "role_evidence_lines": [
+        "我负责文档整理、检索与评测；",
+        "同事负责权限和上线。"
+      ],
+      "verification_note": "Edited state has revised copy and awaits explicit confirmation; user confirmation is not platform verification; before state is an illustrative editable statement.",
+      "logical_width": 1100,
+      "logical_height": 620,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "edit_button_center": [
+          2973,
+          771
+        ],
+        "confirmation_button_center": [
+          2751,
+          1572
+        ],
+        "field_bbox": [
+          111,
+          570,
+          3189,
+          978
+        ],
+        "role_evidence_bbox": [
+          582,
+          1044,
+          3066,
+          1269
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        3298,
+        1858
+      ]
+    },
+    "confirm-after.png": {
+      "width": 3300,
+      "height": 1860,
+      "purpose": "Before/after attribution correction and explicit user confirmation",
+      "copy": [
+        "实际结果",
+        "完成检索与评测",
+        "角色核对",
+        "我负责文档整理、检索与评测；同事负责权限和上线。",
+        "用户已确认"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "correction_demo": true,
+      "field_bbox": [
+        37,
+        190,
+        1063,
+        326
+      ],
+      "edit_button_center": [
+        991,
+        257
+      ],
+      "confirmation_button_center": [
+        917,
+        524
+      ],
+      "role_evidence_bbox": [
+        194,
+        348,
+        1022,
+        423
+      ],
+      "role_evidence_lines": [
+        "我负责文档整理、检索与评测；",
+        "同事负责权限和上线。"
+      ],
+      "verification_note": "Edited state has revised copy and awaits explicit confirmation; user confirmation is not platform verification; before state is an illustrative editable statement.",
+      "logical_width": 1100,
+      "logical_height": 620,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "edit_button_center": [
+          2973,
+          771
+        ],
+        "confirmation_button_center": [
+          2751,
+          1572
+        ],
+        "field_bbox": [
+          111,
+          570,
+          3189,
+          978
+        ],
+        "role_evidence_bbox": [
+          582,
+          1044,
+          3066,
+          1269
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        3298,
+        1858
+      ]
+    },
+    "compare-demand.png": {
+      "width": 2100,
+      "height": 1770,
+      "purpose": "Confirmed example summary for side-by-side comparison, not platform matching result",
+      "copy": [
+        "用人需求",
+        "主要工作",
+        "资料整理、检索与评测",
+        "预期目标",
+        "回答附出处，便于核对",
+        "合作条件",
+        "6 周试点 · 远程 · 预算未定",
+        "用户已确认",
+        "本人确认 · 未经平台验证"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "is_matching_result": false,
+      "common_work_bbox": [
+        163,
+        270,
+        662,
+        313
+      ],
+      "logical_width": 700,
+      "logical_height": 590,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "common_work_bbox": [
+          489,
+          810,
+          1986,
+          939
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2098,
+        1768
+      ]
+    },
+    "compare-capability.png": {
+      "width": 2100,
+      "height": 1770,
+      "purpose": "Confirmed example summary for side-by-side comparison, not platform matching result",
+      "copy": [
+        "能力档案",
+        "适合承担",
+        "资料整理、检索与评测",
+        "个人职责",
+        "文档整理、检索与评测",
+        "依据线索",
+        "可提供脱敏报告",
+        "用户已确认",
+        "本人确认 · 未经平台验证"
+      ],
+      "sources": [
+        "docs/PRODUCT.md",
+        "apps/web/src/discoveryFlow.ts"
+      ],
+      "transparent_background": true,
+      "external_shadow": false,
+      "classification": "product_interaction_demonstration",
+      "example": true,
+      "is_matching_result": false,
+      "common_work_bbox": [
+        163,
+        270,
+        662,
+        313
+      ],
+      "logical_width": 700,
+      "logical_height": 590,
+      "output_scale": 3,
+      "coordinate_space": "logical_layout_pixels",
+      "pixel_coordinates": {
+        "common_work_bbox": [
+          489,
+          810,
+          1986,
+          939
+        ]
+      },
+      "alpha_bbox_pixels": [
+        3,
+        3,
+        2098,
+        1768
+      ]
+    }
+  },
+  "requested_output_scale": 3,
+  "coordinate_contract": "width/height and alpha_bbox_pixels are output pixels; named bbox/center/attachment coordinates remain logical layout pixels. pixel_coordinates supplies their output-pixel equivalents. Source crop coordinates remain source pixels.",
+  "source_limits": {
+    "brand-logo.png": "Original cropped pixels retained at 1245x314; not upscaled.",
+    "hero-window.png": "Browser frame is rendered at 3x, but the existing homepage screenshot is limited to its 1280x720 source and 1280x639 crop."
+  }
+}
