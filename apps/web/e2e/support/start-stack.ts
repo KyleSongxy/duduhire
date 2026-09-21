@@ -110,6 +110,9 @@ try {
     WEB_ORIGIN: webOrigin,
     HOST: "127.0.0.1",
     PORT: String(apiPort),
+    // Only this isolated stack trusts its loopback Vite proxy to supply the
+    // fixture's virtual client IP; production rate limits remain unchanged.
+    TRUST_PROXY_CIDRS: "127.0.0.1/32",
     AUTH_TOKEN_SECRET: randomBytes(48).toString("hex"),
     AUTH_COOKIE_NAME: "duduhire_e2e_session",
     AUTH_COOKIE_SECURE: "false",

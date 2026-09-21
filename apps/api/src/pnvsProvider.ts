@@ -73,7 +73,10 @@ function validateDestination(phone: string, requestId: string): string {
 /** Only the documented PNVS HTTPS endpoint is supported; credentials are explicit, never auto-discovered. */
 export function createAliyunPnvsProvider(
   options: AliyunPnvsProviderOptions,
-  createClient: (config: $OpenApiUtil.Config) => PnvsApiClient = config => new PnvsSdk.default(config),
+  // The CommonJS SDK exposes .default in Node; Bundler and NodeNext infer different import types.
+  createClient: (config: $OpenApiUtil.Config) => PnvsApiClient = config => new (PnvsSdk as unknown as {
+    default: new (config: $OpenApiUtil.Config) => PnvsApiClient;
+  }).default(config),
 ): PhoneVerificationProvider {
   try {
     const signName = options.signName ?? DEFAULT_PNVS_SIGN_NAME;

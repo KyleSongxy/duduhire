@@ -5,14 +5,26 @@ import pg from "pg";
 import { test as base, expect, type Page } from "@playwright/test";
 import { readTestEnvironment, testStateDirectory, type TestEnvironment } from "./settings";
 
+type BrowserTestEnvironment = TestEnvironment & { clientIp: string };
+let nextClientNumber = 0;
+
 export const test = base.extend<{
-  environment: TestEnvironment;
+  environment: BrowserTestEnvironment;
   database: pg.Pool;
 }>({
-  environment: async ({ baseURL }, provide) => {
+  environment: async ({ baseURL }, provide, testInfo) => {
     const environment = await readTestEnvironment();
     if (baseURL !== environment.webOrigin) throw new Error("Unexpected E2E fixture origin.");
-    await provide(environment);
+    const clientNumber = ++nextClientNumber;
+    if (testInfo.workerIndex > 255 || clientNumber > 65535) throw new Error("E2E virtual client address range exhausted.");
+    // Keep genuine per-IP limits inside a test, without sharing one loopback
+    // budget across the entire suite. Restarted workers receive a new index.
+    const clientIp = `10.${testInfo.workerIndex}.${clientNumber >>> 8}.${clientNumber & 255}`;
+    await provide({ ...environment, clientIp });
+  },
+  extraHTTPHeaders: async ({ environment, extraHTTPHeaders }, provide) => {
+    // Context headers also apply to page.request, including password/reset calls.
+    await provide({ ...extraHTTPHeaders, "X-Forwarded-For": environment.clientIp });
   },
   database: async ({ environment }, provide) => {
     const pool = new pg.Pool({ connectionString: environment.databaseUrl, ssl: false, max: 2 });
@@ -44,9 +56,12 @@ export async function capturedMagicLink(email: string, environment: TestEnvironm
 
 export async function requestEmailLink(
   page: Page,
-  environment: TestEnvironment,
+  environment: BrowserTestEnvironment,
   options: { email: string; role?: "client" | "talent"; returnTo?: string },
 ) {
+  // Additional browsers created explicitly in matching/admin tests do not use
+  // Playwright's context options fixture. Give their auth flow this test's IP too.
+  await page.context().setExtraHTTPHeaders({ "X-Forwarded-For": environment.clientIp });
   const mode = options.role ? "signup" : "login";
   await page.goto(`/${mode}?method=email&returnTo=${encodeURIComponent(options.returnTo || "/workspace")}`);
   if (options.role) {
@@ -63,7 +78,7 @@ export async function requestEmailLink(
 
 export async function authenticate(
   page: Page,
-  environment: TestEnvironment,
+  environment: BrowserTestEnvironment,
   options: { email: string; role?: "client" | "talent"; returnTo?: string },
 ) {
   const link = await requestEmailLink(page, environment, options);

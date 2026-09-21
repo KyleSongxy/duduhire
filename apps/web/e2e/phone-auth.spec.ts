@@ -105,7 +105,7 @@ test("邮箱停用时默认使用仍可用的短信注册，不请求邮件接�
   await page.goto("/signup");
   await expect(page.getByRole("radio", { name: "手机短信", exact: true })).toBeChecked();
   await expect(page.getByRole("radio", { name: "邮件链接（暂不可用）", exact: true })).toBeDisabled();
-  await expect(page.getByText("邮箱注册与登录暂未启用。请使用手机短信继续。", { exact: true })).toBeVisible();
+  await expect(page.getByText("使用短信验证码验证手机号。", { exact: true })).toBeVisible();
   await page.locator("#auth-phone").fill(syntheticPhone);
   await sendCode(page);
   await page.locator("#auth-phone-code").fill(syntheticCode);

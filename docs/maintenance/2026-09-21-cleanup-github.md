@@ -32,3 +32,9 @@
 - Git 暂存内容检查排除本地环境配置、会议原件、依赖和生成缓存；未发现凭据特征或超过 GitHub 单文件限制的文件。
 
 同步分支：[codex/cleanup-sync-20260921](https://github.com/KyleSongxy/duduhire/tree/codex/cleanup-sync-20260921)。提交和 PR 记录以 GitHub 为准；生产环境未在本次清理中变更或验收。
+
+## 合并前的测试修复
+
+GitHub 首次完整 CI 的浏览器阶段暴露测试隔离问题：所有用例共享 loopback IP，超过生产邮件接口每小时 20 次的限制后出现 429。E2E 支撑层现为每个用例分配固定虚拟 IP，仅隔离测试 API 信任本机代理；同一用例内部仍保留真实限流和邮箱冷却。真实路由验证确认同 IP 前 20 次返回 202，第 21 次返回 429，另一 IP 可正常申请。另将短信注册测试的旧邮件停用提示断言更新为当前短信验证提示，保留禁止请求邮件接口及完成短信注册的检查。
+
+本地完整浏览器验收 66/66 通过（隔离 PostgreSQL、捕获邮件和模拟短信）；Web/API lint、E2E TypeScript 检查、API 构建及 11 项 PNVS provider 测试通过。PNVS CommonJS 导入增加显式类型以兼容 E2E Bundler 检查，转译后的运行 JavaScript 与修改前相同。GitHub 完整 CI 结果见 PR，不将本地结果视为生产验收。
