@@ -12,7 +12,8 @@ import { createAliyunPnvsProvider, type PhoneVerificationProvider } from "./pnvs
 import type { PhoneAuthRepository } from "./phoneAuthRepository.js";
 import { normalizeMainlandPhone } from "./phoneAuthConfig.js";
 import { createDiscoveryAdvisor, type DiscoveryAdvisor } from "./discoveryAdvisor.js";
-import { isDiscoveryConfirmation } from "./discoveryFlow.js";
+import { DiscoveryFlowError, isDiscoveryConfirmation } from "./discoveryFlow.js";
+import { QwenProviderError } from "./qwenClient.js";
 import {
   normalizeEmail,
   normalizeReturnTo,
@@ -60,6 +61,28 @@ type DiscoveryTurnBody = {
 };
 
 type DiscoveryResetBody = Pick<DiscoveryTurnBody, "expectedThreadId" | "expectedVersion">;
+
+function discoveryFailureReason(error: unknown) {
+  // Only application-owned categories may enter logs, never an error message,
+  // name, cause or provider response that could contain credentials or user text.
+  if (error instanceof QwenProviderError) {
+    switch (error.code) {
+      case "authentication": return "qwen_authentication";
+      case "rate_limit": return "qwen_rate_limit";
+      case "unavailable": return "qwen_unavailable";
+      case "timeout": return "qwen_timeout";
+      case "invalid_output": return "qwen_invalid_output";
+    }
+  }
+  if (error instanceof DiscoveryFlowError) {
+    switch (error.code) {
+      case "invalid_json": return "discovery_invalid_json";
+      case "invalid_shape": return "discovery_invalid_shape";
+      case "unsupported_evidence": return "discovery_unsupported_evidence";
+    }
+  }
+  return "unknown";
+}
 
 type EnterpriseInquiryBody = {
   requestId: string;
@@ -685,8 +708,8 @@ export async function buildApp({
     async (request, reply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
-      const question = request.body.prompt.trim();
-      if (!question) {
+      const question = request.body.prompt;
+      if (!question.trim()) {
         return reply.code(400).send({ error: { code: "PROMPT_REQUIRED", message: "请输入内容后再发送。" } });
       }
       const kind = discoveryKindForRole(session.user.role);
@@ -760,7 +783,7 @@ export async function buildApp({
         });
       } catch (error) {
         request.log.error(
-          { errorName: error instanceof Error ? error.name : "UnknownError", requestId: request.id },
+          { failureReason: discoveryFailureReason(error), requestId: request.id },
           "discovery advisor failed",
         );
         return reply.code(503).send({ error: { code: "AI_UNAVAILABLE", message: "AI 顾问暂时不可用，请稍后重试。" } });

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { isDiscoveryConfirmation, runDiscoveryFlow, type DiscoveryFlowInput, type FlowArtifact, type FlowField, type FlowSource } from "../src/discoveryFlow.js";
+import { DiscoveryFlowError, isDiscoveryConfirmation, runDiscoveryFlow, type DiscoveryFlowInput, type FlowArtifact, type FlowField, type FlowSource } from "../src/discoveryFlow.js";
 import { recoverEvidenceContext } from "../src/evidenceContext.js";
 
 const metadata = { provider: "qwen" as const, model: "qwen-test", promptVersion: "test-v2" };
@@ -164,6 +164,231 @@ test("malformed model response or timeout is not converted into local advice", a
   const input: DiscoveryFlowInput = { kind: "problem", message: "需要找人" };
   await assert.rejects(runDiscoveryFlow(input, async () => "not-json", metadata), /invalid structured/u);
   await assert.rejects(runDiscoveryFlow(input, async () => { throw new Error("AI provider request timed out."); }, metadata), /timed out/u);
+});
+
+test("resume extraction instructs the model to stay within the response and evidence limits", async () => {
+  const message = [...Object.values(talentFacts), "我还整理产品说明、修正失效链接并补充版本记录。"].join("。\n");
+  let prompt = "";
+  const result = await runDiscoveryFlow({ kind: "capability", message, requestId: "resume" }, async request => {
+    prompt = request.system;
+    return replyFor(talentFacts, "resume");
+  }, metadata);
+  assert.equal(result.artifact.flow?.status, "ready");
+  for (const limit of ["acknowledgement最多400字符", "nextQuestion最多300字符", "updates最多7项", "每个field只能出现一次",
+    "value最多1200字符", "每字段evidence最多4条", "sourceId最多200字符", "quote最多800字符",
+    "summary.title最多80字符", "summary.value最多600字符"]) {
+    assert.ok(prompt.includes(limit), `Missing model instruction: ${limit}`);
+  }
+  assert.match(prompt, /不因缩短而改写、合并不相邻片段或删掉限定语/u);
+});
+
+test("model evidence is bounded before normalization and each quote keeps its length limit", async () => {
+  const quotes = ["我整理产品说明。", "我归纳客户常见问题。", "我统一资料分类。", "我修正失效链接。", "我补充版本记录。"];
+  const longQuote = "资料".repeat(400);
+  for (const [evidence, message, valid] of [
+    [quotes.slice(0, 4), quotes.join("\n"), true],
+    [quotes, quotes.join("\n"), true],
+    [[longQuote], longQuote, true],
+    [[`${longQuote}。`], `${longQuote}。`, false],
+  ] as const) {
+    const completion = async () => JSON.stringify({ ...emptyReply, updates: [{
+      field: "actions", status: "provided", value: "整理资料", evidence: evidence.map(quote => ({ sourceId: "user:resume", quote })),
+    }] });
+    const input: DiscoveryFlowInput = { kind: "capability", message, requestId: "resume" };
+    if (valid) {
+      const result = await runDiscoveryFlow(input, completion, metadata);
+      assert.equal(result.artifact.flow?.fields.actions?.evidence.length, Math.min(evidence.length, 4));
+    } else {
+      await assert.rejects(runDiscoveryFlow(input, completion, metadata), (error: unknown) =>
+        error instanceof DiscoveryFlowError && error.code === "invalid_shape");
+    }
+  }
+});
+
+const citationReply = (evidence: unknown, status: FlowField["status"] = "provided", value = "模型改写与未保留事实") => JSON.stringify({
+  ...emptyReply, updates: [{ field: "actions", status, value, evidence }],
+});
+const citations = (quotes: string[]) => quotes.map(quote => ({ sourceId: "user:resume", quote }));
+
+test("five to sixteen model citations normalize to four and survive persisted-field reading", async () => {
+  const quotes = Array.from({ length: 17 }, (_, index) => `我整理第${index + 1}项课程资料。`);
+  const input: DiscoveryFlowInput = { kind: "capability", message: quotes.join("\n"), requestId: "resume" };
+  for (const status of ["provided", "inferred", "skipped"] as const) {
+    for (const count of [4, 5, 6, 16]) {
+      const result = await runDiscoveryFlow(input, async () => citationReply(citations(quotes.slice(0, count)), status), metadata);
+      const field = result.artifact.flow?.fields.actions;
+      const retained = quotes.slice(Math.max(0, count - 4), count);
+      assert.deepEqual(field?.evidence, citations(retained));
+      assert.equal(field?.status, status);
+      if (status === "provided") assert.equal(field.value, retained.join("；"));
+      const restored = await runDiscoveryFlow({ ...input, message: "查看草稿", previousArtifact: result.artifact }, undefined, metadata);
+      assert.deepEqual(restored.artifact.flow?.fields.actions, field);
+    }
+    await assert.rejects(runDiscoveryFlow(input, async () => citationReply(citations(quotes), status), metadata),
+      (error: unknown) => error instanceof DiscoveryFlowError && error.code === "invalid_shape");
+  }
+  const previous = snapshot("capability", { actions: "已保存的资料整理" });
+  previous.flow!.fields.actions!.evidence = citations(quotes.slice(0, 5));
+  const invalidPrevious = await runDiscoveryFlow({ ...input, message: "查看草稿", previousArtifact: previous }, undefined, metadata);
+  assert.equal(invalidPrevious.artifact.flow?.fields.actions, undefined, "persisted fields still reject more than four citations");
+});
+
+test("every surplus citation is validated even after four valid citations fill the budget", async () => {
+  const quotes = ["我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。"];
+  const input: DiscoveryFlowInput = { kind: "capability", message: quotes.join("\n"), requestId: "resume" };
+  const badCitations = [
+    [null, "invalid_shape"],
+    [{ sourceId: "user:resume", quote: 3 }, "invalid_shape"],
+    [{ sourceId: "user:resume", quote: "资".repeat(801) }, "invalid_shape"],
+    [{ sourceId: "s".repeat(201), quote: quotes[0] }, "invalid_shape"],
+    [{ sourceId: "user:absent", quote: quotes[0] }, "unsupported_evidence"],
+    [{ sourceId: "user:resume", quote: "我创造六倍增长。" }, "unsupported_evidence"],
+    [{ sourceId: "user:resume", quote: `${quotes[0]}我创造六倍增长。` }, "unsupported_evidence"],
+  ] as const;
+  for (const position of [5, 16]) {
+    for (const [invalid, code] of badCitations) {
+      const evidence: unknown[] = citations(Array.from({ length: position - 1 }, (_, index) => quotes[index % quotes.length]!));
+      evidence.push(invalid);
+      await assert.rejects(runDiscoveryFlow(input, async () => citationReply(evidence), metadata),
+        (error: unknown) => error instanceof DiscoveryFlowError && error.code === code);
+    }
+  }
+});
+
+test("citation deduplication does not retain model expansions or discarded facts", async () => {
+  const quotes = ["团队计划增长六倍。", "我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。"];
+  const result = await runDiscoveryFlow({ kind: "capability", message: quotes.join("\n"), requestId: "resume" },
+    async () => citationReply(citations([quotes[0]!, quotes[0]!, ...quotes.slice(1)]), "provided", "本人已独立实现六倍增长"), metadata);
+  assert.deepEqual(result.artifact.flow?.fields.actions?.evidence, citations(quotes.slice(1)));
+  assert.equal(result.artifact.flow?.fields.actions?.value, quotes.slice(1).join("；"));
+  assert.doesNotMatch(JSON.stringify(result.artifact), /六倍|独立实现/u);
+});
+
+test("repeated short quotes retain all recovered qualifications or skip their entire group", async () => {
+  const simple = ["我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。"];
+  const input: DiscoveryFlowInput = { kind: "capability", message: ["我没做模型微调。模型微调由同事负责。", ...simple].join("\n"), requestId: "resume" };
+  for (const priorCount of [2, 3]) {
+    const result = await runDiscoveryFlow(input,
+      async () => citationReply(citations(["模型微调", ...simple.slice(0, priorCount)])), metadata);
+    const expected = priorCount === 2
+      ? ["我没做模型微调", "模型微调由同事负责", ...simple.slice(0, 2)]
+      : simple.slice(0, 3);
+    assert.deepEqual(result.artifact.flow?.fields.actions?.evidence, citations(expected));
+    assert.equal(result.artifact.flow?.fields.actions?.value, expected.join("；"));
+  }
+});
+
+test("oversized valid concatenation groups are skipped whole and cannot produce empty accepted evidence", async () => {
+  const parts = ["我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。", "我保留原始记录。"];
+  const final = "我提交交接清单。";
+  const input: DiscoveryFlowInput = { kind: "capability", message: [...parts, final].join("旁注说明。"), requestId: "resume" };
+  const combined = parts.join("");
+  const result = await runDiscoveryFlow(input, async () => citationReply(citations([combined, final])), metadata);
+  assert.deepEqual(result.artifact.flow?.fields.actions?.evidence, citations([final]));
+  assert.equal(result.artifact.flow?.fields.actions?.value, final);
+  for (const status of ["provided", "inferred", "skipped"] as const) {
+    await assert.rejects(runDiscoveryFlow(input, async () => citationReply(citations([combined]), status), metadata),
+      (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  }
+});
+
+test("ambiguous or overlong recovered contexts remain invalid even in discarded positions", async () => {
+  const simple = ["我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。"];
+  for (const context of [
+    Array.from({ length: 5 }, (_, index) => `项目${index + 1}的模型微调由同事负责。`).join(""),
+    `${"资料".repeat(400)}模型微调我没有做过。`,
+  ]) {
+    await assert.rejects(runDiscoveryFlow({ kind: "capability", message: [...simple, context].join("\n"), requestId: "resume" },
+      async () => citationReply(citations([...simple, "模型微调"])), metadata),
+    (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  }
+});
+
+test("the provided value budget cannot truncate a group's postposed negation", async () => {
+  const first = `我整理${"课程资料".repeat(170)}。`;
+  const qualified = `${"模型资料".repeat(150)}相关模型微调我没有做过`;
+  const last = "我保留原始记录。";
+  const result = await runDiscoveryFlow({ kind: "capability", message: [first, `${qualified}。`, last].join("\n"), requestId: "resume" },
+    async () => citationReply(citations([first, "相关模型微调", last])), metadata);
+  assert.deepEqual(result.artifact.flow?.fields.actions?.evidence, citations([qualified, last]));
+  assert.equal(result.artifact.flow?.fields.actions?.value, `${qualified}；${last}`);
+  assert.ok((result.artifact.flow?.fields.actions?.value.length ?? Infinity) <= 1200);
+  assert.match(result.artifact.flow?.fields.actions?.value ?? "", /相关模型微调我没有做过/u);
+});
+
+test("evidence normalization retains later current-source corrections regardless of model order", async () => {
+  const original = ["我完成部署。", "我设计数据表。", "我实现接口。", "我负责测试。"];
+  const correction = "上文四项工作都由团队完成，我本人只整理资料，没有承担交付责任。";
+  const quotes = [...original, correction];
+  const input: DiscoveryFlowInput = { kind: "capability", message: quotes.join("\n"), requestId: "resume" };
+  for (const ordered of [quotes, [...quotes].reverse(), [quotes[2]!, correction, quotes[0]!, quotes[3]!, quotes[1]!]]) {
+    const result = await runDiscoveryFlow(input, async () => citationReply(citations(ordered)), metadata);
+    assert.deepEqual(result.artifact.flow?.fields.actions?.evidence, citations(quotes.slice(1)));
+    assert.match(result.artifact.flow?.fields.actions?.value ?? "", /上文四项工作都由团队完成，我本人只整理资料，没有承担交付责任/u);
+  }
+});
+
+test("trimming cannot mix historical or attachment facts with current-user corrections", async () => {
+  const old = ["我完成部署。", "我设计数据表。", "我实现接口。", "我负责测试。"];
+  const correction = "这些工作由团队完成，我仅整理资料。";
+  for (const sourceId of ["attachment:old", "attachment:resume"]) {
+    const input: DiscoveryFlowInput = { kind: "capability", message: correction, requestId: "resume", sources: [{ id: sourceId, text: old.join("\n"), kind: "attachment" }] };
+    const evidence = [...old.map(quote => ({ sourceId, quote })), ...citations([correction])];
+    await assert.rejects(runDiscoveryFlow(input, async () => citationReply(evidence), metadata),
+      (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  }
+  const historical = [...old, "我保留了原始记录。"];
+  await assert.rejects(runDiscoveryFlow({ kind: "capability", message: "再看一下资料", requestId: "resume", sources: [{ id: "attachment:old", text: historical.join("\n"), kind: "attachment" }] },
+    async () => citationReply(historical.map(quote => ({ sourceId: "attachment:old", quote }))), metadata),
+  (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  const currentAttachment = await runDiscoveryFlow({ kind: "capability", message: "请看本轮附件", requestId: "resume", sources: [{ id: "attachment:resume", text: historical.join("\n"), kind: "attachment" }] },
+    async () => citationReply(historical.map(quote => ({ sourceId: "attachment:resume", quote }))), metadata);
+  assert.deepEqual(currentAttachment.artifact.flow?.fields.actions?.evidence, historical.slice(1).map(quote => ({ sourceId: "attachment:resume", quote })));
+});
+
+test("an oversized latest group fails instead of falling back to earlier assertions", async () => {
+  const earlier = "我完成系统部署。";
+  const parts = ["部署由同事完成。", "表格由团队设计。", "接口由其他人实现。", "测试由同事负责。", "本人没有承担交付责任。"];
+  const input: DiscoveryFlowInput = { kind: "capability", message: [earlier, ...parts].join("旁注说明。"), requestId: "resume" };
+  await assert.rejects(runDiscoveryFlow(input, async () => citationReply(citations([earlier, parts.join("")])), metadata),
+    (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  const longParts = [`课程说明${"甲".repeat(650)}由同事整理。`, `课程说明${"乙".repeat(650)}我没有负责。`];
+  await assert.rejects(runDiscoveryFlow({ ...input, message: [earlier, ...longParts].join("\n") },
+    async () => citationReply(citations([earlier, "课程说明"])), metadata),
+  (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+});
+
+test("ambiguous repeated excerpts or overlapping groups cannot define a trimming boundary", async () => {
+  const simple = ["我整理课程资料。", "我归纳操作步骤。", "我检查文件版本。", "我记录修改日期。", "我保留原始记录。"];
+  await assert.rejects(runDiscoveryFlow({ kind: "capability", message: [...simple, simple[0]!].join("\n"), requestId: "resume" },
+    async () => citationReply(citations(simple)), metadata),
+  (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  const spanning = `${simple[0]}${simple[4]}`;
+  await assert.rejects(runDiscoveryFlow({ kind: "capability", message: simple.join("\n"), requestId: "resume" },
+    async () => citationReply(citations([spanning, simple[1]!, simple[2]!, simple[3]!])), metadata),
+  (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+  const qualified = ["我只整理资料。", "部署由团队完成。", "设计由同事负责。", "本人没有负责交付。", "项目最后按时交付。"];
+  await assert.rejects(runDiscoveryFlow({ kind: "capability", message: qualified.join("旁注说明。"), requestId: "resume" },
+    async () => citationReply(citations([qualified[4]!, qualified.join("")])), metadata),
+  (error: unknown) => error instanceof DiscoveryFlowError && error.code === "unsupported_evidence");
+});
+
+test("structured response failures expose fixed categories without input or provider content", async () => {
+  const secret = "private-resume-sk-private-provider-body";
+  const input: DiscoveryFlowInput = { kind: "capability", message: secret, requestId: "one" };
+  for (const [response, code] of [
+    [secret, "invalid_json"],
+    [JSON.stringify({ ...emptyReply, extra: secret }), "invalid_shape"],
+    [replyFor({ actions: `absent-${secret}` }, "one"), "unsupported_evidence"],
+  ] as const) {
+    await assert.rejects(runDiscoveryFlow(input, async () => response, metadata), (error: unknown) => {
+      assert.ok(error instanceof DiscoveryFlowError);
+      assert.equal(error.code, code);
+      assert.equal(error.cause, undefined);
+      assert.doesNotMatch(String(error), /private/u);
+      return true;
+    });
+  }
 });
 
 test("legacy artifacts remain unconfirmed and are rebuilt from real sources", async () => {

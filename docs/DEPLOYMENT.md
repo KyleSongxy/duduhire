@@ -114,7 +114,7 @@ DUDUHIRE_LOAD_LOCAL_ENV=true npm run start:api
 
 端点来自 [阿里云 Chat API 官方文档](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)。应用限制 HTTPS、官方主机和固定路径，禁止重定向、URL 凭据、查询参数以及任意代理。调用采用 `POST /chat/completions`、`response_format: {type: "json_object"}` 与 `enable_thinking: false`；收到完整响应后，服务端继续校验业务字段和证据出处。JSON mode 只保证格式，不代表内容已经核实，详见 [阿里云结构化输出文档](https://help.aliyun.com/zh/model-studio/qwen-structured-output)。
 
-请求及响应读取共用 30 秒超时，响应上限 256 KiB；限流、鉴权失败、拒答、截断和无效输出均失败，不静默切换模型或退回演示。不会发送真实用户资料进行隐式启动探测。上线前使用经授权的脱敏测试案例验证两个角色的多轮补充、纠正、草稿、确认、恢复与失败重试，确认所选地域的数据处理政策及账户费用/限额。
+请求及响应读取共用 55 秒超时，响应上限 256 KiB；限流、鉴权失败、拒答、截断和无效输出均失败，不静默切换模型或退回演示。55 秒上限低于原生部署 API 代理的 60 秒读取超时，浏览器发现对话等待 120 秒；此预算不保证所有长输入均能成功，调整前须核对实际代理配置，详见[运行手册](RUNBOOK.md#发现建议失败)。不会发送真实用户资料进行隐式启动探测。上线前使用经授权的脱敏测试案例验证两个角色的多轮补充、纠正、草稿、确认、恢复与失败重试，确认所选地域的数据处理政策及账户费用/限额。
 
 ## 部署顺序
 

@@ -1425,7 +1425,7 @@ function DiscoveryClientPage({ mode }: { mode: DiscoveryMode }) {
   const turnInFlightRef = useRef(false);
   const retryDiscoveryTurnRef = useRef<(DiscoveryPendingSubmission & { fingerprint: string }) | null>(
     recoveredDraft?.pending && !recoveredDraft.attachmentCount
-      ? { ...recoveredDraft.pending, fingerprint: JSON.stringify([recoveredDraft.prompt.trim(), []]) } : null,
+      ? { ...recoveredDraft.pending, fingerprint: JSON.stringify([recoveredDraft.prompt, []]) } : null,
   );
   const discoveryVersionRef = useRef<DiscoveryVersion | null>(null);
   const discoveryMutationRevisionRef = useRef(0);
@@ -1475,7 +1475,7 @@ function DiscoveryClientPage({ mode }: { mode: DiscoveryMode }) {
       prompt,
       startsFresh,
       attachmentCount: attachments.length,
-      pending: retry && retry.fingerprint === JSON.stringify([prompt.trim(), []])
+      pending: retry && retry.fingerprint === JSON.stringify([prompt, []])
         ? { requestId: retry.requestId, threadId: retry.threadId, version: retry.version } : null,
     });
   }, [attachments.length, persistComposer, prompt, startsFresh]);
@@ -1684,8 +1684,9 @@ function DiscoveryClientPage({ mode }: { mode: DiscoveryMode }) {
     }
     if (turnInFlightRef.current || resetInFlightRef.current || fileReadInFlightRef.current || isLoadingDiscovery || isClaimingIntake) return;
     if (overridePrompt && (prompt.trim() || attachments.length)) return;
-    const nextPrompt = (overridePrompt ?? prompt).trim().slice(0, MAX_DISCOVERY_MESSAGE_CHARS);
-    if (!nextPrompt && attachments.length === 0) {
+    const nextPrompt = (overridePrompt ?? prompt).slice(0, MAX_DISCOVERY_MESSAGE_CHARS);
+    const hasPrompt = Boolean(nextPrompt.trim());
+    if (!hasPrompt && attachments.length === 0) {
       setInputError(copy.emptyError);
       return;
     }
@@ -1704,7 +1705,7 @@ function DiscoveryClientPage({ mode }: { mode: DiscoveryMode }) {
     const fallbackPrompt = isValueDiscovery
       ? "请根据这些资料提炼我的核心价值，并构建能力身份卡草稿。"
       : "请根据这些资料梳理要解决的问题。";
-    const submittedPrompt = nextPrompt || fallbackPrompt;
+    const submittedPrompt = hasPrompt ? nextPrompt : fallbackPrompt;
     if (overridePrompt) setPrompt(submittedPrompt);
     const submittedAttachments = attachments;
     const attachmentInputs: DiscoveryAttachmentInput[] = submittedAttachments.map(({ file, textExcerpt }) => ({

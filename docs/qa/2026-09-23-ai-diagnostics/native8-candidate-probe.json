@@ -1,0 +1,63 @@
+[
+  {
+    "backup": {
+      "file": "database.before.dump",
+      "bytes": 94752,
+      "sha256": "fc1d22fda38693cddb40e50a23a57656f723004c73f5d3a7722dd29e67b1794e",
+      "archiveListVerified": true,
+      "restoreVerified": false
+    },
+    "current": "/opt/duduhire/releases/duduhire-20260916-native-6",
+    "staged": true,
+    "activated": false
+  },
+  {
+    "release": "duduhire-20260923-native-8",
+    "phase": "synthetic_long_advisor_call",
+    "elapsed_ms": 47930,
+    "input_chars": 3125,
+    "input_han_chars": 2819,
+    "input_bytes": 9311,
+    "input_lines": 33,
+    "network_requests": 1,
+    "http_status": 200,
+    "headers_ms": 47901,
+    "body_bytes": 13951,
+    "output_mode": "metadata_only",
+    "running_release": "duduhire-20260916-native-6",
+    "current_release": "duduhire-20260916-native-6",
+    "manifest_verified": true,
+    "verified_module_files": 40,
+    "adapter_timeout_ms": 55000,
+    "watchdog_ms": 60000,
+    "envelope_json": true,
+    "single_choice": true,
+    "finish_reason": "stop",
+    "tool_calls_shape": "absent",
+    "has_refusal": false,
+    "assistant_role": true,
+    "content_string": true,
+    "content_chars": 5816,
+    "content_json": true,
+    "structure_violations": [
+      "update_1_evidence_array",
+      "update_2_evidence_array",
+      "update_3_evidence_array",
+      "update_4_evidence_array"
+    ],
+    "shape": {
+      "acknowledgement_chars": 79,
+      "next_question_chars": 69,
+      "summary_title_chars": 17,
+      "summary_value_chars": 227,
+      "update_count": 7,
+      "max_evidence_count": 6,
+      "max_quote_chars": 127,
+      "max_value_chars": 325,
+      "nonliteral_quote_count": 1,
+      "foreign_source_count": 0
+    },
+    "probe": "failed",
+    "reason": "discovery_invalid_shape"
+  }
+]

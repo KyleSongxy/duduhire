@@ -46,11 +46,13 @@
 
 ### 发现建议失败
 
-1. 根据响应 request id 检查 `AI_UNAVAILABLE`、请求超时和输出校验失败；日志不得包含用户问题、附件摘录、模型原始错误或 API 密钥。
+1. 根据响应 request id 检查 `AI_UNAVAILABLE`。新版 `discovery advisor failed` 日志只记录白名单 `failureReason`：`qwen_authentication`、`qwen_rate_limit`、`qwen_unavailable`、`qwen_timeout`、`qwen_invalid_output`，或 `discovery_invalid_json`、`discovery_invalid_shape`、`discovery_unsupported_evidence`；其他错误为 `unknown`。旧发布可能只有 `errorName`，不能凭统一的 503 提示确定根因。日志不得包含用户问题、附件摘录、模型原始错误或 API 密钥。
 2. 默认 Qwen 模式检查百炼业务空间状态、模型权限、账户限额和出站网络；确认 `QWEN_BASE_URL` 与密钥地域一致，`QWEN_MODEL` 支持 JSON mode 与非思考模式。显式 `AI_MODE=openai` 的已有部署检查对应 OpenAI 配置。不要把原始供应商响应复制到日志或工单。
 3. `409 DISCOVERY_STATE_CONFLICT` 表示 AI 推理期间活跃对话已被其他页面重置或写入；旧 AI 响应已被拒绝落库。重新读取 `/api/v1/me/discovery`，不要手工修改数据库版本或强行追加旧响应；经用户确认后才重试。
 4. 确认 API 仍能读取既有发现记录。暂停新的发现写入或展示可重试错误，不要在生产把 `AI_MODE` 改为 `local`，否则相同产品入口会产生未经批准的不同语义。
 5. 恢复后以不含真实敏感数据的两个角色测试样例各执行一轮，确认严格 JSON 输出、数据库模型/提示版本和工作台状态正常。
+
+发现对话的超时预算为：Qwen 请求及完整响应读取共用 55 秒，原生部署 Nginx `/api` 的 `proxy_read_timeout` 为 60 秒，浏览器发送发现对话等待 120 秒。模型截止后保留约 5 秒用于校验、落库与返回；API 没有另设更短的处理超时。调整任何一层前先核对实际代理配置，不要只延长浏览器等待或绕过供应商上限。一次较长合成履历在约 44 秒返回完整响应支持此次预算调整，但不保证所有长输入都能在预算内完成，也不表示业务结构和证据校验已经通过。超时仍返回安全失败，不自动重试或切换模型。
 
 ### intake 无法领取
 

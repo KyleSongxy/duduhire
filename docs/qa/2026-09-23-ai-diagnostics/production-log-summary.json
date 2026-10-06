@@ -1,0 +1,117 @@
+{
+  "service": {
+    "MainPID": "112089",
+    "NRestarts": "0",
+    "ActiveState": "active",
+    "SubState": "running"
+  },
+  "installed": {
+    "release": "duduhire-20260916-native-6",
+    "current_matches_running_directory": true,
+    "app": {
+      "sha256": "5605d7497a04a43d29a78134828341b856d9c9266981c66471d19ab959022202",
+      "known_features_present": [
+        false,
+        true
+      ]
+    },
+    "qwen": {
+      "sha256": "2abc66fce0004c5ee3770bc9e08ffa3d4cf7c5fd3308675793fcad6d78ccf005",
+      "known_features_present": [
+        false
+      ]
+    },
+    "flow": {
+      "sha256": "4d213ac47510dfde816f41fe1f922357a4994e146282073b1a97542201adfcc6",
+      "known_features_present": [
+        false,
+        false
+      ]
+    }
+  },
+  "ai": {
+    "ai_mode": "qwen",
+    "qwen_model": "qwen3.8-max",
+    "qwen_endpoint": "dashscope.aliyuncs.com",
+    "has_qwen_key": true,
+    "openai_model": "unset_or_invalid",
+    "openai_endpoint": "default",
+    "has_openai_key": false
+  },
+  "logs": {
+    "window": "last_72h",
+    "max_records": 10000,
+    "journal_records": 1074,
+    "record_cap_reached": false,
+    "parsed_records": 1074,
+    "non_json_records": 0,
+    "advisor_failures_by_name": {
+      "Error": 10
+    },
+    "advisor_failures_by_reason": {
+      "unclassified": 10
+    },
+    "advisor_failures_by_hour_utc": {
+      "2026-09-22T09:00:00Z": 2,
+      "2026-09-22T13:00:00Z": 5,
+      "2026-09-22T14:00:00Z": 2,
+      "2026-09-22T15:00:00Z": 1
+    },
+    "last_32_advisor_failures": [
+      {
+        "time_utc": "2026-09-22T09:48:55Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T09:51:27Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T13:44:24Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T13:44:41Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T13:45:01Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T13:45:28Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T13:45:46Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T14:46:18Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T14:46:40Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      },
+      {
+        "time_utc": "2026-09-22T15:03:12Z",
+        "error_name": "Error",
+        "failure_reason": "unclassified"
+      }
+    ],
+    "logged_503_responses": 0,
+    "logged_503_duration_buckets": {},
+    "zero_logged_503_does_not_prove_no_failures": true
+  },
+  "collection_errors": []
+}

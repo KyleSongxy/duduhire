@@ -1,0 +1,8 @@
+{
+  "release": "duduhire-20260916-native-6",
+  "manifest_matches_recorded_baseline": true,
+  "files_checked": 125,
+  "mismatches": [],
+  "candidate_dependency_and_sql_files_compared": 16,
+  "candidate_differences": []
+}

@@ -4,7 +4,9 @@ import test from "node:test";
 import { Client, type Pool, type PoolClient } from "pg";
 import { buildApp } from "../src/app.js";
 import { loadConfig, loadDatabaseConfig, OFFICIAL_OPENAI_BASE_URL, type AppConfig } from "../src/config.js";
-import type { DiscoveryAdvisor } from "../src/discoveryAdvisor.js";
+import { LocalDiscoveryAdvisor, type DiscoveryAdvisor } from "../src/discoveryAdvisor.js";
+import { DiscoveryFlowError } from "../src/discoveryFlow.js";
+import { QwenProviderError } from "../src/qwenClient.js";
 import {
   emptyProfile,
   normalizeEmail,
@@ -1382,6 +1384,84 @@ test("homepage intake is browser-bound, expires from reuse, and can be claimed e
   });
   assert.equal(replay.statusCode, 404);
   assert.equal(replay.json().error.code, "INTAKE_NOT_FOUND");
+});
+
+test("discovery keeps submitted whitespace while rejecting blank input and recognizing padded confirmation", async context => {
+  const repository = new MemoryRepository();
+  const emailSender = new MemoryEmailSender();
+  const advisorInputs: Array<Parameters<DiscoveryAdvisor["advise"]>[0]> = [];
+  const localAdvisor = new LocalDiscoveryAdvisor();
+  const app = await buildApp({ config, repository, emailSender, discoveryAdvisor: {
+    async advise(input) { advisorInputs.push(input); return localAdvisor.advise(input); },
+  } });
+  context.after(() => app.close());
+  const signedIn = await signUpUser(app, emailSender, "formatted-resume@example.com", "talent");
+  const headers = { origin: config.webOrigin, cookie: signedIn.sessionCookie };
+  const blank = await app.inject({ method: "POST", url: "/api/v1/me/discovery/turns", headers,
+    payload: { requestId: createId(), prompt: " \n\t ", attachments: [] } });
+  assert.equal(blank.statusCode, 400);
+  assert.equal(blank.json().error.code, "PROMPT_REQUIRED");
+  assert.equal(advisorInputs.length, 0);
+
+  const prompt = "\n    经历背景：课程资料分散。\n  个人职责：我负责整理资料。\n  具体行动：我给文档统一分类。\n  实际结果：同学反馈查找更方便。\n\t ";
+  const requestId = createId();
+  const sent = await app.inject({ method: "POST", url: "/api/v1/me/discovery/turns", headers,
+    payload: { requestId, prompt, attachments: [] } });
+  assert.equal(sent.statusCode, 200);
+  assert.equal(advisorInputs[0]?.message, prompt);
+  assert.equal(advisorInputs[0]?.sources?.find(source => source.id === `user:${requestId}`)?.text, prompt);
+  assert.equal(sent.json().discovery.turns[0].question, prompt);
+  const userId = repository.users.get("formatted-resume@example.com")!.id;
+  assert.equal((await repository.readDiscovery(userId, "capability"))?.turns[0]?.question, prompt);
+  const refreshed = await app.inject({ method: "GET", url: "/api/v1/me/discovery", headers });
+  assert.equal(refreshed.json().discovery.turns[0].question, prompt);
+  const discovery = sent.json().discovery;
+  assert.equal(discovery.artifact.draft.flow.status, "ready");
+  const confirmation = await app.inject({ method: "POST", url: "/api/v1/me/discovery/turns", headers,
+    payload: { requestId: createId(), prompt: " \n确认保存当前版本。\n ", attachments: [],
+      expectedThreadId: discovery.threadId, expectedVersion: discovery.version } });
+  assert.equal(confirmation.statusCode, 200);
+  assert.equal(confirmation.json().discovery.artifact.draft.flow.status, "confirmed");
+});
+
+test("discovery failure logs whitelist categories without leaking errors, credentials or submitted materials", async context => {
+  const repository = new MemoryRepository();
+  const emailSender = new MemoryEmailSender();
+  let advisorError: unknown;
+  const app = await buildApp({ config, repository, emailSender, discoveryAdvisor: {
+    async advise() { throw advisorError; },
+  } });
+  context.after(() => app.close());
+  const logs: unknown[][] = [];
+  app.addHook("onRequest", async request => {
+    request.log.error = (...args: unknown[]) => { logs.push(args); };
+  });
+  const signedIn = await signUpUser(app, emailSender, "ai-failure@example.com", "talent");
+  const privateText = "private-resume-sk-private-provider-body";
+  const cases: Array<[unknown, string]> = [
+    ...(["authentication", "rate_limit", "unavailable", "timeout", "invalid_output"] as const)
+      .map(code => [Object.assign(new QwenProviderError(code), { name: privateText, message: privateText, cause: privateText }), `qwen_${code}`] as [unknown, string]),
+    ...(["invalid_json", "invalid_shape", "unsupported_evidence"] as const)
+      .map(code => [new DiscoveryFlowError(code), `discovery_${code}`] as [unknown, string]),
+    [Object.assign(new Error(privateText), { name: privateText, code: "timeout", cause: privateText }), "unknown"],
+    [Object.assign(new QwenProviderError("timeout"), { code: privateText }), "unknown"],
+    [Object.assign(new DiscoveryFlowError("invalid_json"), { code: privateText }), "unknown"],
+    [{ code: "timeout", name: "QwenProviderError", message: privateText }, "unknown"],
+  ];
+  for (const [error, failureReason] of cases) {
+    advisorError = error;
+    const requestId = createId();
+    const response = await app.inject({ method: "POST", url: "/api/v1/me/discovery/turns",
+      headers: { origin: config.webOrigin, cookie: signedIn.sessionCookie, "x-request-id": requestId },
+      payload: { requestId: createId(), prompt: privateText,
+        attachments: [{ name: `${privateText}.txt`, contentType: "text/plain", sizeBytes: 100, textExcerpt: privateText }] } });
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(response.json(), { error: { code: "AI_UNAVAILABLE", message: "AI 顾问暂时不可用，请稍后重试。" } });
+    assert.deepEqual(logs.at(-1), [{ failureReason, requestId }, "discovery advisor failed"]);
+  }
+  assert.equal(logs.length, cases.length);
+  assert.doesNotMatch(JSON.stringify(logs), /private|@|Bearer/u);
+  assert.equal(repository.discoveries.size, 0);
 });
 
 test("discovery is role-scoped, persisted, idempotent, and continues beyond eight turns with stable source references", async (context) => {

@@ -1,0 +1,122 @@
+[
+  {
+    "files": {
+      "current_is_native9": true,
+      "manifest_unchanged": true,
+      "monitored_files_match_manifest": true,
+      "nginx_unchanged": true,
+      "ok": true,
+      "runtime_unchanged": true,
+      "unit_matches_candidate": true
+    },
+    "health": [
+      {
+        "elapsed_ms": 13,
+        "http": 200,
+        "name": "live",
+        "ok": true
+      },
+      {
+        "elapsed_ms": 74,
+        "http": 200,
+        "name": "ready",
+        "ok": true
+      }
+    ],
+    "ok": true,
+    "sample": 1,
+    "services": [
+      {
+        "native9_process": true,
+        "ok": true,
+        "pid": 149015,
+        "restarts": 0,
+        "started_monotonic": 2362276063734,
+        "unchanged_since_first_sample": true,
+        "unit": "duduhire-api-staging.service"
+      },
+      {
+        "ok": true,
+        "pid": 17573,
+        "restarts": 0,
+        "started_monotonic": 20447867470,
+        "unchanged_since_first_sample": true,
+        "unit": "nginx.service"
+      }
+    ],
+    "utc": "2026-09-22T18:02:26Z"
+  },
+  {
+    "files": {
+      "current_is_native9": true,
+      "manifest_unchanged": true,
+      "monitored_files_match_manifest": true,
+      "nginx_unchanged": true,
+      "ok": true,
+      "runtime_unchanged": true,
+      "unit_matches_candidate": true
+    },
+    "health": [
+      {
+        "elapsed_ms": 6,
+        "http": 200,
+        "name": "live",
+        "ok": true
+      },
+      {
+        "elapsed_ms": 26,
+        "http": 200,
+        "name": "ready",
+        "ok": true
+      }
+    ],
+    "ok": true,
+    "sample": 19,
+    "services": [
+      {
+        "native9_process": true,
+        "ok": true,
+        "pid": 149015,
+        "restarts": 0,
+        "started_monotonic": 2362276063734,
+        "unchanged_since_first_sample": true,
+        "unit": "duduhire-api-staging.service"
+      },
+      {
+        "ok": true,
+        "pid": 17573,
+        "restarts": 0,
+        "started_monotonic": 20447867470,
+        "unchanged_since_first_sample": true,
+        "unit": "nginx.service"
+      }
+    ],
+    "utc": "2026-09-22T18:05:26Z"
+  },
+  {
+    "account_mutations": 0,
+    "candidate_unit_sha256": "1a592ab158640f185a26f46fda60f46b882d192661e7080b46acde68e65d8d6f",
+    "changed_service_samples": 0,
+    "complete": true,
+    "failed_samples": 0,
+    "full_payload_hashes_match": true,
+    "journal": {
+      "advisor_failure_reasons": {},
+      "journal_errors": 0,
+      "non_json_messages": 0,
+      "ok": true,
+      "pino_errors": 0,
+      "pino_warnings": 0,
+      "truncated": false
+    },
+    "manifest_sha256": "1c7001c6c2d364dd5cf50b5a012f3f4fd070d99c56f3cd731d3e6f5540f2e842",
+    "model_calls": 0,
+    "observed_seconds": 180.06,
+    "release": "duduhire-20260923-native-9",
+    "samples": 19,
+    "stable": true
+  },
+  {
+    "stability_exit_code": 0
+  }
+]

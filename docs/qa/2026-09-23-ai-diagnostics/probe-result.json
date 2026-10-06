@@ -1,0 +1,31 @@
+{
+  "release": "duduhire-20260916-native-6",
+  "phase": "synthetic_advisor_call",
+  "elapsed_ms": 8144,
+  "network_requests": 1,
+  "http_status": 200,
+  "headers_ms": 8108,
+  "body_bytes": 2507,
+  "envelope_json": true,
+  "single_choice": true,
+  "finish_reason": "stop",
+  "tool_calls_shape": "absent",
+  "has_refusal": false,
+  "assistant_role": true,
+  "content_string": true,
+  "content_chars": 1274,
+  "content_json": true,
+  "shape": {
+    "acknowledgement_chars": 31,
+    "next_question_chars": 0,
+    "update_count": 7,
+    "max_evidence_count": 1,
+    "max_quote_chars": 24,
+    "max_value_chars": 19,
+    "nonliteral_quote_count": 0,
+    "foreign_source_count": 0
+  },
+  "probe": "completed",
+  "flow_status": "ready",
+  "missing_required_count": 0
+}

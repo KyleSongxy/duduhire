@@ -1,6 +1,7 @@
 import { DEFAULT_QWEN_MODEL, readQwenBaseUrl } from "./config.js";
 
-export const QWEN_DISCOVERY_TIMEOUT_MS = 30_000;
+// Leave time for validation and persistence before the native API proxy's 60s deadline.
+export const QWEN_DISCOVERY_TIMEOUT_MS = 55_000;
 const MAX_RESPONSE_BYTES = 256 * 1024;
 
 type QwenFailureCode = "authentication" | "rate_limit" | "unavailable" | "timeout" | "invalid_output";
@@ -110,7 +111,8 @@ export class QwenClient {
       }
       const choice = payload.choices[0];
       if (!isRecord(choice) || choice.finish_reason !== "stop" || !isRecord(choice.message)
-        || choice.message.role !== "assistant" || choice.message.refusal || choice.message.tool_calls
+        || choice.message.role !== "assistant" || choice.message.refusal
+        || (choice.message.tool_calls != null && (!Array.isArray(choice.message.tool_calls) || choice.message.tool_calls.length > 0))
         || typeof choice.message.content !== "string" || !choice.message.content.trim()) {
         throw new QwenProviderError("invalid_output");
       }

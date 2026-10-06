@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { DEFAULT_QWEN_BASE_URL, loadConfig, readQwenBaseUrl } from "../src/config.js";
-import { QwenClient, QwenProviderError } from "../src/qwenClient.js";
+import { QWEN_DISCOVERY_TIMEOUT_MS, QwenClient, QwenProviderError } from "../src/qwenClient.js";
 import { QwenDiscoveryAdvisor } from "../src/discoveryAdvisor.js";
 
 const testEnvironment = {
@@ -79,6 +79,50 @@ test("Qwen sends server-side Chat Completions with JSON mode and thinking disabl
   assert.equal(result.model, "qwen3.8-max");
 });
 
+test("Qwen accepts normal content when tool_calls is omitted, null, or empty", async (t) => {
+  for (const [label, toolCalls] of [["omitted", undefined], ["null", null], ["empty array", []]] as const) {
+    await t.test(label, async () => {
+      const body = payload();
+      if (toolCalls !== undefined) Object.assign(body.choices[0].message, { tool_calls: toolCalls });
+      let calls = 0;
+      const client = makeClient(async () => {
+        calls++;
+        return new Response(JSON.stringify(body));
+      });
+      assert.deepEqual(await client.complete(completionInput), { text: JSON.stringify(validReply), model: "qwen3.8-max" });
+      assert.equal(calls, 1);
+    });
+  }
+});
+
+test("Qwen rejects nonempty or malformed tool_calls even with normal content", async (t) => {
+  for (const [label, toolCalls] of [
+    ["nonempty array", [{}]],
+    ["object", {}],
+    ["empty string", ""],
+    ["false", false],
+    ["zero", 0],
+    ["string", "tools"],
+  ] as const) {
+    await t.test(label, async () => {
+      const body = payload();
+      Object.assign(body.choices[0].message, { tool_calls: toolCalls });
+      let calls = 0;
+      const client = makeClient(async () => {
+        calls++;
+        return new Response(JSON.stringify(body));
+      });
+      await assert.rejects(client.complete(completionInput), (error: unknown) => {
+        assert.ok(error instanceof QwenProviderError);
+        assert.equal(error.code, "invalid_output");
+        assert.equal(error.cause, undefined);
+        return true;
+      });
+      assert.equal(calls, 1);
+    });
+  }
+});
+
 test("Qwen advisor passes model extraction into the shared flow with source validation", async () => {
   let calls = 0;
   const advisor = new QwenDiscoveryAdvisor({ apiKey: "sk-test-only", fetchImplementation: async () => {
@@ -135,6 +179,53 @@ test("Qwen rejects truncation, refusals, tools, missing or malformed responses",
 test("Qwen applies a byte limit even when content-length is absent or misleading", async () => {
   for (const headers of [{}, { "content-length": "1" }, { "content-length": "999999" }]) {
     await assert.rejects(makeClient(async () => new Response("中".repeat(100_000), { headers })).complete(completionInput), /invalid_output/u);
+  }
+});
+
+test("Qwen accepts a complete response after the former 30-second deadline", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  let signal: AbortSignal | null | undefined;
+  let resolveResponse!: (response: Response) => void;
+  const client = makeClient((_url, init) => {
+    signal = init?.signal;
+    return new Promise<Response>((resolve) => { resolveResponse = resolve; });
+  });
+  const completion = client.complete(completionInput);
+  t.mock.timers.tick(44_000);
+  assert.ok(signal);
+  assert.equal(signal.aborted, false);
+  resolveResponse(new Response(JSON.stringify(payload())));
+  assert.equal((await completion).text, JSON.stringify(validReply));
+  t.mock.timers.tick(55_000);
+  assert.equal(signal.aborted, false, "completion must clear its timeout");
+});
+
+test("Qwen caps default and oversized timeout budgets at 55 seconds", async (t) => {
+  assert.equal(QWEN_DISCOVERY_TIMEOUT_MS, 55_000);
+  for (const [label, options] of [["default", {}], ["oversized", { timeoutMs: 90_000 }]] as const) {
+    await t.test(label, async (t) => {
+      t.mock.timers.enable({ apis: ["setTimeout"] });
+      let signal: AbortSignal | null | undefined;
+      let calls = 0;
+      const client = makeClient((_url, init) => new Promise((_resolve, reject) => {
+        calls++;
+        signal = init?.signal;
+        signal?.addEventListener("abort", () => reject(new Error("private transport detail")), { once: true });
+      }), options);
+      const rejected = assert.rejects(client.complete(completionInput), (error: unknown) => {
+        assert.ok(error instanceof QwenProviderError);
+        assert.equal(error.code, "timeout");
+        assert.equal(error.cause, undefined);
+        return true;
+      });
+      t.mock.timers.tick(54_999);
+      assert.ok(signal);
+      assert.equal(signal.aborted, false);
+      t.mock.timers.tick(1);
+      await rejected;
+      assert.equal(signal.aborted, true);
+      assert.equal(calls, 1, "timeouts must not trigger another provider request");
+    });
   }
 });
 

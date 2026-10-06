@@ -45,6 +45,15 @@ export type FlowMetadata = { provider: "local" | "qwen" | "openai"; model: strin
 export type DiscoveryFlowAdvice = FlowMetadata & { answer: string; artifact: FlowArtifact };
 export type FlowCompletion = (request: { system: string; user: string }) => Promise<string>;
 
+export class DiscoveryFlowError extends Error {
+  constructor(readonly code: "invalid_json" | "invalid_shape" | "unsupported_evidence") {
+    super(code === "invalid_json" ? "AI provider returned invalid structured output."
+      : code === "invalid_shape" ? "AI provider returned an unexpected response shape."
+        : "AI provider returned unsupported evidence.");
+    this.name = "DiscoveryFlowError";
+  }
+}
+
 type FieldDefinition = { key: string; label: string; question: string; required?: boolean };
 const definitions: Record<DiscoveryKind, FieldDefinition[]> = {
   problem: [
@@ -82,8 +91,8 @@ const unsupportedMetric = (value: string, evidence: string) => {
   return metrics(value).some((number) => !known.has(number));
 };
 
-function readEvidence(value: unknown): FlowEvidence[] | null {
-  if (!Array.isArray(value) || value.length > 4) return null;
+function readEvidence(value: unknown, maximumItems = 4): FlowEvidence[] | null {
+  if (!Array.isArray(value) || value.length > maximumItems) return null;
   const items: FlowEvidence[] = [];
   for (const item of value) {
     if (!isRecord(item)) return null;
@@ -95,35 +104,76 @@ function readEvidence(value: unknown): FlowEvidence[] | null {
   return items;
 }
 
-function groundEvidence(evidence: FlowEvidence[], sourceMap: Map<string, string>): FlowEvidence[] | null {
-  const grounded: FlowEvidence[] = [];
+const uniqueEvidence = (evidence: FlowEvidence[]) => evidence.filter((entry, index) => evidence.findIndex(
+  (candidate) => candidate.sourceId === entry.sourceId && candidate.quote === entry.quote,
+) === index);
+const evidenceValue = (evidence: FlowEvidence[]) => [...new Set(evidence.map((entry) => entry.quote))].join("；");
+
+function groundModelEvidence(evidence: FlowEvidence[], sourceMap: Map<string, string>, derivesValue: boolean, currentSourceIds: Set<string>): FlowEvidence[] | null {
+  const groups: FlowEvidence[][] = [];
   for (const entry of evidence) {
     const source = sourceMap.get(entry.sourceId);
     if (!source) return null;
     if (source.includes(entry.quote)) {
       const contextual = recoverEvidenceContext(source, entry.quote);
       if (!contextual.length) return null;
-      grounded.push(...contextual.map((quote) => ({ sourceId: entry.sourceId, quote })));
+      groups.push(contextual.map((quote) => ({ sourceId: entry.sourceId, quote })));
       continue;
     }
     // Some providers concatenate separate sentences into one quote. Recover only
     // when every complete part exists verbatim in that same source. No fuzzy match.
     const parts = entry.quote.match(/[^。！？!?；;\n]+[。！？!?；;\n]?/gu)?.map((part) => part.trim()).filter(Boolean) ?? [];
     if (parts.length < 2 || parts.some((part) => part.length < 3 || !source.includes(part))) return null;
+    const group: FlowEvidence[] = [];
     for (const part of parts) {
       const contextual = recoverEvidenceContext(source, part);
       if (!contextual.length) return null;
-      grounded.push(...contextual.map((quote) => ({ sourceId: entry.sourceId, quote })));
+      group.push(...contextual.map((quote) => ({ sourceId: entry.sourceId, quote })));
     }
+    groups.push(uniqueEvidence(group));
   }
-  const unique = grounded.filter((entry, index) => grounded.findIndex((candidate) => candidate.sourceId === entry.sourceId && candidate.quote === entry.quote) === index);
-  return unique.length <= 4 ? unique : null;
+  // Validate every raw citation before selecting any, including citations that
+  // will not fit. Each recovered group is atomic: dropping one occurrence could
+  // remove a negation, team attribution or other qualification of the same quote.
+  const fits = (candidate: FlowEvidence[]) => candidate.length <= 4 && (!derivesValue || evidenceValue(candidate).length <= 1200);
+  const all = uniqueEvidence(groups.flat());
+  if (fits(all)) return all;
+  // Trimming across sources or historical material could discard the current
+  // user's correction. Only a single current source has a usable text order.
+  const sourceId = all[0]!.sourceId;
+  if (!currentSourceIds.has(sourceId) || all.some((entry) => entry.sourceId !== sourceId)) return null;
+  const source = sourceMap.get(sourceId)!;
+  const positions = new Map<string, { start: number; end: number }>();
+  for (const entry of all) {
+    const start = source.indexOf(entry.quote);
+    // Repeated identical excerpts cannot be assigned a safe chronology.
+    if (start !== source.lastIndexOf(entry.quote)) return null;
+    positions.set(entry.quote, { start, end: start + entry.quote.length });
+  }
+  const endOf = (group: FlowEvidence[]) => Math.max(...group.map((entry) => positions.get(entry.quote)!.end));
+  let retained: FlowEvidence[] = [];
+  for (const group of [...groups].sort((left, right) => endOf(right) - endOf(left))) {
+    const candidate = uniqueEvidence([...retained, ...group]);
+    // Keep a suffix, not a collection with gaps. In particular, an oversized
+    // latest group must never be skipped in favor of older positive statements.
+    if (!fits(candidate)) break;
+    retained = candidate;
+  }
+  if (!retained.length) return null;
+  const retainedQuotes = new Set(retained.map((entry) => entry.quote));
+  // Overlapping groups must not preserve a shared later statement while losing
+  // an earlier qualification from another group containing that same statement.
+  if (groups.some((group) => group.some((entry) => retainedQuotes.has(entry.quote))
+    && group.some((entry) => !retainedQuotes.has(entry.quote)))) return null;
+  const startOfRetained = Math.min(...retained.map((entry) => positions.get(entry.quote)!.start));
+  if (all.some((entry) => !retainedQuotes.has(entry.quote) && positions.get(entry.quote)!.end > startOfRetained)) return null;
+  return retained.sort((left, right) => positions.get(left.quote)!.start - positions.get(right.quote)!.start);
 }
 
-function readField(value: unknown): FlowField | null {
+function readField(value: unknown, maximumEvidence = 4): FlowField | null {
   if (!isRecord(value)) return null;
   const fieldText = text(value.value, 1200);
-  const evidence = readEvidence(value.evidence);
+  const evidence = readEvidence(value.evidence, maximumEvidence);
   if (!fieldText || !evidence || !["provided", "inferred", "skipped"].includes(String(value.status))) return null;
   if (value.status === "provided" && evidence.length === 0) return null;
   return { value: fieldText, status: value.status as FlowField["status"], evidence };
@@ -185,10 +235,10 @@ type ModelReply = {
   summary: { title: string; value: string };
 };
 
-function parseReply(raw: string, kind: DiscoveryKind, sources: FlowSource[]): ModelReply {
+function parseReply(raw: string, kind: DiscoveryKind, sources: FlowSource[], currentSourceIds: Set<string>): ModelReply {
   let data: unknown;
-  try { data = JSON.parse(raw); } catch { throw new Error("AI provider returned invalid structured output."); }
-  const invalid = () => new Error("AI provider returned an unexpected response shape or unsupported evidence.");
+  try { data = JSON.parse(raw); } catch { throw new DiscoveryFlowError("invalid_json"); }
+  const invalid = () => new DiscoveryFlowError("invalid_shape");
   if (!isRecord(data) || !["acknowledgement,nextQuestion,summary,updates", "acknowledgement,nextQuestion,questionField,summary,updates"].includes(Object.keys(data).sort().join(","))) throw invalid();
   const acknowledgement = text(data.acknowledgement, 400);
   const nextQuestion = text(data.nextQuestion, 300);
@@ -206,22 +256,24 @@ function parseReply(raw: string, kind: DiscoveryKind, sources: FlowSource[]): Mo
   for (const rawField of data.updates) {
     if (!isRecord(rawField) || typeof rawField.field !== "string" || !allowed.has(rawField.field) || seen.has(rawField.field)) throw invalid();
     if (Object.keys(rawField).sort().join(",") !== "evidence,field,status,value") throw invalid();
-    const rawEvidence = readEvidence(rawField.evidence);
+    // Only model responses may temporarily exceed the persisted four-citation
+    // format. All citations must validate before normalization back to that bound.
+    const rawEvidence = readEvidence(rawField.evidence, 16);
     const field: FlowField | null = rawField.status === "provided"
       ? typeof rawField.value === "string" && rawEvidence?.length
         ? { value: "", status: "provided", evidence: rawEvidence } : null
-      : readField(rawField);
+      : readField(rawField, 16);
     if (!field) throw invalid();
     // Quotes must be present in a user/attachment source, not in prior AI answers.
-    const grounded = groundEvidence(field.evidence, sourceMap);
-    if (!grounded) throw invalid();
+    const grounded = groundModelEvidence(field.evidence, sourceMap, field.status === "provided", currentSourceIds);
+    if (!grounded) throw new DiscoveryFlowError("unsupported_evidence");
     field.evidence = grounded;
     if (field.status === "provided") {
       // The model decides field attribution and which sentences matter. Only the
       // actual excerpts become provided facts; a plausible paraphrase could add
       // tools, hard requirements, guarantees or responsibilities absent in them.
       // rawField.value is intentionally ignored, including all its numbers.
-      field.value = [...new Set(field.evidence.map((entry) => entry.quote))].join("；").slice(0, 1200);
+      field.value = evidenceValue(field.evidence);
     }
     if (field.status === "skipped" && field.evidence.length === 0) throw invalid();
     seen.add(rawField.field);
@@ -246,6 +298,7 @@ domainGuidance是有来源的工作方法参考，不是用户经历、招聘硬
 summary是待用户确认的简短能力/用人方向提炼，不得新增事实和数字，信息不足时title和value返回空字符串。title描述可承担的工作方向，不写专家、负责人、资深、高级、认证等职级身份定论。不以用户一句话生成职业定论。acknowledgement不宣称保存、确认、完成、发布、匹配或验证；这些状态由服务端控制。不在acknowledgement里提问，问题只放nextQuestion。不得输出确认状态、阶段状态或隐藏推理。
 lastQuestion仅说明上轮实际提问；用户简短回复要结合该问题理解，不要把答案填错字段。nextQuestion必须对应questionField，优先问仍缺失的必要事实。已经provided的字段不重复问；矛盾可通过本轮引用明确更新。各字段只写与其有关的内容：context/situation为业务或项目背景，work/role为实际工作职责，actions是本人做法，outcome是需求目标或经历结果。具体工具和市场仅在用户提及时保留，不能由框架推定。
 JSON精确结构：{"acknowledgement":"简短承接，一到两句，不带问题","updates":[{"field":"fieldGuide中的key","value":"简明完整的事实或建议","status":"provided或inferred或skipped","evidence":[{"sourceId":"sources中的id","quote":"逐字原文摘录"}]}],"nextQuestion":"只问一个必要问题，信息完整可为空","questionField":"下一个问题对应fieldGuide中的key，无问题则空字符串","summary":{"title":"不超过80字的工作/能力方向，信息不足留空","value":"不超过600字的价值表述，不虚构"}}。
+长度与数量上限：acknowledgement最多400字符，nextQuestion最多300字符；updates最多7项，每个field只能出现一次；每项value最多1200字符。每字段evidence最多4条，每条sourceId最多200字符且必须使用sources中已有的id，每条quote最多800字符。provided和skipped必须至少引用1条原文；inferred可没有证据。长简历只选最能说明该字段的1至4段连续原文，保留否定、个人与团队归属、预计等限定语，不因缩短而改写、合并不相邻片段或删掉限定语。summary.title最多80字符，summary.value最多600字符。这些上限按字符串字符数计算；不需要为了接近上限而扩写。
 所有字段都必须返回；updates可为空数组；不得包含任何额外字段。fields仅包含已收集草稿，缺失内容保持缺失。`;
   return { system, user: JSON.stringify({ task: input.kind, currentMessage: input.message, currentSourceId: `user:${input.requestId ?? "current"}`, stage, lastQuestion, fieldGuide, fields, domainGuidance, sources: modelSources(sources) }) };
 }
@@ -402,8 +455,8 @@ export async function runDiscoveryFlow(raw: DiscoveryFlowInput, complete: FlowCo
     questionField = next?.key ?? "";
   } else {
     const request = flowPrompt(input, fields, sources, current?.key ?? "review", previous.flow?.nextQuestion ?? "");
-    const reply = complete ? parseReply(await complete(request), input.kind, sources) : localReply(input, fields, current?.key ?? "review", sources);
     const currentIds = new Set([`user:${input.requestId ?? "current"}`, `attachment:${input.requestId ?? "current"}`]);
+    const reply = complete ? parseReply(await complete(request), input.kind, sources, currentIds) : localReply(input, fields, current?.key ?? "review", sources);
     let changed = false;
     let staleRejected = false;
     for (const update of reply.updates) {
